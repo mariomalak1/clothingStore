@@ -1,0 +1,38 @@
+{% extends "main.html" %}
+{% load static %}
+{% block body %}
+    <a href="{% url "seller_create_order" cart.cart_code %}" class="btn btn-primary btn-lg btn-block link-home-page p-2 mb-3" style="margin-left: 0">Add Order</a>
+    {% if cart.order_set %}
+
+        {# display the total of orders and cart #}
+        <div class="card mb-3 text-white bg-steel">
+            <div class="card-body">
+                <h5>Number of Orders : {{ cart.order_set.count }}</h5>
+                <h5>Total Cost : {{ cart.total_price }}</h5>
+            </div>
+        </div>
+
+        {% for order in cart.order_set.all %}
+
+            <div class="card mb-4">
+                <h5 class="card-header">order {{ forloop.counter }}</h5>
+                <div class="card-body">
+                    <h5 class="card-title ml-0">Name : {{ order.product.name }}</h5>
+                    <h5 class="card-title mr-3">Size : {{ order.product.size }}</h5>
+                    <h5 class="card-title mr-3">Quantity : {{ order.quantity }}</h5>
+                    <h5 class="card-title mr-3">Total for this order : {{ order.total_for_order }}</h5>
+                    <h6 class="card-text">product code : {{ order.product.product_code }}</h6>
+                    <a href="#" class="btn btn-primary">Edit</a>
+
+                    <!-- Confirmation button code -->
+                    <a href="{% url "delete_order" order.id forloop.counter%}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
+
+
+{##}

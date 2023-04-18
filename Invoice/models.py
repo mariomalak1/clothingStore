@@ -17,6 +17,7 @@ class Cart(models.Model):
     discount = models.PositiveIntegerField(default=0)
     is_percent_discount = models.BooleanField(default=False)
     cart_code = models.CharField(max_length=200, null=True, blank=True)
+    is_finished = models.BooleanField(default=False)
 
     # function to generate code for every cart
     @staticmethod
@@ -46,7 +47,7 @@ class Cart(models.Model):
     def total_price_without_discount(self):
         total = 0
         for order in self.order_set.all():
-            total += order.product.price
+            total += (order.product.price * order.quantity)
         return total
 
     def calculate_percent_get_total(self):
@@ -63,6 +64,10 @@ class Order(models.Model):
     product = models.ForeignKey(product_model, on_delete= models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(default=1)
     cart = models.ForeignKey(Cart, on_delete= models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def total_for_order(self):
         return (self.product.price * self.quantity)
+
+    def __str__(self):
+        return (self.product.name + " - " + str(self.quantity) + " - " + self.cart.cart_code)

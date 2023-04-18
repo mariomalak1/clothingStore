@@ -1,4 +1,9 @@
 {% extends "main.html" %}
 {% block body %}
-
+    <a href="{% url "check_out" cart.cart_code%}" class="btn btn-success w-100 p-2 mb-4" style="width: 100%;">Return to Check Out</a>
+    <form method="post" action="" novalidate>
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit" class="btn btn-primary">Order</button>
+    </form>
 {% endblock %}
