@@ -16,7 +16,7 @@
                 {% if anotherText %}
                     <p>{{ anotherText }}</p>
                 {% endif %}
-                    <a class="btn btn-secondary btn-block" href="{% url "check_out" cart_code%}">Cancel</a>
+                    <a class="btn btn-secondary btn-block" href="{% url "all_orders_created" cart_code%}">Cancel</a>
                     <button class="btn btn-danger btn-block" type="submit">Delete</button>
                 </form>
             </div>

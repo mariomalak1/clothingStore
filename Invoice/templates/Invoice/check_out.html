@@ -1,38 +1,46 @@
 {% extends "main.html" %}
-{% load static %}
 {% block body %}
-    <a href="{% url "seller_create_order" cart.cart_code %}" class="btn btn-primary btn-lg btn-block link-home-page p-2 mb-3" style="margin-left: 0">Add Order</a>
-    {% if cart.order_set %}
+    <a href="{% url "all_orders_created" cart.cart_code %}" class="btn btn-primary btn-lg btn-block link-home-page p-2 mb-3" style="margin-left: 0">Return To All Orders</a>
 
-        {# display the total of orders and cart #}
-        <div class="card mb-3 text-white bg-steel">
-            <div class="card-body">
-                <h5>Number of Orders : {{ cart.order_set.count }}</h5>
-                <h5>Total Cost : {{ cart.total_price }}</h5>
-            </div>
+    {# display the total of orders and cart #}
+    <div class="card mb-3 text-white bg-steel">
+        <div class="card-body">
+            <h5>Number of Orders : {{ cart.order_set.count }}</h5>
+            <h5>Total Cost : {{ cart.total_price }}</h5>
         </div>
+    </div>
 
-        {% for order in cart.order_set.all %}
+    <div class = "content-section">
+        <form method="post" action="" novalidate>
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Create Order</legend>
 
-            <div class="card mb-4">
-                <h5 class="card-header">order {{ forloop.counter }}</h5>
-                <div class="card-body">
-                    <h5 class="card-title ml-0">Name : {{ order.product.name }}</h5>
-                    <h5 class="card-title mr-3">Size : {{ order.product.size }}</h5>
-                    <h5 class="card-title mr-3">Quantity : {{ order.quantity }}</h5>
-                    <h5 class="card-title mr-3">Total for this order : {{ order.total_for_order }}</h5>
-                    <h6 class="card-text">product code : {{ order.product.product_code }}</h6>
-                    <a href="#" class="btn btn-primary">Edit</a>
+                {% for field in buyer_form %}
+                    <div class="form-group">
+                        <label class="label">{{ field.label }}</label>
+                        {% if field.errors %}
+                            <div class = "form-control is-invalid">{{ field.label }}</div>
+                            <div class = "invalid-feedback">
+                                {% for error in field.errors %}
+                                    <span> {{ error }} </span>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class = "form-control">{{ field.as_widget }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
 
-                    <!-- Confirmation button code -->
-                    <a href="{% url "delete_order" order.id forloop.counter%}" class="btn btn-danger">Delete</a>
+
+                <div class = "form-group">
+                    <button class = "btn btn-outline-primary w-100" type="submit">Order</button>
                 </div>
-            </div>
 
-        {% endfor %}
-    {% endif %}
+            </fieldset>
+        </form>
+    </div>
+
 
 {% endblock %}
-
-
-{##}

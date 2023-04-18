@@ -10,14 +10,17 @@ class Buyer(models.Model):
     name = models.CharField(max_length=150)
     phone_number = models.CharField(max_length=11, null=True, blank=True)
     age = models.PositiveIntegerField(null=True, blank=True)
-
     gender = models.CharField(max_length=10, choices=GENDER, default="Man")
+
+    def __str__(self):
+        return self.name
 
 class Cart(models.Model):
     discount = models.PositiveIntegerField(default=0)
     is_percent_discount = models.BooleanField(default=False)
     cart_code = models.CharField(max_length=200, null=True, blank=True)
     is_finished = models.BooleanField(default=False)
+    buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True)
 
     # function to generate code for every cart
     @staticmethod

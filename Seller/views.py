@@ -12,7 +12,7 @@ def create_order(request, cart_code):
             form.instance.cart = cart
             form.save()
             messages.add_message(request, messages.SUCCESS, "Order created Successfully")
-            return redirect("check_out", cart_code = cart_code)
+            return redirect("all_orders_created", cart_code = cart_code)
     else:
         form = CreateOrderForm()
     context = {
@@ -29,7 +29,7 @@ def delete_order(request, order_id, order_number):
     if request.method == "POST":
         Order.delete(order)
         messages.add_message(request, messages.SUCCESS, "Order delete Successfully")
-        return redirect("check_out", order.cart.cart_code)
+        return redirect("all_orders_created", order.cart.cart_code)
 
     context = {"object_name": f"order {order_number}",
                "afterObjName":f'With Total Cost "{order.total_for_order()}"',
@@ -41,4 +41,4 @@ def delete_order(request, order_id, order_number):
 
 def create_cart(request):
     cart = Cart.objects.create()
-    return redirect("check_out", cart.cart_code)
+    return redirect("all_orders_created", cart.cart_code)
