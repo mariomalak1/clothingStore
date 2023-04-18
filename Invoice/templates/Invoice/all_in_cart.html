@@ -1,7 +1,10 @@
 {% extends "main.html" %}
+{% load static %}
 {% block body %}
+    <script src="{% static "JS/confirmation_code.js" %}"></script>
     {% if orders_in_cart %}
         {% for order in orders_in_cart %}
+
             <div class="card mb-4">
                 <h5 class="card-header">order {{ forloop.counter }}</h5>
                 <div class="card-body">
@@ -9,7 +12,8 @@
                     <h5 class="card-title mr-3">Size : {{ order.product.size }}</h5>
                     <h5 class="card-title mr-3">Quantity : {{ order.quantity }}</h5>
                     <h6 class="card-text">product code : {{ order.product.product_code }}</h6>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                    {% include "Invoice/delete_confirmation_button.html" %}
                 </div>
             </div>
 
@@ -17,15 +21,3 @@
     {% endif %}
 
 {% endblock %}
-
-<div class="div-order-ca">
-                {{ order.product.name }}
-                <br>
-                {{ order.product.size }}
-                <br>
-
-                {{ order.product.product_code }}
-                <br>
-
-                {{ order.total_for_order }}
-            </div>
