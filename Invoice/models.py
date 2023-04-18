@@ -64,7 +64,5 @@ class Order(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     cart = models.ForeignKey(Cart, on_delete= models.CASCADE)
 
-    def save(self, *args, **kwargs):
-        super(Order, self).save(*args, **kwargs)
-        print(self.cart.total_price())
-
+    def total_for_order(self):
+        return (self.product.price * self.quantity)
