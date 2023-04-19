@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 {% load static %}
 {% block body %}
-    <a href="{% url "seller_create_order" cart.cart_code %}" class="btn btn-primary btn-lg btn-block link-home-page p-2 mb-3" style="margin-left: 0">Add Order</a>
+    <a href="{% url "seller_create_order" cart.cart_code %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Add Order</a>
     {% if cart.order_set %}
 
         {# display the total of orders and cart #}
@@ -29,7 +29,10 @@
 
         {% endfor %}
 
-        <a href="{% url "check_out" cart.cart_code%}" class="btn btn-success w-100 p-2 mb-4" style="width: 100%;">Check Out</a>
+        <a href="{% url "check_out" cart.cart_code%}" class="btn btn-success btn-lg btn-block w-100 p-2 mb-3" style="width: 100%;">Check Out</a>
+
+        <a href="{% url "delete_cart" cart.cart_code%}" class="btn btn-danger btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Cancel All Orders</a>
+
     {% endif %}
 
 {% endblock %}

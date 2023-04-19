@@ -1,8 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from Invoice.models import Cart, Order
-from .forms import CreateOrderForm
+from .forms import CreateOrderForm, BuyerForm
 from django.contrib import messages
 # Create your views here.
+
+def all_orders_created(request, cart_code):
+    cart = get_object_or_404(Cart, cart_code = cart_code)
+    context = {
+        "cart": cart,
+        "page_title":"Check Out",
+        "cart_code": cart_code,
+    }
+    return render(request, "Seller/all_orders_created.html", context)
+
 
 def create_order(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
@@ -19,6 +29,7 @@ def create_order(request, cart_code):
         "form":form,
         "cart":cart,
         "page_title":"Create New Order",
+        "cart_code":cart_code,
         }
     return render(request, "Seller/create_order.html", context)
 
@@ -39,6 +50,64 @@ def delete_order(request, order_id, order_number):
     return render(request, "Seller/delete_confirmation.html", context)
 
 
-def create_cart(request):
-    cart = Cart.objects.create()
+def create_cart(request, cart_code = None):
+    if not cart_code or cart_code == "None":
+        cart = Cart.objects.create()
+    else:
+        cart = Cart.objects.filter(cart_code = cart_code).first()
+        if cart:
+            if cart.is_finished:
+                messages.add_message(request, messages.WARNING, "This Is Finished Cart")
+                return redirect("home_page")
+        else:
+            cart = Cart.objects.create()
     return redirect("all_orders_created", cart.cart_code)
+
+
+
+
+def check_out(request, cart_code):
+    cart = get_object_or_404(Cart, cart_code = cart_code)
+    if cart.order_set.all():
+        if request.method == "POST":
+            buyer_form = BuyerForm(request.POST)
+            if buyer_form.is_valid():
+                if buyer_form.data.get("name"):
+                    buyer_form.save()
+                    cart.buyer = buyer_form.instance
+                cart.is_finished = True
+                cart.save()
+                messages.add_message(request,messages.SUCCESS, f"Check Out For Cart with Code {cart.cart_code} is Finished Successfully")
+                return redirect("home_page")
+
+        buyer_form = BuyerForm()
+
+        context = {
+            "cart": cart,
+            "buyer_form": buyer_form,
+            "cart_code": cart_code,
+        }
+        return render(request, "Seller/check_out.html", context)
+    else:
+        messages.add_message(request, messages.WARNING, "No Orders Created Yet")
+        return redirect("all_orders_created", cart_code)
+
+def delete_cart(request, cart_code):
+    cart = get_object_or_404(Cart, cart_code = cart_code)
+
+    if cart.order_set.all():
+        total = cart.total_price()
+    else:
+        messages.add_message(request, messages.WARNING, "Cart Has No Orders Yet")
+        return redirect("all_orders_created", cart.cart_code)
+    if request.method == "POST":
+        Cart.delete(cart)
+        messages.add_message(request, messages.SUCCESS, "Cart delete Successfully")
+        return redirect("home_page")
+
+    context = {"object_name": f"Cart",
+               "afterObjName":f'With Total Cost "{total}"',
+               "anotherText": f"With Number Orders : {cart.order_set.count()}",
+               "cart_code":cart_code
+               }
+    return render(request, "Seller/delete_confirmation.html", context)

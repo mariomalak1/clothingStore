@@ -16,6 +16,8 @@ class Buyer(models.Model):
         return self.name
 
 class Cart(models.Model):
+    # buyer_choices = list(Buyer.objects.all().iterator())
+    # choices = buyer_choices
     discount = models.PositiveIntegerField(default=0)
     is_percent_discount = models.BooleanField(default=False)
     cart_code = models.CharField(max_length=200, null=True, blank=True)

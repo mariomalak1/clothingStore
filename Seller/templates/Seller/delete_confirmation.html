@@ -8,7 +8,7 @@
                     {% csrf_token %}
                     <h5>Delete Confirmation for "{{ object_name }}"</h5>
                     <hr>
-                    <p class="text-danger">Are You Sure That You Want To Delete Order
+                    <p class="text-danger">Are You Sure That You Want To Delete {{ object_name }}
                         {% if afterObjName %}
                             {{ afterObjName }}
                         {% endif %} ?

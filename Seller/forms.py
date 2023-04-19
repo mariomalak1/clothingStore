@@ -1,5 +1,8 @@
 from django import forms
 from Invoice.models import Order
+from Invoice.models import Buyer
+
+# forms here
 
 class CreateOrderForm(forms.ModelForm):
     class Meta:
@@ -11,3 +14,8 @@ class CheckOutForm(forms.Form):
     is_finished = forms.BooleanField(required=True, label="Is Finished")
 
 
+class BuyerForm(forms.ModelForm):
+    name = forms.CharField(max_length=145, required=False)
+    class Meta:
+        model = Buyer
+        fields = '__all__'
