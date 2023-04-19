@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from Invoice.models import Cart, Order
-from .forms import CreateOrderForm, BuyerForm
+from .forms import CreateOrderForm, BuyerForm, GetCartForm
 from django.contrib import messages
 # Create your views here.
 
@@ -64,8 +64,6 @@ def create_cart(request, cart_code = None):
     return redirect("all_orders_created", cart.cart_code)
 
 
-
-
 def check_out(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
     if cart.order_set.all():
@@ -111,3 +109,30 @@ def delete_cart(request, cart_code):
                "cart_code":cart_code
                }
     return render(request, "Seller/delete_confirmation.html", context)
+
+
+def get_cart_code_from_user(request):
+    if request.method == "POST":
+        form = GetCartForm(request.POST)
+        cart_code = form.data.get("cart_code")
+        cart = Cart.objects.filter(cart_code=cart_code).first()
+        if cart:
+            messages.add_message(request, messages.SUCCESS, "Cart Founded")
+            return redirect("edit_cart", cart_code = cart.cart_code)
+        else:
+            messages.add_message(request, messages.WARNING, "No Cart Found with This Code")
+            return redirect("get_cart_code_from_user")
+    else:
+        form = GetCartForm()
+
+    context = {"form":form}
+    return render(request, "Seller/get_cart_code_from_user.html", context)
+
+def edit_cart(request, cart_code):
+    cart = get_object_or_404(Cart, cart_code = cart_code)
+    context = {
+        "cart": cart,
+        "page_title":"Edit Cart",
+    }
+    return render(request, "Seller/all_orders_created.html", context)
+

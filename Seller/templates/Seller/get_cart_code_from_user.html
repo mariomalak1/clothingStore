@@ -1,0 +1,8 @@
+{% extends "main.html" %}
+{% block body %}
+    <form method="post" action="" novalidate>
+        {% csrf_token %}
+        {{ form }}
+        <button class="btn btn-success w-100 mt-3" type="submit">Check</button>
+    </form>
+{% endblock %}

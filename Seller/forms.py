@@ -19,3 +19,6 @@ class BuyerForm(forms.ModelForm):
     class Meta:
         model = Buyer
         fields = '__all__'
+
+class GetCartForm(forms.Form):
+    cart_code = forms.CharField(max_length=10)
