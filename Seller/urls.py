@@ -31,4 +31,7 @@ urlpatterns = [
     path("admin/add_new_user/", views.add_new_user, name="add_new_user"),
 
     path("admin/add_new_branch/", views.add_new_branch, name="add_new_branch"),
+    path("admin/display_all_branches/", views.display_all_branches, name="display_all_branches"),
+    path("admin/edit_product_detail/<str:branch_name>", views.edit_product_detail, name="edit_product_detail"),
+    path("admin/delete_branch/<str:branch_name>", views.delete_branch, name="delete_branch"),
 ]

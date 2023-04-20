@@ -19,8 +19,3 @@ def home_page(request, cart_code = None):
 
 def admin_panel(request):
     return render(request, "Main/admin_panel.html", {"page_title":"Admin Panel"})
-
-
-def manage_branches(request):
-    context = {"Page_title":"Product Detail Manage"}
-    return render(request, "Main/manage_branches.html", context)

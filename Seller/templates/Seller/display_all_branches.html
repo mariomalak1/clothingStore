@@ -1,0 +1,37 @@
+{% extends 'main.html' %}
+{% block body %}
+    <a href="{% url "add_new_branch" %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Add New Branch</a>
+    <table class="table table-hover table-dark">
+      <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for branch in branches %}
+          <tr>
+              <td> <a> {{ forloop.counter }} </a> </td>
+              <td> <a> {{ branch.name }} </a> </td>
+              {% if branch.address %}
+                  <td> <a> {{ branch.address }} </a> </td>
+              {% else %}
+                  <td> <a> Not Found </a> </td>
+              {% endif %}
+
+              {% if branch.address %}
+                  <td> <a> {{ branch.phone_branch }} </a> </td>
+              {% else %}
+                  <td> <a> Not Found </a> </td>
+              {% endif %}
+              <td> <a href="{% url "edit_product_detail" branch.name %}" class="btn btn-secondary"> Edit </a> </td>
+              <td> <a href="{% url "delete_branch" branch.name %}" class="btn btn-danger"> Delete </a> </td>
+          </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

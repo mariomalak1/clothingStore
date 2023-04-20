@@ -45,12 +45,12 @@ def edit_product_detail(request, product_code):
     if request.method == "POST":
         form = ProductDetailAddForm(request.POST)
         if form.is_valid():
+            messages.add_message(request, messages.SUCCESS, f"Product with Code {product_code} Edited Successfully")
             product_details.product_code = form.cleaned_data.get("product_code")
             product_details.name = form.cleaned_data.get("name")
             product_details.size = form.cleaned_data.get("size")
             product_details.price = form.cleaned_data.get("price")
             product_details.save()
-            messages.add_message(request, messages.SUCCESS, f"Product with Code {form.data.get('code')} Edited Successfully")
             return redirect("display_all_products_details")
     else:
         form = ProductDetailAddForm(instance=product_details)

@@ -1,0 +1,25 @@
+{% extends "main.html" %}
+{% block body %}
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+                <form method="post" action="" novalidate>
+                    {% csrf_token %}
+                    <h5>Delete Confirmation for "Branch With Name {{ branch.name }}"</h5>
+                    <hr>
+                    <span class="text-danger">Note That : </span> <span>If You Delete This Branch, All Product in All This Branch Will Be Deleted, and All Employees Are There Will Be Deleted Also</span>
+                    <p class="text-danger">Number Of Products Found In The Branch : {{ total_number_of_products }}</p>
+                    <p class="text-danger">Number Of Employees Found In The Branch : {{ total_number_of_employees }}</p>
+                    <span class="text-danger">Note That very Important : </span> <span>If You Delete This Branch, Employees Will Deleted And All Orders They Created Before Will Deleted Also</span>
+                    <p>You can Edit It If You Want From Display All Branches Page</p>
+                    <p>Are You Sure That You Want To Delete This Branch ?</p>
+                    <a class="btn btn-secondary btn-block" href="{% url "display_all_branches" %}">Cancel</a>
+                    <button class="btn btn-danger btn-block" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
