@@ -23,6 +23,8 @@ class Cart(models.Model):
     cart_code = models.CharField(max_length=200, null=True, blank=True)
     is_finished = models.BooleanField(default=False)
     buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    edit_at = models.DateTimeField(null=True, blank=True)
 
     # function to generate code for every cart
     @staticmethod

@@ -17,4 +17,5 @@ urlpatterns = [
 
     path('get_cart_code_from_user/', views.get_cart_code_from_user, name="get_cart_code_from_user"),
     path('edit_cart/<str:cart_code>/', views.edit_cart, name="edit_cart"),
+    path('check_out_exchange/<str:old_cart_code>/', views.check_out_exchange, name="check_out_exchange"),
 ]

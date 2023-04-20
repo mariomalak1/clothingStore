@@ -7,14 +7,15 @@ from django.contrib import messages
 def home_page(request, cart_code = None):
     if cart_code:
         cart = Cart.objects.filter(cart_code = cart_code).first()
-        print(cart)
         if cart:
-            if cart.is_finished:
-                messages.add_message(request, messages.WARNING, "This Is Finished Cart")
-                return redirect("home_page")
-    print("mario")
-    context = {"cart_code":cart_code}
-    return render(request, "Main/home_page.html", context)
+            context = {"cart_code":cart_code}
+            return render(request, "Main/home_page.html", context)
+        else:
+            messages.add_message(request, messages.WARNING, "No Card Found with This Code")
+            return render(request, "Main/home_page.html")
+    else:
+        return render(request, "Main/home_page.html")
+
 
 def admin_panel(request):
     return render(request, "Main/admin_panel.html")
