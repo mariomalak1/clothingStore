@@ -66,7 +66,7 @@ def delete_order(request, order_id, order_number):
                "cart_code": order.cart.cart_code,
                "anotherText": f"Quantity : {order.quantity}, Size : {order.product.size}",
                }
-    return render(request, "Seller/delete_confirmation.html", context)
+    return render(request, "delete_confirmation.html", context)
 
 def check_out(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
@@ -116,7 +116,7 @@ def delete_cart(request, cart_code):
                "anotherText": f"With Number Orders : {cart.order_set.count()}",
                "cart_code":cart_code
                }
-    return render(request, "Seller/delete_confirmation.html", context)
+    return render(request, "delete_confirmation.html", context)
 
 def get_cart_code_from_user(request):
     if request.method == "POST":

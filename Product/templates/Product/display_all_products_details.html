@@ -21,8 +21,8 @@
               <td> <a> {{ product.name }} </a> </td>
               <td> <a> {{ product.price }} </a> </td>
               <td> <a> {{ product.size }} </a> </td>
-              <td> <a class="btn btn-secondary"> Edit </a> </td>
-              <td> <a class="btn btn-danger"> Delete </a> </td>
+              <td> <a href="{% url "edit_product_detail" product.product_code %}" class="btn btn-secondary"> Edit </a> </td>
+              <td> <a href="{% url "delete_product_detail" product.product_code %}" class="btn btn-danger"> Delete </a> </td>
           </tr>
       {% endfor %}
       </tbody>

@@ -1,0 +1,23 @@
+{% extends "main.html" %}
+{% block body %}
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+                <form method="post" action="" novalidate>
+                    {% csrf_token %}
+                    <h5>Delete Confirmation for "Product Details With Code {{ product.product_code }}"</h5>
+                    <hr>
+                    <span class="text-danger">Note That : </span> <span>If You Delete This Product Details, All Product From This Type in All Branches Will Be Deleted ALso!!</span>
+                    <p class="text-danger">Number Of Products Found In All Branches : {{ total_number_of_products_in_branches }}</p>
+                    <p>You can Edit It If You Want From Display All Product Page</p>
+                    <p>Are You Sure That You Want To Delete this Product Details ?</p>
+                    <a class="btn btn-secondary btn-block" href="{% url "display_all_products_details" %}">Cancel</a>
+                    <button class="btn btn-danger btn-block" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
