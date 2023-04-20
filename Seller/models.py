@@ -8,9 +8,9 @@ class Seller(django_user):
     age = models.PositiveIntegerField(null=True, blank=True)
     national_id = models.CharField(max_length=14, null=True, blank=True)
     manager = models.BooleanField(default=False)
+    branch = models.ForeignKey("Branch", on_delete = models.CASCADE)
 
 class Branch(models.Model):
     name = models.CharField(max_length=250)
     address = models.CharField(max_length=250, null=False, blank=True)
-    manager = models.ForeignKey(Seller, on_delete=models.SET_NULL, null=True, blank=True)
     phone_branch = models.CharField(max_length=11, null=False, blank=True)

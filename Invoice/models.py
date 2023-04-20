@@ -1,5 +1,7 @@
 from django.db import models
 from Product.models import Product as product_model
+from django.core.exceptions import ValidationError
+from Seller.models import Seller
 import random
 import string
 # Create your models here.
@@ -17,7 +19,7 @@ class Buyer(models.Model):
 
 class Cart(models.Model):
     # buyer_choices = list(Buyer.objects.all().iterator())
-    # choices = buyer_choices
+    # choices = ["mario", "Malak", "Alabd", "Sefen"]
     discount = models.PositiveIntegerField(default=0)
     is_percent_discount = models.BooleanField(default=False)
     cart_code = models.CharField(max_length=200, null=True, blank=True)
@@ -25,6 +27,7 @@ class Cart(models.Model):
     buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     edit_at = models.DateTimeField(null=True, blank=True)
+    created_by = models.ForeignKey(Seller, on_delete=models.CASCADE)
 
     # function to generate code for every cart
     @staticmethod
@@ -68,10 +71,14 @@ class Cart(models.Model):
         return (total - discount)
 
 class Order(models.Model):
-    product = models.ForeignKey(product_model, on_delete= models.SET_NULL, null=True)
+    product = models.ForeignKey(product_model, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     cart = models.ForeignKey(Cart, on_delete= models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    def clean(self):
+        if self.quantity > self.product.quantity:
+            raise ValidationError("Not Founded All of This Quantity from This Product In This Branch")
 
     def total_for_order(self):
         return (self.product.price * self.quantity)
