@@ -5,7 +5,7 @@ from Seller.models import Branch
 class ProductDetail(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)
     size = models.CharField(max_length=10, null=True, blank=True)
-    product_code = models.CharField(max_length=150, unique=True)
+    product_code = models.CharField(max_length=150, unique=True, null=False, blank=False)
     price = models.PositiveIntegerField(null=True, blank=True, default=0)
 
     def __str__(self):

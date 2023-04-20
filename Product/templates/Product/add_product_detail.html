@@ -1,6 +1,7 @@
 {% extends "main.html" %}
 {% load crispy_forms_filters %}
 {% block body %}
+    <a href="{% url "display_all_products_details" %}" class = "btn btn-success w-100 mb-3" >Return To All Products</a>
     <div class = "content-section">
         <form method="post" action="" novalidate>
             {% csrf_token %}

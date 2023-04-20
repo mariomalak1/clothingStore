@@ -10,11 +10,20 @@ def add_product_detail(request):
     if request.method == "POST":
         form = ProductDetailAddForm(request.POST)
         if form.is_valid():
+            print("mario")
             form.save()
             messages.add_message(request, messages.SUCCESS, f"Product with Code {form.data.get('code')} Added Successfully")
-        else:
-            messages.add_message(request, 40, f"No Product Add as You Don't Enter Any Value")
-        return redirect("product_manage")
-    form = ProductDetailAddForm()
-    context = {"form": form}
-    return render(request, "Product/add_product_detail.html", context)
+            return redirect("display_all_products_details")
+    else:
+        form = ProductDetailAddForm()
+    return render(request, "Product/add_product_detail.html", {"form": form})
+
+def display_all_products_details(request):
+    products = ProductDetail.objects.all()
+    context = {"products":products}
+    return render(request, "Product/display_all_products_details.html", context)
+
+# def delete_product_detail(request, product_):
+#
+#     return render(request, "Seller/delete_confirmation.html", context)
+
