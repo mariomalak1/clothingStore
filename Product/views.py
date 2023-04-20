@@ -12,7 +12,9 @@ def add_product_detail(request):
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, f"Product with Code {form.data.get('code')} Added Successfully")
-        return redirect("admin_panel")
+        else:
+            messages.add_message(request, 40, f"No Product Add as You Don't Enter Any Value")
+        return redirect("product_manage")
     form = ProductDetailAddForm()
     context = {"form": form}
     return render(request, "Product/add_product_detail.html", context)

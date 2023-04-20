@@ -1,5 +1,8 @@
 from django.urls import path
 from . import views
+from django.contrib.auth.views import LogoutView, LoginView
+
+
 urlpatterns = [
     path('all_orders_created/<str:cart_code>/', views.all_orders_created, name="all_orders_created"),
 
@@ -18,4 +21,10 @@ urlpatterns = [
     path('get_cart_code_from_user/', views.get_cart_code_from_user, name="get_cart_code_from_user"),
     path('edit_cart/<str:cart_code>/', views.edit_cart, name="edit_cart"),
     path('check_out_exchange/<str:old_cart_code>/', views.check_out_exchange, name="check_out_exchange"),
+
+
+    # user urls
+    path("logout/", LogoutView.as_view(), name= "logout"),
+    path("login/", LoginView.as_view(template_name= "Seller/User/login_page.html"), name= "login"),
+    path("admin/add_new_user/", views.add_new_user, name="add_new_user"),
 ]

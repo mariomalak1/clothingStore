@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from Invoice.models import Cart, Order
-from .forms import CreateOrderForm, BuyerForm, GetCartForm
+from .forms import CreateOrderForm, BuyerForm, GetCartForm, AddUserForm
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
 import datetime
 # Create your views here.
 
 def create_cart(request, cart_code = None):
     if not cart_code or cart_code == "None":
-        cart = Cart.objects.create()
-        print("mario")
+        cart = Cart.objects.create(created_by = request.user)
     else:
         cart = Cart.objects.filter(cart_code = cart_code).first()
         if cart:
@@ -148,3 +150,17 @@ def edit_cart(request, cart_code):
 def check_out_exchange(request, old_cart_code):
     context = {"cart_code":old_cart_code}
     return render(request, "Seller/check_out_exchange.html", context)
+
+
+# admin views
+def add_new_user(request):
+    if request.method == "POST":
+        form = AddUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get("username")
+            messages.success(request, f"Seller with Username {username} have been created")
+            return redirect("admin_panel")
+    else:
+        form = AddUserForm()
+    return render(request, "Seller/User/register.html", {"form":form})

@@ -1,5 +1,5 @@
 {% extends "main.html" %}
-{% load static %}
+{% load crispy_forms_filters %}
 {% block body %}
     <a href="{% url "all_orders_created" cart.cart_code%}" class="btn btn-success w-100 p-2 mb-4" style="width: 100%;">Return to Check Out</a>
 
@@ -10,23 +10,7 @@
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Create Order</legend>
 
-                {% for field in form %}
-                    <div class="form-group">
-                        <label class="label">{{ field.label }}</label>
-                        {% if field.errors %}
-                            <div class = "form-control is-invalid">{{ field.label }}</div>
-                            <div class = "invalid-feedback">
-                                {% for error in field.errors %}
-                                    <span> {{ error }} </span>
-                                    <br>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <div class = "form-control">{{ field.as_widget }}</div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-
+                {{ form|crispy }}
 
                 <div class = "form-group">
                     <button class = "btn btn-outline-primary w-100" type="submit">Order</button>

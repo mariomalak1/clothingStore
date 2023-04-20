@@ -2,6 +2,9 @@ from django import forms
 from Invoice.models import Order
 from Invoice.models import Buyer
 
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from .models import Seller
 # forms here
 
 class CreateOrderForm(forms.ModelForm):
@@ -22,3 +25,10 @@ class BuyerForm(forms.ModelForm):
 
 class GetCartForm(forms.Form):
     cart_code = forms.CharField(max_length=10)
+
+
+class AddUserForm(forms.ModelForm):
+    is_admin = forms.BooleanField(required=False)
+    class Meta:
+        model = Seller
+        exclude = ["last_login", "is_superuser", "user_permissions", "is_staff", "is_active", "date_joined", "groups"]
