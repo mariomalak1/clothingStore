@@ -175,6 +175,12 @@ def add_new_user(request):
     return render(request, "Seller/User/register.html", context)
 
 def add_new_branch(request):
-    form = AddNewBranch()
+    if request.method == "POST":
+        form = AddNewBranch(request.POST)
+        if form.is_valid():
+            messages.add_message(request, messages.SUCCESS, "Congratulations, Branch Successfully Opened In System, You Can Add To It Sellers and Managers from Admin Panel")
+            redirect("admin_panel")
+    else:
+        form = AddNewBranch()
     return render(request, "Seller/add_new_branch.html",{"form":form})
 

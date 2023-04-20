@@ -15,7 +15,7 @@ class Seller(models.Model):
         return self.user_obj.username
 
 class Branch(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
     address = models.CharField(max_length=250, null=False, blank=True)
     phone_branch = models.CharField(max_length=11, null=False, blank=True)
 
