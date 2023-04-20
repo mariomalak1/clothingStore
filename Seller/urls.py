@@ -3,6 +3,7 @@ from . import views
 from django.contrib.auth.views import LogoutView, LoginView
 
 
+
 urlpatterns = [
     path('all_orders_created/<str:cart_code>/', views.all_orders_created, name="all_orders_created"),
 
@@ -26,5 +27,8 @@ urlpatterns = [
     # user urls
     path("logout/", LogoutView.as_view(), name= "logout"),
     path("login/", LoginView.as_view(template_name= "Seller/User/login_page.html"), name= "login"),
+
     path("admin/add_new_user/", views.add_new_user, name="add_new_user"),
+
+    path("admin/add_new_branch/", views.add_new_branch, name="add_new_branch"),
 ]

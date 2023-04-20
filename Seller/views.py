@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from Invoice.models import Cart, Order
-from .forms import CreateOrderForm, BuyerForm, GetCartForm, AddUserForm, AddSellerForm
+from .forms import CreateOrderForm, BuyerForm, GetCartForm, AddUserForm, AddSellerForm, AddNewBranch
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -173,3 +173,8 @@ def add_new_user(request):
 
     context = {"form_user":form_user, "form_seller":form_seller}
     return render(request, "Seller/User/register.html", context)
+
+def add_new_branch(request):
+    form = AddNewBranch()
+    return render(request, "Seller/add_new_branch.html",{"form":form})
+

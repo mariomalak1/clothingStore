@@ -1,7 +1,7 @@
 from django import forms
 from Invoice.models import Order
 from Invoice.models import Buyer
-from .models import Seller
+from .models import Seller, Branch
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User as django_user
@@ -39,3 +39,8 @@ class AddUserForm(UserCreationForm):
     class Meta:
         model = django_user
         fields = ["username", "password1", "password2"]
+
+class AddNewBranch(forms.ModelForm):
+    class Meta:
+        model = Branch
+        fields = "__all__"

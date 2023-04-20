@@ -17,16 +17,18 @@
         </a>
 
         <br>
-        <a href="">
-            <div class="btn btn-primary btn-lg btn-block link-home-page">Open A New Branch</div>
-        </a>
-
-        <a href="{% url "product_manage" %}">
+        <a href="{% url "manage_products" %}">
             <div class="btn btn-primary btn-lg btn-block link-home-page">Products Manage</div>
         </a>
 
+        <br>
         <a href="{% url "add_new_user" %}">
             <div class="btn btn-primary btn-lg btn-block link-home-page">Add New User</div>
+        </a>
+
+        <br>
+        <a href="{% url "manage_branches" %}">
+            <div class="btn btn-primary btn-lg btn-block link-home-page">Manage Branches</div>
         </a>
 
     </div>
