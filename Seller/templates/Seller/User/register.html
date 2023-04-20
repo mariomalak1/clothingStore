@@ -9,7 +9,8 @@
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Create Order</legend>
 
-                {{ form|crispy }}
+                {{ form_user|crispy }}
+                {{ form_seller|crispy }}
 
                 <div class = "form-group">
                     <button class = "btn btn-outline-primary w-100" type="submit">Save</button>

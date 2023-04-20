@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from Invoice.models import Cart, Order
-from .forms import CreateOrderForm, BuyerForm, GetCartForm, AddUserForm
+from .forms import CreateOrderForm, BuyerForm, GetCartForm, AddUserForm, AddSellerForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -155,12 +155,21 @@ def check_out_exchange(request, old_cart_code):
 # admin views
 def add_new_user(request):
     if request.method == "POST":
-        form = AddUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get("username")
+        form_user = AddUserForm(request.POST)
+        form_seller = AddSellerForm(request.POST)
+        if form_seller.is_valid() and form_user.is_valid():
+            form_user.save()
+            form_seller.instance.user = form_user.instance
+            if form_seller.data.get("is_admin"):
+                form_user.instance.is_staff = True
+            form_user.save()
+            form_seller.save()
+            username = form_user.cleaned_data.get("username")
             messages.success(request, f"Seller with Username {username} have been created")
             return redirect("admin_panel")
     else:
-        form = AddUserForm()
-    return render(request, "Seller/User/register.html", {"form":form})
+        form_user = AddUserForm()
+        form_seller = AddSellerForm()
+
+    context = {"form_user":form_user, "form_seller":form_seller}
+    return render(request, "Seller/User/register.html", context)
