@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User as django_user
 # Create your models here.
 
-class Seller(django_user):
+class Seller(models.Model):
+    user_obj = models.OneToOneField(django_user, on_delete=models.CASCADE)
     salary = models.PositiveIntegerField(null=True, blank=True)
     phone_number = models.CharField(max_length=11, null=True, blank=True)
     age = models.PositiveIntegerField(null=True, blank=True)
@@ -11,7 +12,7 @@ class Seller(django_user):
     branch = models.ForeignKey("Branch", on_delete = models.CASCADE)
 
     def __str__(self):
-        return self.username
+        return self.user_obj.username
 
 class Branch(models.Model):
     name = models.CharField(max_length=250)
