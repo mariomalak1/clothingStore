@@ -4,13 +4,14 @@ from .forms import CreateOrderForm, BuyerForm, GetCartForm, AddUserForm, AddSell
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-
+from .models import Seller
 import datetime
 # Create your views here.
 
 def create_cart(request, cart_code = None):
     if not cart_code or cart_code == "None":
-        cart = Cart.objects.create(created_by = request.user)
+        seller = get_object_or_404(Seller, user_obj = request.user)
+        cart = Cart.objects.create(created_by = seller)
     else:
         cart = Cart.objects.filter(cart_code = cart_code).first()
         if cart:
@@ -178,8 +179,9 @@ def add_new_branch(request):
     if request.method == "POST":
         form = AddNewBranch(request.POST)
         if form.is_valid():
+            form.save()
             messages.add_message(request, messages.SUCCESS, "Congratulations, Branch Successfully Opened In System, You Can Add To It Sellers and Managers from Admin Panel")
-            redirect("admin_panel")
+            return redirect("admin_panel")
     else:
         form = AddNewBranch()
     return render(request, "Seller/add_new_branch.html",{"form":form})
