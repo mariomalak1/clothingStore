@@ -8,6 +8,7 @@ import datetime
 def create_cart(request, cart_code = None):
     if not cart_code or cart_code == "None":
         cart = Cart.objects.create()
+        print("mario")
     else:
         cart = Cart.objects.filter(cart_code = cart_code).first()
         if cart:

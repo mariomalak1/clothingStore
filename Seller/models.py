@@ -10,7 +10,13 @@ class Seller(django_user):
     manager = models.BooleanField(default=False)
     branch = models.ForeignKey("Branch", on_delete = models.CASCADE)
 
+    def __str__(self):
+        return self.username
+
 class Branch(models.Model):
     name = models.CharField(max_length=250)
     address = models.CharField(max_length=250, null=False, blank=True)
     phone_branch = models.CharField(max_length=11, null=False, blank=True)
+
+    def __str__(self):
+        return self.name

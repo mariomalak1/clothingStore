@@ -8,7 +8,6 @@ import string
 
 class Buyer(models.Model):
     GENDER = (("man", "Man"), ("women", "Women"))
-
     name = models.CharField(max_length=150)
     phone_number = models.CharField(max_length=11, null=True, blank=True)
     age = models.PositiveIntegerField(null=True, blank=True)
