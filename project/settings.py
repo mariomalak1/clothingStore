@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "Product",
     "Seller",
     "Main",
+    "AdminPanel",
 
 
     "crispy_forms",

@@ -1,0 +1,30 @@
+{% extends "main.html" %}
+{% load static %}
+{% block body %}
+    <a href="{% url "admin_panel" %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Admin panel</a>
+    {% if total_money_entered %}
+
+        {# display the total money entered #}
+        <div class="card mb-3 text-white bg-steel">
+            <div class="card-body">
+                <h5>total money : {{ total_money_entered }}</h5>
+            </div>
+        </div>
+
+        {% for cart in carts %}
+
+            <div class="card mb-4">
+                <h5 class="card-header">{{ forloop.counter }}- Cart : {{ cart.cart_code }} In {{ cart.created_by.branch }}</h5>
+                <div class="card-body">
+                    <h5 class="card-title ml-0">Total Cost : {{ cart.total_price }}</h5>
+                    <h5 class="card-title ml-0">Total Orders : {{ cart.order_set.count }}</h5>
+                    <h6 class="card-text">Discount : {{ cart.discount }}</h6>
+                    <a href="{% url "delete_cart" cart.cart_code%}" class="btn btn-danger">Delete</a>
+                    <a href="{% url "home_page" %}"> <p class="bp3-form-helper-text">if you want to edit it, you can make it only by exchange it, go to main page from here</p></a>
+                </div>
+            </div>
+
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

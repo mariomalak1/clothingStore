@@ -23,4 +23,5 @@ urlpatterns = [
     path("store/main/", include("Main.urls")),
     path("store/seller/", include("Seller.urls")),
     path("store/invoice/", include("Invoice.urls")),
+    path("store/admin_panel/", include("AdminPanel.urls")),
 ]

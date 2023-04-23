@@ -2,13 +2,9 @@
 {% block body %}
     <div class="container">
 
-        <a href="">
-            <div class="btn btn-primary btn-lg btn-block link-home-page">Today's Sales</div>
-        </a>
-
         <br>
-        <a href="">
-            <div class="btn btn-primary btn-lg btn-block link-home-page">Sales for Specific Day</div>
+        <a href="{% url "display_all_carts" %}">
+            <div class="btn btn-primary btn-lg btn-block link-home-page">All Sales</div>
         </a>
 
         <br>

@@ -1,5 +1,5 @@
 from django.db import models
-from Product.models import Product as product_model
+from Product.models import Product as product_model, Size as Product_size
 from django.core.exceptions import ValidationError
 from Seller.models import Seller
 import random
@@ -79,9 +79,14 @@ class Cart(models.Model):
 
 class Order(models.Model):
     product = models.ForeignKey(product_model, on_delete=models.CASCADE)
+    # in forms, we will make it required and the choices will be sizes from the product chosen only, by javascript
+    # size = models.ForeignKey(Product_size, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=1)
     cart = models.ForeignKey(Cart, on_delete= models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    # def get_sizes_of_product(self):
+    #     return self.product.product_detail.sizes.all()
 
     def clean(self):
         if self.quantity > self.product.quantity:
