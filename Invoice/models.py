@@ -17,13 +17,18 @@ class Buyer(models.Model):
         return self.name
 
 class Cart(models.Model):
+
+    # def buyers_to_tuple(self):
+    #     Buyer.objects.all()
+
+
     # buyer_choices = list(Buyer.objects.all().iterator())
-    # choices = ["mario", "Malak", "Alabd", "Sefen"]
+    choices = (("mario", "mario"), ("Malak", "malak"), ("Alabd", "Alabd"), ("Sefen", "Sefen"), ("Zalamoka", "Zalamoka"))
     discount = models.PositiveIntegerField(default=0)
     is_percent_discount = models.BooleanField(default=False)
     cart_code = models.CharField(max_length=200, null=True, blank=True)
     is_finished = models.BooleanField(default=False)
-    buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True)
+    buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True, choices=choices)
     created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     edit_at = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(Seller, on_delete=models.CASCADE)
@@ -56,7 +61,10 @@ class Cart(models.Model):
     def total_price_without_discount(self):
         total = 0
         for order in self.order_set.all():
-            total += (order.product.price * order.quantity)
+            if order.product.price_for_branch > 0:
+                total += (order.product.price_for_branch * order.quantity)
+            else:
+                total += (order.product.product_detail.price * order.quantity)
         return total
 
     def calculate_percent_get_total(self):
@@ -80,7 +88,10 @@ class Order(models.Model):
             raise ValidationError("Not Founded All of This Quantity from This Product In This Branch")
 
     def total_for_order(self):
-        return (self.product.price * self.quantity)
+        if self.product.price_for_branch > 0:
+            return (self.product.price_for_branch * self.quantity)
+        else:
+            return (self.product.product_detail.price * self.quantity)
 
     def __str__(self):
         return (self.product.name + " - " + str(self.quantity) + " - " + self.cart.cart_code)
