@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+{% load crispy_forms_filters %}
+{% block body %}
+    <a href="{% url "display_all_sizes" %}" class="btn btn-success w-100 p-2 mb-4" style="width: 100%;">Return To All Sizes</a>
+
+    <div class = "content-section">
+        <form method="post" action="" novalidate>
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">{{ process_name }} New Size</legend>
+
+                {{ form|crispy }}
+
+                <div class = "form-group">
+                    <button class = "btn btn-outline-primary w-100" type="submit">{{ button_name }}</button>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+
+{% endblock %}

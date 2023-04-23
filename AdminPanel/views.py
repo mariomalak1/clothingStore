@@ -4,9 +4,32 @@ from .forms import ProductDetailAddForm, AddUserForm, AddSellerForm, AddNewBranc
 from django.contrib import messages
 from Seller.models import Branch
 from Invoice.models import Cart, Order
+from django.views.generic import ListView, UpdateView, DeleteView, CreateView
+from Product.models import Size
 # Create your views here.
 
-# it will be by admin only, and this to be for all branches
+class SizesListView(ListView):
+    model = Size
+    template_name = "AdminPanel/display_all_sizes.html"
+
+class SizeCreateView(CreateView):
+    model = Size
+    fields = "__all__"
+    template_name = "AdminPanel/add_new_size.html"
+    extra_context = {"process_name": "Create", "button_name":"Create"}
+
+class SizeUpdateView(UpdateView):
+    model = Size
+    fields = "__all__"
+    template_name = "AdminPanel/add_new_size.html"
+    extra_context = {"process_name": "Edit", "button_name":"Save"}
+
+class SizeDeleteView(DeleteView):
+    model = Size
+    template_name = "AdminPanel/size_delete_confirmation.html"
+    context_object_name = "size"
+    success_url = "/store/admin_panel/display_all_sizes"
+
 def add_product_detail(request):
     if request.method == "POST":
         form = ProductDetailAddForm(request.POST)

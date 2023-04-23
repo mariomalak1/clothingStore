@@ -13,4 +13,9 @@ urlpatterns = [
     path("edit_product_detail/<str:product_code>/", views.edit_product_detail, name="edit_product_detail"),
     path("delete_product_detail/<str:product_code>/", views.delete_product_detail, name="delete_product_detail"),
     path("display_all_carts/", views.display_all_carts, name="display_all_carts"),
+    path("display_all_sizes/", views.SizesListView.as_view(), name="display_all_sizes"),
+    path("add_new_size/", views.SizeCreateView.as_view(), name="add_new_size"),
+
+    path("delete_size/<int:pk>", views.SizeDeleteView.as_view(), name="delete_size"),
+    path("edit_size/<int:pk>", views.SizeUpdateView.as_view(), name="edit_size"),
 ]
