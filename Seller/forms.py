@@ -10,6 +10,8 @@ class CreateOrderForm(forms.ModelForm):
         exclude = ["created_at", "cart"]
 
 
+
+
 class CheckOutForm(forms.Form):
     is_finished = forms.BooleanField(required=True, label="Is Finished")
 

@@ -17,12 +17,6 @@ class Buyer(models.Model):
         return self.name
 
 class Cart(models.Model):
-
-    # def buyers_to_tuple(self):
-    #     Buyer.objects.all()
-
-
-    # buyer_choices = list(Buyer.objects.all().iterator())
     choices = (("mario", "mario"), ("Malak", "malak"), ("Alabd", "Alabd"), ("Sefen", "Sefen"), ("Zalamoka", "Zalamoka"))
     discount = models.PositiveIntegerField(default=0)
     is_percent_discount = models.BooleanField(default=False)
@@ -79,20 +73,19 @@ class Cart(models.Model):
 
 class Order(models.Model):
     product = models.ForeignKey(product_model, on_delete=models.CASCADE)
-    # in forms, we will make it required and the choices will be sizes from the product chosen only, by javascript
-    # size = models.ForeignKey(Product_size, on_delete=models.SET_NULL, null=True, blank=True)
+    size = models.ForeignKey(Product_size, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=1)
     cart = models.ForeignKey(Cart, on_delete= models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
-    # def get_sizes_of_product(self):
-    #     return self.product.product_detail.sizes.all()
-
     def clean(self):
         if self.quantity > self.product.quantity:
-            raise ValidationError("Not Founded All of This Quantity from This Product In This Branch")
+            raise ValidationError("Not Found All This Quantity From This Product In The Branch")
 
-    def total_for_order(self):
+        if self.quantity <= 0:
+            raise ValidationError("You Must Enter Valid Quantity Number")
+
+    def total_cost_for_order(self):
         if self.product.price_for_branch > 0:
             return (self.product.price_for_branch * self.quantity)
         else:

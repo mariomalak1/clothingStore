@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Seller, Branch
+from Product.models import Product as Product_Model
 import datetime
 # Create your views here.
 
@@ -36,7 +37,11 @@ def create_order(request, cart_code):
     if request.method == "POST":
         form = CreateOrderForm(request.POST)
         if form.is_valid():
-            form.instance.cart = cart
+            order = form.instance
+            order.cart = cart
+            # decrease the product quantity in the branch the order created in
+            order.product.quantity -= order.quantity
+            order.product.save()
             form.save()
             messages.add_message(request, messages.SUCCESS, "Order created Successfully")
             if cart.is_finished:
@@ -57,14 +62,17 @@ def delete_order(request, order_id, order_number):
     order = get_object_or_404(Order, id = order_id)
 
     if request.method == "POST":
+        # increase the product quantity in the branch the order created in
+        order.product.quantity += order.quantity
+        order.product.save()
         Order.delete(order)
         messages.add_message(request, messages.SUCCESS, "Order delete Successfully")
         return redirect("all_orders_created", order.cart.cart_code)
 
     context = {"object_name": f"order {order_number}",
-               "afterObjName":f'With Total Cost "{order.total_for_order()}"',
+               "afterObjName":f'With Total Cost "{order.total_cost_for_order()}"',
                "cart_code": order.cart.cart_code,
-               "anotherText": f"Quantity : {order.quantity}, Size : {order.product.size}",
+               "anotherText": f"Quantity : {order.quantity}",
                }
     return render(request, "delete_confirmation.html", context)
 

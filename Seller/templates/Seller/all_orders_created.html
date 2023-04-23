@@ -19,7 +19,7 @@
                 <div class="card-body">
                     <h5 class="card-title ml-0">Name : {{ order.product.product_detail.name }}</h5>
                     <h5 class="card-title mr-3">Quantity : {{ order.quantity }}</h5>
-                    <h5 class="card-title mr-3">Total for this order : {{ order.total_for_order }}</h5>
+                    <h5 class="card-title mr-3">Total for this order : {{ order.total_cost_for_order }}</h5>
                     <h6 class="card-text">product code : {{ order.product.product_detail.product_code }}</h6>
                     <!-- Confirmation button code -->
                     <a href="{% url "delete_order" order.id forloop.counter%}" class="btn btn-danger">Delete</a>
