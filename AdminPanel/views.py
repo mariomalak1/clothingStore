@@ -4,6 +4,7 @@ from .forms import ProductDetailAddForm, AddUserForm, AddSellerForm, AddNewBranc
 from django.contrib import messages
 from Seller.models import Branch
 from Invoice.models import Cart, Order
+from .filters import CartFilter
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView
 from Product.models import Size
 # Create your views here.
@@ -81,12 +82,15 @@ def edit_product_detail(request, product_code):
 
 def display_all_carts(request):
     carts = Cart.objects.all()
+    carts.filter()
     total_money_entered = 0
+    cart_filter = CartFilter(data= request.GET, queryset=carts)
     for cart in carts:
         total_money_entered += cart.total_price()
     context = {
-        "carts":carts,
+        "carts":cart_filter.qs,
         "total_money_entered": total_money_entered,
+        "cart_filter":cart_filter,
     }
     return render(request, "AdminPanel/display_all_carts.html", context)
 

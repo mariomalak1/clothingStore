@@ -1,7 +1,8 @@
 {% extends "main.html" %}
+{% load crispy_forms_filters %}
 {% load static %}
 {% block body %}
-    <a href="{% url "admin_panel" %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Admin panel</a>
+    <a href="{% url "admin_panel" %}" class="btn btn-outline-success btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Admin panel</a>
     {% if total_money_entered %}
 
         {# display the total money entered #}
@@ -10,7 +11,20 @@
                 <h5>total money : {{ total_money_entered }}</h5>
             </div>
         </div>
+    {% endif %}
 
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+                <form method="get">
+                    {{ cart_filter.form|crispy }}
+                    <button class="btn btn-primary btn-block w-100 p-2 mb-3" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    {% if carts %}
         {% for cart in carts %}
 
             <div class="card mb-4">
@@ -19,12 +33,19 @@
                     <h5 class="card-title ml-0">Total Cost : {{ cart.total_price }}</h5>
                     <h5 class="card-title ml-0">Total Orders : {{ cart.order_set.count }}</h5>
                     <h6 class="card-text">Discount : {{ cart.discount }}</h6>
+                    {% if cart.edit_at %}
+                        <h6 class="card-text">Edit At : {{ cart.edit_at }}</h6>
+                    {% endif %}
                     <a href="{% url "delete_cart" cart.cart_code%}" class="btn btn-danger">Delete</a>
-                    <a href="{% url "home_page" %}"> <p class="bp3-form-helper-text">if you want to edit it, you can make it only by exchange it, go to main page from here</p></a>
+{#                    <a href="{% url "home_page" %}"> <p class="bp3-form-helper-text">if you want to edit it, you can make it only by exchange it, go to main page from here</p></a>#}
                 </div>
             </div>
 
         {% endfor %}
+    {% else %}
+        <div class="card mb-4">
+            <p class="text-light m-2">No Cards Found</p>
+        </div>
     {% endif %}
 
 {% endblock %}
