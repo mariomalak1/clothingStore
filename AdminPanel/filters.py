@@ -1,6 +1,7 @@
 import django_filters
 from Seller.models import Branch
 from Invoice.models import Cart, Order
+from django import forms
 
 class CartFilter(django_filters.FilterSet):
 
@@ -13,8 +14,8 @@ class CartFilter(django_filters.FilterSet):
         return tuple(lis)
 
     branch_name = django_filters.ChoiceFilter(choices = all_branches, field_name= "created_by", label="Branch Name", method="data_by_branch_name")
-    from_date = django_filters.DateFilter(field_name= "created_at", label="From Date", lookup_expr= "gt")
-    to_date = django_filters.DateFilter(field_name= "created_at", label="To Date", lookup_expr= "lt")
+    from_date = django_filters.DateFilter(widget=forms.DateInput(), field_name= "created_at", label="From Date", lookup_expr= "gt")
+    to_date = django_filters.DateFilter(widget=forms.DateInput(), field_name= "created_at", label="To Date", lookup_expr= "lt")
     edited = django_filters.BooleanFilter(field_name='edit_at', label="Edited ? ", method="data_by_edited__or_not")
     cart_code = django_filters.CharFilter(field_name="cart_code", method="data_by_cart_code_like")
 

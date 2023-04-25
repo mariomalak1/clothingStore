@@ -85,7 +85,7 @@ def display_all_carts(request):
     carts.filter()
     total_money_entered = 0
     cart_filter = CartFilter(data= request.GET, queryset=carts)
-    for cart in carts:
+    for cart in cart_filter.qs:
         total_money_entered += cart.total_price()
     context = {
         "carts":cart_filter.qs,

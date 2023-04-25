@@ -27,19 +27,33 @@
     {% if carts %}
         {% for cart in carts %}
 
-            <div class="card mb-4">
-                <h5 class="card-header">{{ forloop.counter }}- Cart : {{ cart.cart_code }} In {{ cart.created_by.branch }}</h5>
+            <div class="card mb-2" style="background-color:#1c1e1f;">
+                <input class="btn-primary btn-secondary" type="button" onclick="f({{ cart.cart_code }}, 'button_{{ cart.cart_code }}')" value="Show Orders" id="button_{{ cart.cart_code }}">
+                <h5 class="card-header">{{ forloop.counter }}- Cart : {{ cart.cart_code }} <span class="mr-5">{{ cart.created_by.branch }}</span> </h5>
                 <div class="card-body">
                     <h5 class="card-title ml-0">Total Cost : {{ cart.total_price }}</h5>
                     <h5 class="card-title ml-0">Total Orders : {{ cart.order_set.count }}</h5>
-                    <h6 class="card-text">Discount : {{ cart.discount }}</h6>
+                    <h6 class="card-text">Created At : {{ cart.created_at }}</h6>
                     {% if cart.edit_at %}
                         <h6 class="card-text">Edit At : {{ cart.edit_at }}</h6>
                     {% endif %}
+                    <h6 class="card-text">Discount : {{ cart.discount }}</h6>
                     <a href="{% url "delete_cart" cart.cart_code%}" class="btn btn-danger">Delete</a>
-{#                    <a href="{% url "home_page" %}"> <p class="bp3-form-helper-text">if you want to edit it, you can make it only by exchange it, go to main page from here</p></a>#}
                 </div>
             </div>
+            {% if cart.order_set %}
+                <div class="card mb-4" hidden id="{{ cart.cart_code }}" style="margin-left: 0">
+                {% for order in cart.order_set.all %}
+                    <h5 class="card-header">order {{ forloop.counter }}</h5>
+                    <div class="card-body">
+                        <h5 class="card-title ml-0">Name : {{ order.product.product_detail.name }}</h5>
+                        <h5 class="card-title mr-3">Quantity : {{ order.quantity }}</h5>
+                        <h5 class="card-title mr-3">Total for this order : {{ order.total_cost_for_order }}</h5>
+                        <h6 class="card-text">product code : {{ order.product.product_detail.product_code }}</h6>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
 
         {% endfor %}
     {% else %}
@@ -48,4 +62,23 @@
         </div>
     {% endif %}
 
+    <script>
+        function f(id, button_id) {
+            try {
+                id = id.id;
+                let orders_div = document.getElementById(id);
+                let button_ = document.getElementById(button_id)
+                if (orders_div.hidden){
+                    orders_div.hidden = false;
+                    button_.value = 'Hide Orders';
+                }else{
+                    orders_div.hidden = true;
+                    button_.value = "Show Orders";
+                }
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+    </script>
 {% endblock %}
