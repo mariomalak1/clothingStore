@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from Product.models import ProductDetail, Product
-from .forms import ProductDetailAddForm, AddUserForm, AddSellerForm, AddNewBranch
+from .forms import ProductDetailAddForm, AddUserForm, AddSellerForm, AddNewBranch, EditProductCodeForm
 from django.contrib import messages
 from Seller.models import Branch
 from Invoice.models import Cart, Order
@@ -66,7 +66,8 @@ def delete_product_detail(request, product_code):
 def edit_product_detail(request, product_code):
     product_details = get_object_or_404(ProductDetail, product_code=product_code)
     if request.method == "POST":
-        form = ProductDetailAddForm(request.POST)
+        form = ProductDetailAddForm(request.POST, instance=product_details)
+        form.fields["product_code"].disabled = True
         if form.is_valid():
             messages.add_message(request, messages.SUCCESS, f"Product with Code {product_code} Edited Successfully")
             product_details.product_code = form.cleaned_data.get("product_code")
@@ -77,8 +78,35 @@ def edit_product_detail(request, product_code):
             return redirect("display_all_products_details")
     else:
         form = ProductDetailAddForm(instance=product_details)
-    context = {"process_name":"Edit", "form":form}
+        form.fields["product_code"].disabled = True
+    context = {"process_name":"Edit", "form":form, "product_details":product_details}
     return render(request, "AdminPanel/add_product_detail.html", context)
+
+def edit_product_code(request, product_detail_id):
+    product_detail = get_object_or_404(ProductDetail, id = product_detail_id)
+    if request.method == "POST":
+        form = EditProductCodeForm(request.POST)
+        if form.is_valid():
+            if form.data.get("product_code") == product_detail.product_code:
+                messages.add_message(request, messages.WARNING, "Please Enter The Change You Want To Apply")
+                return redirect("edit_product_code",  product_detail_id)
+            else:
+                another_product_detail = ProductDetail.objects.filter(product_code=form.data.get("product_code")).first()
+                if another_product_detail:
+                    messages.add_message(request, messages.WARNING, "Sorry, But there's Another Product Code With Same Code You Enter")
+                    return redirect("edit_product_code",  product_detail_id)
+                else:
+                    product_detail.product_code = form.data.get("product_code")
+                    messages.add_message(request, messages.SUCCESS, "Product Code Changed Successfully")
+                    product_detail.save()
+                    return redirect("edit_product_detail", product_detail.product_code)
+    else:
+        form = EditProductCodeForm()
+
+    form.fields["product_code"].initial = product_detail.product_code
+    context = {"form":form, "product_detail":product_detail}
+
+    return render(request, "AdminPanel/edit_product_code.html", context)
 
 def display_all_carts(request):
     carts = Cart.objects.all()

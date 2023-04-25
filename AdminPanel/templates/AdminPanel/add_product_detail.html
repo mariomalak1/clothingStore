@@ -14,6 +14,14 @@
                     <button class = "btn btn-outline-primary w-100" type="submit">Save</button>
                 </div>
 
+                {% if process_name == "Edit" %}
+                    <br>
+                    <div class = "form-group">
+                        <a href="{% url "edit_product_code" product_details.id %}" class = "btn btn-outline-secondary w-100">Change Product Code</a>
+                    </div>
+                {% endif %}
+
+
             </fieldset>
         </form>
     </div>

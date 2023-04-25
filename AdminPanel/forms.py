@@ -9,6 +9,11 @@ class ProductDetailAddForm(forms.ModelForm):
         model = ProductDetail
         fields = "__all__"
 
+class EditProductCodeForm(forms.Form):
+    product_code = forms.CharField(required=True)
+
+# onchange="doSomething();" onfocus="this.selectedIndex = -1;"
+
 class AddSellerForm(forms.ModelForm):
     is_admin = forms.BooleanField(required=False)
     email = forms.EmailField(required=False)

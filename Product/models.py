@@ -1,6 +1,7 @@
 from django.db import models
 from Seller.models import Branch
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 # Create your models here.
 
 class Size(models.Model):
@@ -29,4 +30,8 @@ class Product(models.Model):
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.product_detail.product_code + " - " + str(self.quantity)
+        return self.product_detail.product_code + " - " + "Q: " + str(self.quantity) + " P: " + str(self.price_for_branch) if self.price_for_branch != 0 else + str(self.product_detail.price)
+
+    def clean(self):
+        if not self.quantity:
+            raise ValidationError("Please Enter Valid Value In Quantity Field")

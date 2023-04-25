@@ -18,4 +18,5 @@ urlpatterns = [
 
     path("delete_size/<int:pk>", views.SizeDeleteView.as_view(), name="delete_size"),
     path("edit_size/<int:pk>", views.SizeUpdateView.as_view(), name="edit_size"),
+    path("edit_product_code/<int:product_detail_id>", views.edit_product_code, name="edit_product_code"),
 ]
