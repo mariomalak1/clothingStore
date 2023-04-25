@@ -50,6 +50,9 @@ def create_order(request, cart_code):
                 return redirect("all_orders_created", cart_code = cart_code)
     else:
         form = CreateOrderForm()
+        form.fields["size"].attrs = {"onclick":"changeMe()"}
+        print(form.fields["size"].attrs)
+        print(form)
     context = {
         "form":form,
         "cart":cart,

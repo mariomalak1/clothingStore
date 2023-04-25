@@ -1,6 +1,8 @@
 {% extends "main.html" %}
 {% load crispy_forms_filters %}
+{% load static %}
 {% block body %}
+    <script type="text/javascript" src="{% static 'JS/custom_main.js' %}"></script>
     <a href="{% url "all_orders_created" cart.cart_code%}" class="btn btn-success w-100 p-2 mb-4" style="width: 100%;">Return to Check Out</a>
 
 
@@ -22,8 +24,30 @@
 
     <script>
         function change_sizes() {
-
+            try {
+                let sizes_field = document.getElementById("id_size");
+                let product_field = document.getElementById("id_product");
+                console.log(product_field)
+                console.log(sizes_field);
+                console.log(product_field);
+            }
+            catch (e){
+                console.log(e);
+            }
         }
     </script>
 
 {% endblock %}
+
+
+<select name="product" sizes="
+[
+[<Size: Xl>, <Size: L>, <Size: S>, <Size: XS>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>, <Size: Xl>, <Size: XXL>, <Size: S>, <Size: XS>, <Size: XXL>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 40>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>],
+[<Size: Xl>, <Size: L>, <Size: S>, <Size: XS>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>, <Size: Xl>, <Size: XXL>, <Size: S>, <Size: XS>, <Size: XXL>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 40>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>],
+[<Size: Xl>, <Size: L>, <Size: S>, <Size: XS>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>, <Size: Xl>, <Size: XXL>, <Size: S>, <Size: XS>, <Size: XXL>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 40>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>]
+[<Size: Xl>, <Size: L>, <Size: S>, <Size: XS>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>, <Size: Xl>, <Size: XXL>, <Size: S>, <Size: XS>, <Size: XXL>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 40>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>],
+[<Size: Xl>, <Size: L>, <Size: S>, <Size: XS>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>, <Size: Xl>, <Size: XXL>, <Size: S>, <Size: XS>, <Size: XXL>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 40>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>], [<Size: Xl>, <Size: L>, <Size: S>, <Size: XS>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>, <Size: Xl>, <Size: XXL>, <Size: S>, <Size: XS>, <Size: XXL>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 40>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>]
+[<Size: Xl>, <Size: L>, <Size: S>, <Size: XS>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>, <Size: Xl>, <Size: XXL>, <Size: S>, <Size: XS>, <Size: XXL>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 32>, <Size: 34>, <Size: 36>, <Size: 40>, <Size: L>, <Size: S>, <Size: XL>, <Size: XXXL>]
+]" class="select form-select" required="" id="id_product"> <option value="" selected="">---------</option> <option value="20">code1 - Q: 0 P: 80</option> <option value="21">code2 - Q: 2 P: 80</option> <option value="22">code3 - Q: 8 P: 70</option> <option value="23">code4 - Q: 24 P: 80</option> <option value="24">code5 - Q: 19 P: 500</option> <option value="25">code6 - Q: 20 P: 80</option> <option value="26">code2 - Q: 18 P: 50</option>
+
+</select>
