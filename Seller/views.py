@@ -112,11 +112,17 @@ def delete_cart(request, cart_code):
     if cart.order_set.all():
         total = cart.total_price()
     else:
-        messages.add_message(request, messages.WARNING, "Cart Has No Orders Yet")
-        return redirect("all_orders_created", cart.cart_code)
+        if request.user.is_staff:
+            total = 0
+        else:
+            messages.add_message(request, messages.WARNING, "Cart Has No Orders Yet")
+            return redirect("all_orders_created", cart.cart_code)
+
     if request.method == "POST":
         Cart.delete(cart)
         messages.add_message(request, messages.SUCCESS, "Cart delete Successfully")
+        if request.user.is_staff:
+            return redirect("admin_panel")
         return redirect("home_page")
 
     context = {"object_name": f"Cart",
