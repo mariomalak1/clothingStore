@@ -72,7 +72,7 @@ def edit_product_detail(request, product_code):
             messages.add_message(request, messages.SUCCESS, f"Product with Code {product_code} Edited Successfully")
             product_details.product_code = form.cleaned_data.get("product_code")
             product_details.name = form.cleaned_data.get("name")
-            product_details.size = form.cleaned_data.get("size")
+            product_details.sizes.set(form.cleaned_data.get("sizes"))
             product_details.price = form.cleaned_data.get("price")
             product_details.save()
             return redirect("display_all_products_details")
