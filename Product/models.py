@@ -30,7 +30,7 @@ class Product(models.Model):
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.product_detail.product_code + " - " + "Q: " + str(self.quantity) + " P: " + str(self.price_for_branch) if self.price_for_branch != 0 else + str(self.product_detail.price)
+        return f"{self.product_detail.product_code} + - Q: {self.quantity} + P: {self.price_for_branch if self.price_for_branch != 0 else self.product_detail.price}"
 
     def clean(self):
         if not self.quantity:

@@ -5,7 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Seller, Branch
-from Product.models import Product as Product_Model
+from Product.models import Product as Product_Model, ProductDetail
+from .utils import put_sizes_in_to_options_in_select_widget_form, get_id_of_product_from_option_widget
 import datetime
 # Create your views here.
 
@@ -34,6 +35,8 @@ def all_orders_created(request, cart_code):
 
 def create_order(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
+    seller = get_object_or_404(Seller, id = request.user.id)
+    branch = get_object_or_404(Branch, id = seller.branch_id)
     if request.method == "POST":
         form = CreateOrderForm(request.POST)
         if form.is_valid():
@@ -49,10 +52,7 @@ def create_order(request, cart_code):
             else:
                 return redirect("all_orders_created", cart_code = cart_code)
     else:
-        form = CreateOrderForm()
-        form.fields["size"].attrs = {"onclick":"changeMe()"}
-        print(form.fields["size"].attrs)
-        print(form)
+        form = CreateOrderForm(branch)
     context = {
         "form":form,
         "cart":cart,

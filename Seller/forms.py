@@ -10,20 +10,13 @@ class CreateOrderForm(forms.ModelForm):
         model = Order
         exclude = ["created_at", "cart"]
 
-        def get_all_sizes_of_product_in_list():
-            lis = []
-            for product in Product_Model.objects.all():
-                lis.append(product.product_detail.sizes.count())
-            return lis
-
         widgets = {
             "size": forms.Select(attrs={'onChange': 'change_sizes()'}),
-            "product": forms.Select(attrs={"sizes":get_all_sizes_of_product_in_list()}),
         }
 
-
-    class Media:
-        js = ('JS/custom_main.js',)
+    def __init__(self, seller_branch, *args, **kwargs):
+        super(CreateOrderForm, self).__init__(*args, **kwargs)
+        self.fields["product"].queryset = Product_Model.objects.filter(branch=seller_branch)
 
 class CheckOutForm(forms.Form):
     is_finished = forms.BooleanField(required=True, label="Is Finished")
