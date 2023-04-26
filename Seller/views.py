@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Seller, Branch
 from Product.models import Product as Product_Model, ProductDetail
-from .utils import put_sizes_in_to_options_in_select_widget_form, get_id_of_product_from_option_widget
+from django.http import JsonResponse
 import datetime
 # Create your views here.
 
@@ -26,19 +26,35 @@ def create_cart(request, cart_code = None):
 
 def all_orders_created(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
+    orders_in_cart = cart.order_set.all().order_by("-created_at")
     context = {
         "cart": cart,
         "page_title":"Check Out",
         "cart_code": cart_code,
+        "orders_in_cart":orders_in_cart,
     }
     return render(request, "Seller/all_orders_created.html", context)
+
+# create this function to get the of specific product that user choose it, done by chat GPT
+def get_sizes(request):
+    product_id = request.GET.get('product_id', None)  # Extract product_id from request.GET
+    if product_id is None:
+        return JsonResponse({'error': 'Product ID not found in request.'})  # Handle error
+    product = get_object_or_404(Product_Model, id=product_id)
+    sizes = product.product_detail.sizes.all()
+    list_of_sizes = []
+    for size in sizes:
+        dic = {"size_name": size.name, "size_id": size.id}
+        list_of_sizes.append(dic)
+    response_data = {'sizes': list_of_sizes}
+    return JsonResponse(response_data)
 
 def create_order(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
     seller = get_object_or_404(Seller, id = request.user.id)
     branch = get_object_or_404(Branch, id = seller.branch_id)
     if request.method == "POST":
-        form = CreateOrderForm(request.POST)
+        form = CreateOrderForm(branch, request.POST)
         if form.is_valid():
             order = form.instance
             order.cart = cart
@@ -153,12 +169,14 @@ def get_cart_code_from_user(request):
 
 def edit_cart(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
+    orders_in_cart = cart.order_set.all().order_by("-created_at")
     if cart.is_finished:
         cart.edit_at = datetime.datetime.now()
         context = {
             "cart": cart,
             "page_title":"Edit Cart",
             "cart_code":cart_code,
+            "orders_in_cart": orders_in_cart,
         }
         return render(request, "Seller/all_orders_created.html", context)
     else:

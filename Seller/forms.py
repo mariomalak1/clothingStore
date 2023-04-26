@@ -10,10 +10,6 @@ class CreateOrderForm(forms.ModelForm):
         model = Order
         exclude = ["created_at", "cart"]
 
-        widgets = {
-            "size": forms.Select(attrs={'onChange': 'change_sizes()'}),
-        }
-
     def __init__(self, seller_branch, *args, **kwargs):
         super(CreateOrderForm, self).__init__(*args, **kwargs)
         self.fields["product"].queryset = Product_Model.objects.filter(branch=seller_branch)

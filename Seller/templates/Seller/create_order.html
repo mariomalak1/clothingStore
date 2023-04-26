@@ -23,18 +23,39 @@
     </div>
 
     <script>
-        function change_sizes() {
-            try {
-                let sizes_field = document.getElementById("id_size");
-                let product_field = document.getElementById("id_product");
-                console.log(product_field)
-                console.log(sizes_field);
-                console.log(product_field);
-            }
-            catch (e){
-                console.log(e);
-            }
-        }
-    </script>
+        // Assuming you have a select field with id "id_size" in your HTML template
+            var sizeField = document.getElementById('id_size');
 
+            // Attach an event listener to the "product" field change event
+            document.getElementById('id_product').addEventListener('change', function() {
+                // Clear the existing options in the size field
+                sizeField.innerHTML = '';
+
+                // Fetch the selected product ID
+                var productId = this.value;
+
+                // Send an AJAX request to the server to get sizes for the selected product
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/store/seller/get_sizes/?product_id=' + productId, true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Parse the JSON response
+                        var response = JSON.parse(xhr.responseText);
+
+                        // Loop through the sizes and append new options
+                        response.sizes.forEach(function(size) {
+                            var option = document.createElement('option');
+                            option.text = size["size_name"];
+                            option.value = size["size_id"];
+                            sizeField.add(option);
+                        });
+                    } else {
+                        // Handle error, if any
+                        console.error('Error: ' + xhr.statusText);
+                    }
+                };
+                xhr.send();
+            });
+
+    </script>
 {% endblock %}
