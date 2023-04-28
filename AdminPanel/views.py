@@ -189,3 +189,6 @@ def delete_branch(request, branch_name):
 
         context = {"branch":branch, "total_number_of_employees":total_number_of_employees, "total_number_of_products":total_number_of_products}
         return render(request, "AdminPanel/branch_delete_confirmation.html", context)
+
+def show_statistics(request):
+    return render(request, "AdminPanel/show_statistics.html")
