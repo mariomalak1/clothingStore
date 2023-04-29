@@ -57,9 +57,10 @@
                                 {# choose way to make statistics #}
                                 <div class="col-9">
                                     <select class="form-select" aria-label="Default select example" onchange="make_choose_specific_function()" id="select_statistics_by">
-                                        <option value="1" selected>With Specific Day and Month</option>
-                                        <option value="2">With Specific Year</option>
-                                        <option value="3">With Specific Month</option>
+                                        <option value="0" selected>--------</option>
+                                        <option value="1">With Specific Year</option>
+                                        <option value="2">With Specific Month And Year</option>
+                                        <option value="3">With Specific Day and Month And Year</option>
                                     </select>
                                 </div>
                             </div>
@@ -85,39 +86,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <script>
+        {# to display the plot when the user is come #}
+        window.onload = create_empty_plot;
+
         let myDiv = document.getElementById("choose_the_specific");
         function make_choose_specific_function(){
             let select_element = document.getElementById("select_statistics_by");
-            let date_select = document.createElement("select");
-            if (select_element.options[select_element.selectedIndex].text === "With Specific Year"){
-                date_select.className = "form-select";
-                date_select.onchange = get_value_of_year_and_call_server;
-                date_select.id = "date_select_year";
-                let currentYear = new Date().getFullYear();
-                let earliestYear = 1970;
-                while (currentYear >= earliestYear) {
-                    let dateOption = document.createElement('option');
-                    dateOption.text = currentYear;
-                    dateOption.value = currentYear;
-                    date_select.add(dateOption);
-                    currentYear -= 1;
-                }
-            }
             myDiv.innerHTML = "";
-            myDiv.appendChild(date_select);
+            select_the_date(select_element, myDiv);
         }
     </script>
-
-    <script>
-        window.onload = function create_plot(){
-            let trace1 = {
-                x : 0,
-                y : 0,
-            }
-            let shown_data = [trace1]
-            let layout = {barmode: 'group'};
-            Plotly.newPlot('myPlot', shown_data, layout);
-        }
-    </script>
-
 </html>
