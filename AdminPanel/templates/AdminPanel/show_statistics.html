@@ -14,7 +14,7 @@
 
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="{% static "JS/ajax_statistics.js" %}"></script>
+    <script src="{% static "ajax_statistics.js" %}"></script>
 </head>
 <body>
 
@@ -49,8 +49,8 @@
                         <div class="page-body">
                             <div class="row">
                                 {# statistics view #}
-                                <div class="col-9">
-                                    <div id="myPlot" style="width:100%;max-width:700px;"></div>
+                                <div class="col-12">
+                                    <div id="myPlot"></div>
                                 </div>
 
                                 {# choose way to make statistics #}
@@ -113,7 +113,8 @@
             let date_select = document.createElement("select");
             if (select_element.options[select_element.selectedIndex].text === "With Specific Year"){
                 date_select.className = "form-select";
-                {#date_select.onchange =#}
+                date_select.onchange = get_value_of_year_and_call_server;
+                date_select.id = "date_select_year";
                 let currentYear = new Date().getFullYear();
                 let earliestYear = 1970;
                 while (currentYear >= earliestYear) {

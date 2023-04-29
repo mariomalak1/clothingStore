@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from . import ajax_request_statistics
 urlpatterns = [
     path("add_new_user/", views.add_new_user, name="add_new_user"),
     path("add_new_branch/", views.add_new_branch, name="add_new_branch"),
@@ -20,4 +20,6 @@ urlpatterns = [
     path("edit_size/<int:pk>", views.SizeUpdateView.as_view(), name="edit_size"),
     path("edit_product_code/<int:product_detail_id>", views.edit_product_code, name="edit_product_code"),
     path("show_statistics/", views.show_statistics, name="show_statistics"),
+
+    path("ajax_request/get_data_specific_year_for_statistics/", ajax_request_statistics.get_data_specific_year_for_statistics, name="get_data_specific_year_for_statistics"),
 ]
