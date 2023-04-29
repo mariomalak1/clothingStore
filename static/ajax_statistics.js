@@ -89,11 +89,11 @@ function get_value_of_year_month_and_call_server() {
   let year_select_element = document.getElementById("date_select_year");
   let month_select_element = document.getElementById("date_select_month");
   let year_selected_option = year_select_element.options[year_select_element.selectedIndex];
-  let month_selected_option = month_select_element.options[month_selected_option.selectedIndex];
+  let month_selected_option = month_select_element.options[month_select_element.selectedIndex];
   let year_value = year_selected_option.value;
   let month_value = month_selected_option.value;
   if (year_value !== "0" && month_value !== "0") {
-    makeAjaxRequest("/store/admin_panel/ajax_request/get_data_specific_year_for_statistics/?specific_year=" + value, "get", {
+    makeAjaxRequest("/store/admin_panel/ajax_request/get_data_by_year_month_for_statistics/?year=" + year_value + "&month=" + month_value, "get", {
       "year": year_value,
       "month": month_value,
     });
