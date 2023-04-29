@@ -52,9 +52,10 @@
                                 <div class="col-12">
                                     <div id="myPlot"></div>
                                 </div>
-
+                            </div>
+                            <div class="row">
                                 {# choose way to make statistics #}
-                                <div class="col-3">
+                                <div class="col-9">
                                     <select class="form-select" aria-label="Default select example" onchange="make_choose_specific_function()" id="select_statistics_by">
                                         <option value="1" selected>With Specific Day and Month</option>
                                         <option value="2">With Specific Year</option>
@@ -62,10 +63,9 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div hidden class="col-9"></div>
-                                <div class="col-3" id="choose_the_specific">
 
+                            <div class="row">
+                                <div class="col-9" id="choose_the_specific">
                                 </div>
                             </div>
                         </div>
@@ -83,28 +83,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-    <script>
-        var trace1 = {
-          x: ['giraffes', 'orangutans', 'monkeys'],
-          y: [20, 14, 23],
-          name: 'SF Zoo',
-          type: 'bar'
-        };
-
-        var trace2 = {
-          x: ['giraffes', 'orangutans', 'monkeys'],
-          y: [12, 18, 29],
-          name: 'LA Zoo',
-          type: 'bar'
-        };
-
-        var data = [trace1, trace2];
-
-        var layout = {barmode: 'group'};
-
-        Plotly.newPlot('myPlot', data, layout);
-    </script>
 
     <script>
         let myDiv = document.getElementById("choose_the_specific");
@@ -127,6 +105,18 @@
             }
             myDiv.innerHTML = "";
             myDiv.appendChild(date_select);
+        }
+    </script>
+
+    <script>
+        window.onload = function create_plot(){
+            let trace1 = {
+                x : 0,
+                y : 0,
+            }
+            let shown_data = [trace1]
+            let layout = {barmode: 'group'};
+            Plotly.newPlot('myPlot', shown_data, layout);
         }
     </script>
 

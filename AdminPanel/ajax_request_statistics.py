@@ -7,15 +7,6 @@ from Seller.models import Branch
 # from Seller.models import Seller as Seller_Model
 # function here
 
-# discount = models.PositiveIntegerField(default=0)
-# is_percent_discount = models.BooleanField(default=False)
-# cart_code = models.CharField(max_length=200, null=True, blank=True)
-# is_finished = models.BooleanField(default=False)
-# buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True, choices=choices)
-# created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
-# edit_at = models.DateTimeField(null=True, blank=True)
-# created_by = models.ForeignKey(Seller, on_delete=models.CASCADE)
-
 # check that user that send the request is admin!!!!
 #### make this function can use by manager or admin, admin can view all branches, but manager can see his
 def get_data_specific_year_for_statistics(request):
