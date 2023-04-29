@@ -33,37 +33,75 @@ function get_all_branches(data) {
   return all_branches;
 }
 
+function get_days_range_for_month(data){
+  let days = [];
+  for (let key in data[0]) {
+    if (data[0].hasOwnProperty(key)) {
+      days.push(key);
+    }
+  }
+  return days;
+}
+
+function total_in_days(data){
+  let list_total_in_days = []
+  for(let branch in data){
+    for (let i in branch){
+      if (branch.hasOwnProperty(i)) {
+        list_total_in_days.push(branch[i]);
+      }
+    }
+  }
+  return list_total_in_days;
+}
+
 function update_plot(data = "", place = "") {
   let shown_data = [];
   if (data) {
-    let all_branches = get_all_branches(data)
-    let all_month_names = get_month_names();
-    let all_months_total = months_total_return(data);
-    for (let i = 0; i < all_branches.length; i++) {
-      let trace = {
-        x: all_month_names,
-        y: all_months_total[i],
-        name: all_branches[i],
-        type: 'bar'
-      };
-      shown_data.push(trace)
+    if (place === "from_one_year") {
+      let all_branches = get_all_branches(data)
+      let all_month_names = get_month_names();
+      let all_months_total = months_total_return(data);
+      for (let i = 0; i < all_branches.length; i++) {
+        let trace = {
+          x: all_month_names,
+          y: all_months_total[i],
+          name: all_branches[i],
+          type: 'bar'
+        };
+        shown_data.push(trace)
+      }
+    }
+    else if(place === "from_month_year"){
+      let range_month_days = get_days_range_for_month(data);
+      let all_branches = get_all_branches(data)
+      let all_total_in_day = total_in_days(data);
+      for (let i = 0; i < all_branches.length; i++) {
+        let trace = {
+          x: range_month_days,
+          y: all_total_in_day[i],
+          name: all_branches[i],
+          type: 'bar'
+        };
+        shown_data.push(trace);
+      }
     }
   }
-
   let layout = {
     barmode: 'group'
   };
+  console.log(shown_data);
   Plotly.newPlot('myPlot', shown_data, layout);
 }
 
-function makeAjaxRequest(url, method, data, successCallback, errorCallback) {
+function makeAjaxRequest(url, method, data, place_from, successCallback, errorCallback) {
   var xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
-        update_plot(JSON.parse(xhr.responseText), "from_one_year")
+        update_plot(JSON.parse(xhr.responseText), place_from)
       } else {
         errorCallback(xhr.status);
       }
@@ -79,7 +117,7 @@ function get_value_of_year_and_call_server() {
   if (value !== "0") {
     makeAjaxRequest("/store/admin_panel/ajax_request/get_data_specific_year_for_statistics/?specific_year=" + value, "get", {
       "specific_year": value
-    });
+    }, "from_one_year");
   }else{
     create_empty_plot();
   }
@@ -96,7 +134,7 @@ function get_value_of_year_month_and_call_server() {
     makeAjaxRequest("/store/admin_panel/ajax_request/get_data_by_year_month_for_statistics/?year=" + year_value + "&month=" + month_value, "get", {
       "year": year_value,
       "month": month_value,
-    });
+    }, "from_month_year");
   }else{
     create_empty_plot();
   }
@@ -140,10 +178,10 @@ function put_days_in_select_element(year_date_select, month_date_select){
 
 function with_specific_year_only(year_date_select, myDiv){
   year_date_select.className = "form-select";
-    year_date_select.onchange = get_value_of_year_and_call_server;
-    year_date_select.id = "date_select_year";
-    put_years_in_select_element(year_date_select);
-    myDiv.appendChild(year_date_select);
+  year_date_select.onchange = get_value_of_year_and_call_server;
+  year_date_select.id = "date_select_year";
+  put_years_in_select_element(year_date_select);
+  myDiv.appendChild(year_date_select);
 }
 
 function with_month_year(year_date_select, myDiv){
