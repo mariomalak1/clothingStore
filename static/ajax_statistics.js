@@ -73,16 +73,15 @@ function update_plot(data = "", place = "") {
         }
         else if (place === "from_year_month_day"){
             let all_branches = get_all_branches(data);
-            let total_money_from_branches_in_day = total_money_from_branches_in_day(data);
-            for (let i = 0; i < all_branches.length; i++) {
-                let trace = {
-                    x: all_branches,
-                    y: total_money_from_branches_in_day[i],
-                    name: all_branches[i],
-                    type: 'bar'
-                };
-                shown_data.push(trace);
-            }
+            let total_money_from_branches = total_money_from_branches_in_day(data);
+            let trace = {
+                x: all_branches,
+                y: total_money_from_branches,
+                type: 'bar'
+            };
+
+            shown_data.push(trace);
+
         }
     }
     let layout = {
@@ -108,7 +107,7 @@ function total_money_from_branches_in_day(data){
     for (let i = 0; i < data.length; i++){
         all_money_in_branches.push(data[i][Object.keys(data[i])[0]])
     }
-    return all_money_in_branches
+    return all_money_in_branches;
 }
 
 function get_days_range_for_month(data){
@@ -224,7 +223,6 @@ function get_value_of_year_month_day_and_call_server() {
     let year_select_element = document.getElementById("date_select_year");
     let month_select_element = document.getElementById("date_select_month");
     let day_select_element = document.getElementById("date_select_day");
-    console.log("iam here");
     try {
         let year_selected_option = year_select_element.options[year_select_element.selectedIndex];
         let month_selected_option = month_select_element.options[month_select_element.selectedIndex];
@@ -298,7 +296,7 @@ function with_day_month_year(year_date_select, myDiv){
         month_date_select.onchange = function (){
             day_date_select.className = "form-select";
             day_date_select.onchange = get_value_of_year_month_day_and_call_server;
-            day_date_select.id = "date_select_month";
+            day_date_select.id = "date_select_day";
             if (day_date_select.options.length > 0){
                 delete_all_select_element_options(day_date_select);
             }else{
