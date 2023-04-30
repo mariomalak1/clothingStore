@@ -69,3 +69,32 @@ def get_data_by_year_month_for_statistics(request):
     # elif he is seller and manager
     else:
         return HttpResponseForbidden()
+
+def get_data_by_year_month_day_for_statistics(request):
+    user_ = get_object_or_404(User, id =request.user.id)
+    if user_.is_staff:
+        branches = Branch.objects.all()
+        year = request.GET.get("year")
+        month = request.GET.get("month")
+        day = request.GET.get("day")
+        total_in_day_for_branches_list = []
+        try:
+            year = int(year)
+            month = int(month)
+            day = int(day)
+            for branch in branches:
+                total_money_in_day = 0
+                carts = Cart.objects.filter(created_at__month=month, created_at__year=year, created_at__day= day,created_by__branch=branch).all()
+                for cart in carts:
+                    # total money for specific month
+                    total_money_in_day += cart.total_price()
+                total_in_day_for_branches_list.append({branch.name: total_money_in_day})
+        except:
+            return HttpResponseNotFound()
+        print(total_in_day_for_branches_list)
+        return JsonResponse(total_in_day_for_branches_list, safe=False)
+
+    # elif he is seller and manager
+    else:
+        return HttpResponseForbidden()
+

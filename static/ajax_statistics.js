@@ -58,13 +58,26 @@ function update_plot(data = "", place = "") {
             }
         }
         else if(place === "from_month_year"){
-            let all_branches = get_all_branches(data)
+            let all_branches = get_all_branches(data);
             let range_month_days = get_days_range_for_month(data);
             let all_total_in_day = total_in_days(data);
             for (let i = 0; i < all_branches.length; i++) {
                 let trace = {
                     x: range_month_days,
                     y: all_total_in_day[i],
+                    name: all_branches[i],
+                    type: 'bar'
+                };
+                shown_data.push(trace);
+            }
+        }
+        else if (place === "from_year_month_day"){
+            let all_branches = get_all_branches(data);
+            let total_money_from_branches_in_day = total_money_from_branches_in_day(data);
+            for (let i = 0; i < all_branches.length; i++) {
+                let trace = {
+                    x: all_branches,
+                    y: total_money_from_branches_in_day[i],
                     name: all_branches[i],
                     type: 'bar'
                 };
@@ -88,6 +101,14 @@ function get_all_branches(data) {
         all_branches.push(Object.keys(i)[0]);
     }
     return all_branches;
+}
+
+function total_money_from_branches_in_day(data){
+    let all_money_in_branches = []
+    for (let i = 0; i < data.length; i++){
+        all_money_in_branches.push(data[i][Object.keys(data[i])[0]])
+    }
+    return all_money_in_branches
 }
 
 function get_days_range_for_month(data){
@@ -202,7 +223,8 @@ function get_value_of_year_month_and_call_server() {
 function get_value_of_year_month_day_and_call_server() {
     let year_select_element = document.getElementById("date_select_year");
     let month_select_element = document.getElementById("date_select_month");
-    let day_select_element = document.getElementById("date_select_month");
+    let day_select_element = document.getElementById("date_select_day");
+    console.log("iam here");
     try {
         let year_selected_option = year_select_element.options[year_select_element.selectedIndex];
         let month_selected_option = month_select_element.options[month_select_element.selectedIndex];
@@ -211,7 +233,7 @@ function get_value_of_year_month_day_and_call_server() {
         let month_value = month_selected_option.value;
         let day_value = day_selected_option.value;
         if (year_value !== "0" && month_value !== "0" && day_value !== "0") {
-            makeAjaxRequest("/store/admin_panel/ajax_request/get_data_by_year_month_for_statistics/?year=" + year_value + "&month=" + month_value, "get", {
+            makeAjaxRequest("/store/admin_panel/ajax_request/get_data_by_year_month_day_for_statistics/?year=" + year_value + "&month=" + month_value + "&day=" + day_value, "get", {
                 "year": year_value,
                 "month": month_value,
                 "day": day_value,
