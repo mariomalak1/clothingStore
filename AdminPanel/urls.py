@@ -24,4 +24,5 @@ urlpatterns = [
     path("ajax_request/get_data_specific_year_for_statistics/", ajax_request_statistics.get_data_specific_year_for_statistics, name="get_data_specific_year_for_statistics"),
     path("ajax_request/get_data_by_year_month_for_statistics/", ajax_request_statistics.get_data_by_year_month_for_statistics, name="get_data_by_year_month_for_statistics"),
     path("ajax_request/get_data_by_year_month_day_for_statistics/", ajax_request_statistics.get_data_by_year_month_day_for_statistics, name="get_data_by_year_month_day_for_statistics"),
+    path("ajax_request/get_data_by_year_and_another/", ajax_request_statistics.get_data_by_year_and_another, name="get_data_by_year_and_another"),
 ]

@@ -18,8 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-
+from Main.views import home_page
 urlpatterns = [
+    path("", home_page),
     path("admin/", admin.site.urls),
     path("store/product/", include("Product.urls")),
     path("store/main/", include("Main.urls")),

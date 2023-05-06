@@ -83,6 +83,19 @@ function update_plot(data = "", place = "") {
             shown_data.push(trace);
 
         }
+
+        else if (place === "from_year_to_another"){
+            let all_branches = get_all_branches(data);
+            let total_money_from_branches = total_money_from_branches_in_day(data);
+            let trace = {
+                x: all_branches,
+                y: total_money_from_branches,
+                type: 'bar'
+            };
+
+            shown_data.push(trace);
+
+        }
     }
     let layout = {
         barmode: 'group'
@@ -189,12 +202,32 @@ function makeAjaxRequest(url, method, data, place_from, successCallback, errorCa
     xhr.send(JSON.stringify(data));
 }
 
-function get_value_of_year_and_call_server() {
+function get_value_of_two_years_and_call_server() {
+    let year1 = document.getElementById("date_select_year1");
+    let year2 = document.getElementById("date_select_year2");
+
+    let year1_select_option = year1.options[year1.selectedIndex];
+    let year2_select_option = year2.options[year2.selectedIndex];
+
+    let year1_value = year1_select_option.value;
+    let year2_value = year2_select_option.value;
+
+    if (year1_value !== "0" && year2_value !== "0") {
+        makeAjaxRequest("/store/admin_panel/ajax_request/get_data_by_year_and_another/", "get", {
+            "year1": year1_value,
+            "year2" : year2_value
+        }, "from_year_to_another");
+    }else{
+        create_empty_plot();
+    }
+}
+
+function get_value_of_year_and_call_server(){
     let select_element = document.getElementById("date_select_year");
     let selected_option = select_element.options[select_element.selectedIndex];
     let value = selected_option.value;
     if (value !== "0") {
-        makeAjaxRequest("/store/admin_panel/ajax_request/get_data_specific_year_for_statistics/?specific_year=" + value, "get", {
+        makeAjaxRequest("/store/admin_panel/ajax_request/get_data_by_year_and_another/?specific_year=" + value, "get", {
             "specific_year": value
         }, "from_one_year");
     }else{
@@ -246,7 +279,7 @@ function get_value_of_year_month_day_and_call_server() {
 }
 
 function with_specific_year_only(year_date_select, myDiv){
-    year_date_select.className = "form-select";
+    year_date_select.className = "form-select mt-2";
     year_date_select.onchange = get_value_of_year_and_call_server;
     year_date_select.id = "date_select_year";
     put_years_in_select_element(year_date_select);
@@ -255,8 +288,8 @@ function with_specific_year_only(year_date_select, myDiv){
 
 function with_month_year(year_date_select, myDiv){
     let month_date_select = document.createElement("select");
-    year_date_select.className = "form-select";
-    month_date_select.className = "form-select";
+    year_date_select.className = "form-select mt-2";
+    month_date_select.className = "form-select mt-2";
     year_date_select.onchange = get_value_of_year_month_and_call_server;
     month_date_select.onchange = get_value_of_year_month_and_call_server;
     year_date_select.id = "date_select_year";
@@ -281,10 +314,10 @@ function delete_all_select_element_options(select_element){
 function with_day_month_year(year_date_select, myDiv){
     let month_date_select = document.createElement("select");
     let day_date_select = document.createElement("select");
-    year_date_select.className = "form-select";
+    year_date_select.className = "form-select mt-2";
 
     year_date_select.onchange = function(){
-        month_date_select.className = "form-select";
+        month_date_select.className = "form-select mt-2";
         month_date_select.id = "date_select_month";
 
         if (month_date_select.options.length > 0){
@@ -294,7 +327,7 @@ function with_day_month_year(year_date_select, myDiv){
         }
         put_month_names_in_select_element(month_date_select);
         month_date_select.onchange = function (){
-            day_date_select.className = "form-select";
+            day_date_select.className = "form-select mt-2";
             day_date_select.onchange = get_value_of_year_month_day_and_call_server;
             day_date_select.id = "date_select_day";
             if (day_date_select.options.length > 0){
@@ -311,18 +344,42 @@ function with_day_month_year(year_date_select, myDiv){
     myDiv.appendChild(year_date_select);
 }
 
+function from_year_to_another(year_date_select, myDiv){
+    let another_year_select = document.createElement("select");
+
+    year_date_select.className = "form-select mt-2";
+    another_year_select.className = "form-select mt-2";
+
+    year_date_select.onchange = get_value_of_two_years_and_call_server;
+    another_year_select.onchange = get_value_of_two_years_and_call_server;
+
+
+    year_date_select.id = "date_select_year1";
+    year_date_select.id = "date_select_year2";
+
+    put_years_in_select_element(year_date_select);
+    put_years_in_select_element(another_year_select);
+
+    myDiv.appendChild(year_date_select);
+    myDiv.appendChild(another_year_select);
+}
+
 function select_the_date(select_element, myDiv){
     let year_date_select = document.createElement("select");
     // if the user choose with specific year
+
     if (select_element.options[select_element.selectedIndex].value === "1"){
+        from_year_to_another(year_date_select, myDiv);
+    }
+    else if (select_element.options[select_element.selectedIndex].value === "2"){
         with_specific_year_only(year_date_select, myDiv)
     }
     // if the user choose with specific year and month
-    else if (select_element.options[select_element.selectedIndex].value === "2"){
+    else if (select_element.options[select_element.selectedIndex].value === "3"){
         with_month_year(year_date_select, myDiv);
     }
     // if the user choose With Specific Day and Month And Year
-    else if (select_element.options[select_element.selectedIndex].value === "3"){
+    else if (select_element.options[select_element.selectedIndex].value === "4"){
         with_day_month_year(year_date_select, myDiv);
     }
 }
