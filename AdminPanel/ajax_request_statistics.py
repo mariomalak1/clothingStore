@@ -112,14 +112,13 @@ def get_data_by_year_and_another_for_statistics(request):
             diff = 0
             if year1 > year2:
                 year1, year2 = year2, year1
-                diff = year2 - year1
+            diff = year2 - year1
             for branch in branches:
                 total_money_in_years_in_branch = []
                 for i in range(diff + 1):
                     total_money_in_year_in_branch = 0
                     carts = Cart.objects.filter(created_at__year= (year1 + i), created_by__branch=branch).all()
                     for cart in carts:
-                        # total money for specific month
                         total_money_in_year_in_branch += cart.total_price()
                     total_money_in_years_in_branch.append({(year1 + i) : total_money_in_year_in_branch})
                 total_in_year_for_branches_list.append({branch.name: total_money_in_years_in_branch})
