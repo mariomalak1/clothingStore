@@ -86,21 +86,45 @@ function update_plot(data = "", place = "") {
 
         else if (place === "from_year_to_another"){
             let all_branches = get_all_branches(data);
-            let total_money_from_branches = total_money_from_branches_in_day(data);
-            let trace = {
-                x: all_branches,
-                y: total_money_from_branches,
-                type: 'bar'
-            };
+            let all_years_in_specific_duration = get_all_years_in_specific_duration(data)
+            let total_money_from_branch_in_year = total_money_in_year(data);
 
-            shown_data.push(trace);
+            // console.log(all_branches);
+            // console.log(all_years_in_specific_duration);
+            // console.log(total_money_from_branch_in_year);
 
+            for (let i = 0; i < all_branches.length; i++) {
+                let trace = {
+                    x: all_years_in_specific_duration,
+                    y: total_money_from_branch_in_year[i],
+                    name: all_branches[i],
+                    type: 'bar'
+                };
+                shown_data.push(trace);
+            }
         }
     }
     let layout = {
         barmode: 'group'
     };
     Plotly.newPlot('myPlot', shown_data, layout);
+}
+
+function get_all_years_in_specific_duration(data){
+    if (data){
+        let years = [];
+        data.forEach(branchData => {
+            Object.values(branchData).forEach(branchValues => {
+                branchValues.forEach(yearData => {
+                    let year = Object.keys(yearData)[0];
+                    years.push(year);
+                });
+            });
+        });
+        return years;
+    }else{
+        return [];
+    }
 }
 
 function get_month_names() {
@@ -113,6 +137,20 @@ function get_all_branches(data) {
         all_branches.push(Object.keys(i)[0]);
     }
     return all_branches;
+}
+
+function total_money_in_year(data){
+    if (data) {
+        const allBranchValues = [];
+        data.forEach(branchData => {
+            const branchValues = Object.values(branchData)[0];
+            const values = branchValues.map(yearData => Object.values(yearData)[0]);
+            allBranchValues.push(values);
+        });
+        return allBranchValues;
+    }else {
+        return [];
+    }
 }
 
 function total_money_from_branches_in_day(data){
@@ -213,7 +251,7 @@ function get_value_of_two_years_and_call_server() {
     let year2_value = year2_select_option.value;
 
     if (year1_value !== "0" && year2_value !== "0") {
-        makeAjaxRequest("/store/admin_panel/ajax_request/get_data_by_year_and_another/", "get", {
+        makeAjaxRequest("/store/admin_panel/ajax_request/get_data_by_year_and_another_for_statistics/?year1=" + year1_value + "&year2=" + year2_value, "get", {
             "year1": year1_value,
             "year2" : year2_value
         }, "from_year_to_another");
@@ -227,7 +265,7 @@ function get_value_of_year_and_call_server(){
     let selected_option = select_element.options[select_element.selectedIndex];
     let value = selected_option.value;
     if (value !== "0") {
-        makeAjaxRequest("/store/admin_panel/ajax_request/get_data_by_year_and_another/?specific_year=" + value, "get", {
+        makeAjaxRequest("/store/admin_panel/ajax_request/get_data_specific_year_for_statistics/?specific_year=" + value, "get", {
             "specific_year": value
         }, "from_one_year");
     }else{
@@ -355,7 +393,7 @@ function from_year_to_another(year_date_select, myDiv){
 
 
     year_date_select.id = "date_select_year1";
-    year_date_select.id = "date_select_year2";
+    another_year_select.id = "date_select_year2";
 
     put_years_in_select_element(year_date_select);
     put_years_in_select_element(another_year_select);
@@ -366,11 +404,12 @@ function from_year_to_another(year_date_select, myDiv){
 
 function select_the_date(select_element, myDiv){
     let year_date_select = document.createElement("select");
-    // if the user choose with specific year
 
+    // if the user choose with year and another
     if (select_element.options[select_element.selectedIndex].value === "1"){
         from_year_to_another(year_date_select, myDiv);
     }
+    // if the user choose with specific year
     else if (select_element.options[select_element.selectedIndex].value === "2"){
         with_specific_year_only(year_date_select, myDiv)
     }
