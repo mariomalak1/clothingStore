@@ -7,18 +7,25 @@ from Seller.models import Seller as Seller_Model
 # Create your views here.
 
 def home_page(request, cart_code=None):
-    seller = get_object_or_404(Seller_Model, id=request.user.id)
-    context = {"seller": seller}
-    if cart_code:
-        cart = Cart.objects.filter(cart_code=cart_code).first()
-        if cart:
-            context["cart_code"] = cart_code
-            return render(request, "Main/home_page.html", context)
+    try:
+        seller = Seller_Model.objects.get(request.user.id)
+        if seller:
+            context = {"seller": seller}
+            if cart_code:
+                cart = Cart.objects.filter(cart_code=cart_code).first()
+                if cart:
+                    context["cart_code"] = cart_code
+                    return render(request, "Main/home_page.html", context)
+                else:
+                    messages.add_message(request, messages.WARNING, "No Card Found with This Code")
+                    return render(request, "Main/home_page.html", context)
+            else:
+                return render(request, "Main/home_page.html", context)
         else:
-            messages.add_message(request, messages.WARNING, "No Card Found with This Code")
-            return render(request, "Main/home_page.html", context)
-    else:
-        return render(request, "Main/home_page.html", context)
+            messages.add_message(request, messages.WARNING, "Please Login")
+            return redirect("login")
+    except:
+        return redirect("login")
 
 
 def admin_panel(request):
