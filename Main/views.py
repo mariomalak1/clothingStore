@@ -23,3 +23,6 @@ def home_page(request, cart_code=None):
 
 def admin_panel(request):
     return render(request, "Main/admin_panel.html", {"page_title": "Admin Panel"})
+
+def settings(request):
+    return render(request, "Main/settings.html")
