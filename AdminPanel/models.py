@@ -1,6 +1,7 @@
 from django.db import models
-from Seller.models import Seller as Seller_Model
+from django.contrib.auth.models import User as Django_User
+from Seller.models import Branch
 # Create your models here.
 
-# class SiteAdmin(Seller_Model):
-#     branch = models.ForeignKey("Branch", on_delete=models.SET_NULL, null=True, blank=True)
+class SiteAdmin(Django_User):
+    branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, blank=True)

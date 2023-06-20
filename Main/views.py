@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from Invoice.models import Cart
 from django.contrib import messages
 from Seller.models import Seller as Seller_Model
-from AdminPanel.decorators import is_authenticated_admin_decorator
+from AdminPanel.decorators import is_authenticated_admin_decorator, is_authenticated_seller_decorator, is_authenticated_admin_or_manager_decorator
 
 # Create your views here.
+@is_authenticated_seller_decorator
 def home_page(request, cart_code=None):
     seller = get_object_or_404(Seller_Model, id=request.user.id)
     context = {"seller": seller}
@@ -19,10 +20,19 @@ def home_page(request, cart_code=None):
     else:
         return render(request, "Main/home_page.html", context)
 
-@is_authenticated_admin_decorator
+@is_authenticated_admin_or_manager_decorator
 def admin_panel(request):
-    return render(request, "Main/admin_panel.html", {"page_title": "Admin Panel", "user":request.user})
+    if request.user.is_staff:
+        page_title = "Admin Panel"
+    else:
+        page_title = "Manager Panel"
 
-@is_authenticated_admin_decorator
+    context = {
+        "page_title": page_title,
+        "user":request.user,
+    }
+    return render(request, "Main/admin_panel.html", )
+
+@is_authenticated_admin_or_manager_decorator
 def settings(request):
     return render(request, "Main/settings.html")
