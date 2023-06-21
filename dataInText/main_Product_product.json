@@ -1,0 +1,86 @@
+[
+  {
+    "id": ٢٠,
+    "quantity": ٠,
+    "price_for_branch": ٨٠,
+    "branch_id": ١,
+    "product_detail_id": ١
+  },
+  {
+    "id": ٢١,
+    "quantity": ١,
+    "price_for_branch": ٨٠,
+    "branch_id": ١,
+    "product_detail_id": ٢
+  },
+  {
+    "id": ٢٢,
+    "quantity": ٦,
+    "price_for_branch": ٧٠,
+    "branch_id": ١,
+    "product_detail_id": ٣
+  },
+  {
+    "id": ٢٣,
+    "quantity": ٧,
+    "price_for_branch": ٨٠,
+    "branch_id": ١,
+    "product_detail_id": ٦
+  },
+  {
+    "id": ٢٤,
+    "quantity": ١٨,
+    "price_for_branch": ٥٠٠,
+    "branch_id": ١,
+    "product_detail_id": ٧
+  },
+  {
+    "id": ٢٥,
+    "quantity": ١٩,
+    "price_for_branch": ٨٠,
+    "branch_id": ١,
+    "product_detail_id": ٩
+  },
+  {
+    "id": ٢٦,
+    "quantity": ١٨,
+    "price_for_branch": ٥٠,
+    "branch_id": ١,
+    "product_detail_id": ٢
+  },
+  {
+    "id": ٢٧,
+    "quantity": ١٩,
+    "price_for_branch": ٨٠,
+    "branch_id": ٥,
+    "product_detail_id": ١
+  },
+  {
+    "id": ٢٨,
+    "quantity": ١١,
+    "price_for_branch": ٨٠,
+    "branch_id": ٥,
+    "product_detail_id": ٢
+  },
+  {
+    "id": ٢٩,
+    "quantity": ٣٣,
+    "price_for_branch": ٧٠,
+    "branch_id": ٥,
+    "product_detail_id": ٣
+  },
+  {
+    "id": ٣٠,
+    "quantity": ٦٩,
+    "price_for_branch": ٠,
+    "branch_id": ٥,
+    "product_detail_id": ٩
+  },
+  {
+    "id": ٣١,
+    "quantity": ١٥,
+    "price_for_branch": ١٢٠,
+    "branch_id": ١,
+    "product_detail_id": ٣
+  }
+]

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from Product.models import ProductDetail, Product
-from .forms import ProductDetailAddForm, AddUserForm, AddSellerForm, AddNewBranch, EditProductCodeForm
+from .forms import ProductDetailAddForm, AddUserForm, AddSellerForm, AddNewBranch, EditProductCodeForm, EditBranchForm
 from django.contrib import messages
 from Seller.models import Branch
 from Invoice.models import Cart, Order
@@ -161,19 +161,36 @@ def display_all_branches(request):
     context = {"branches":branches}
     return render(request, "AdminPanel/display_all_branches.html", context)
 
+def save_branch_data(form, branch, request):
+    branch_name = branch.name
+    branch.name = form.cleaned_data.get("branch")
+    branch.address = form.cleaned_data.get("address")
+    branch.phone_branch = form.cleaned_data.get("phone_branch")
+    branch.save()
+    messages.add_message(request, messages.SUCCESS,
+                         f"Branch With Name {branch_name} Edited Successfully To {branch.name}")
+
 def edit_branch(request, branch_name):
     branch = get_object_or_404(Branch, name=branch_name)
     if request.method == "POST":
-        form = AddNewBranch(request.POST)
+        form = EditBranchForm(request.POST)
         if form.is_valid():
-            messages.add_message(request, messages.SUCCESS, f"Branch With Name {branch_name} Edited Successfully")
-            branch.name = form.cleaned_data.get("name")
-            branch.address = form.cleaned_data.get("address")
-            branch.phone_branch = form.cleaned_data.get("phone_branch")
-            branch.save()
+            try:
+                branch_form = Branch.objects.filter(name = form.cleaned_data.get("branch")).first()
+                if branch_form:
+                    if branch_form == branch:
+                        save_branch_data(form, branch, request)
+                    else:
+                        messages.add_message(request, messages.WARNING,
+                                             f"There's Another Branch With Same Name")
+                else:
+                    save_branch_data(form, branch, request)
+            except:
+                save_branch_data(form, branch, request)
             return redirect("display_all_branches")
     else:
-        form = AddNewBranch(instance=branch)
+        form = EditBranchForm(instance=branch)
+        form["branch"].initial = branch.name
     context = {"process_name":"Edit", "form":form, "button_name":"Save"}
     return render(request, "AdminPanel/add_new_branch.html", context)
 

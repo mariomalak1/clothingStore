@@ -1,0 +1,147 @@
+[
+  {
+    "id": ١,
+    "productdetail_id": ٩,
+    "size_id": ٨
+  },
+  {
+    "id": ٢,
+    "productdetail_id": ٩,
+    "size_id": ١١
+  },
+  {
+    "id": ٣,
+    "productdetail_id": ٩,
+    "size_id": ٦
+  },
+  {
+    "id": ٤,
+    "productdetail_id": ٩,
+    "size_id": ٧
+  },
+  {
+    "id": ٥,
+    "productdetail_id": ٧,
+    "size_id": ٣
+  },
+  {
+    "id": ٦,
+    "productdetail_id": ٧,
+    "size_id": ٤
+  },
+  {
+    "id": ٧,
+    "productdetail_id": ٧,
+    "size_id": ٥
+  },
+  {
+    "id": ٨,
+    "productdetail_id": ٧,
+    "size_id": ٦
+  },
+  {
+    "id": ٩,
+    "productdetail_id": ٧,
+    "size_id": ٧
+  },
+  {
+    "id": ١٠,
+    "productdetail_id": ٧,
+    "size_id": ٨
+  },
+  {
+    "id": ١١,
+    "productdetail_id": ١,
+    "size_id": ١
+  },
+  {
+    "id": ١٢,
+    "productdetail_id": ١,
+    "size_id": ٢
+  },
+  {
+    "id": ١٣,
+    "productdetail_id": ١,
+    "size_id": ٣
+  },
+  {
+    "id": ١٤,
+    "productdetail_id": ١,
+    "size_id": ٤
+  },
+  {
+    "id": ١٥,
+    "productdetail_id": ٢,
+    "size_id": ١٠
+  },
+  {
+    "id": ١٦,
+    "productdetail_id": ٢,
+    "size_id": ٩
+  },
+  {
+    "id": ١٧,
+    "productdetail_id": ٢,
+    "size_id": ٢
+  },
+  {
+    "id": ١٨,
+    "productdetail_id": ٢,
+    "size_id": ٣
+  },
+  {
+    "id": ١٩,
+    "productdetail_id": ٣,
+    "size_id": ١
+  },
+  {
+    "id": ٢٠,
+    "productdetail_id": ٦,
+    "size_id": ٥
+  },
+  {
+    "id": ٢١,
+    "productdetail_id": ١٠,
+    "size_id": ٨
+  },
+  {
+    "id": ٢٢,
+    "productdetail_id": ١٠,
+    "size_id": ١١
+  },
+  {
+    "id": ٢٣,
+    "productdetail_id": ١٠,
+    "size_id": ٦
+  },
+  {
+    "id": ٢٤,
+    "productdetail_id": ١٠,
+    "size_id": ٧
+  },
+  {
+    "id": ٢٥,
+    "productdetail_id": ١١,
+    "size_id": ٩
+  },
+  {
+    "id": ٢٦,
+    "productdetail_id": ١١,
+    "size_id": ١٠
+  },
+  {
+    "id": ٢٧,
+    "productdetail_id": ١٢,
+    "size_id": ٨
+  },
+  {
+    "id": ٢٨,
+    "productdetail_id": ١٢,
+    "size_id": ٦
+  },
+  {
+    "id": ٢٩,
+    "productdetail_id": ١٢,
+    "size_id": ٧
+  }
+]

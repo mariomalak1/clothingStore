@@ -33,3 +33,9 @@ class AddNewBranch(forms.ModelForm):
     class Meta:
         model = Branch
         fields = "__all__"
+
+class EditBranchForm(forms.ModelForm):
+    branch = forms.CharField(max_length=250, min_length=2, strip=True)
+    class Meta:
+        model = Branch
+        fields = ["branch", "phone_branch", "address"]

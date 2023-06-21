@@ -24,13 +24,13 @@
                   <td> <a> Not Found </a> </td>
               {% endif %}
 
-              {% if branch.address %}
+              {% if branch.phone_branch %}
                   <td> <a> {{ branch.phone_branch }} </a> </td>
               {% else %}
                   <td> <a> Not Found </a> </td>
               {% endif %}
-              <td> <a href="{% url "edit_product_detail" branch.name %}" class="btn btn-secondary"> Edit </a> </td>
-              <td> <a href="{% url "delete_branch" branch.name %}" class="btn btn-danger"> Delete </a> </td>
+              <td> <a href="{% url 'edit_branch' branch.name %}" class="btn btn-secondary"> Edit </a> </td>
+              <td> <a href="{% url 'delete_branch' branch.name %}" class="btn btn-danger"> Delete </a> </td>
           </tr>
       {% endfor %}
       </tbody>
