@@ -46,10 +46,9 @@ INSTALLED_APPS = [
     "AdminPanel",
 
 
-    "crispy_forms",
-    "crispy_bootstrap5",
-    "django_filters",
-
+    # "crispy_forms",
+    # "crispy_bootstrap5",
+    # "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -142,9 +141,9 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # crispy settings
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+# CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+# CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-LOGIN_REDIRECT_URL = "home_page"
-LOGOUT_REDIRECT_URL = "login"
-LOGIN_URL = "login"
+# LOGIN_REDIRECT_URL = "home_page"
+# LOGOUT_REDIRECT_URL = "login"
+# LOGIN_URL = "login"

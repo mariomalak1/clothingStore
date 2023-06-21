@@ -122,28 +122,28 @@ def display_all_carts(request):
     }
     return render(request, "AdminPanel/display_all_carts.html", context)
 
-def add_new_user(request):
-    if request.method == "POST":
-        form_user = AddUserForm(request.POST)
-        form_seller = AddSellerForm(request.POST)
-        if form_seller.is_valid() and form_user.is_valid():
-            form_user.save()
-            form_seller.instance.user = form_user.instance
-            if form_seller.data.get("is_admin"):
-                form_user.instance.is_staff = True
-                admin_ = SiteAdmin.objects.create(user_obj=form_user.instance)
-                admin_.save()
-            form_user.save()
-            form_seller.save()
-            username = form_user.cleaned_data.get("username")
-            messages.success(request, f"Seller with Username {username} have been created")
-            return redirect("admin_panel")
-    else:
-        form_user = AddUserForm()
-        form_seller = AddSellerForm()
-
-    context = {"form_user":form_user, "form_seller":form_seller}
-    return render(request, "AdminPanel/register.html", context)
+# def add_new_user(request):
+#     if request.method == "POST":
+#         form_user = AddUserForm(request.POST)
+#         form_seller = AddSellerForm(request.POST)
+#         if form_seller.is_valid() and form_user.is_valid():
+#             form_user.save()
+#             form_seller.instance.user = form_user.instance
+#             if form_seller.data.get("is_admin"):
+#                 form_user.instance.is_staff = True
+#                 admin_ = SiteAdmin.objects.create(user_obj=form_user.instance)
+#                 admin_.save()
+#             form_user.save()
+#             form_seller.save()
+#             username = form_user.cleaned_data.get("username")
+#             messages.success(request, f"Seller with Username {username} have been created")
+#             return redirect("admin_panel")
+#     else:
+#         form_user = AddUserForm()
+#         form_seller = AddSellerForm()
+#
+#     context = {"form_user":form_user, "form_seller":form_seller}
+#     return render(request, "AdminPanel/register.html", context)
 
 def add_new_branch(request):
     if request.method == "POST":

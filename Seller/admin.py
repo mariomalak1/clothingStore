@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import User, Branch
+from .models import Site_User, Branch
 # Register your models here.
 
-admin.site.register(User)
+admin.site.register(Site_User)
 admin.site.register(Branch)

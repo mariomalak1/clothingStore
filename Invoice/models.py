@@ -1,7 +1,7 @@
 from django.db import models
 from Product.models import Product as product_model, Size as Product_size
 from django.core.exceptions import ValidationError
-from Seller.models import User
+from Seller.models import Site_User
 import random
 import string
 # Create your models here.
@@ -25,7 +25,7 @@ class Cart(models.Model):
     buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True, choices=choices)
     created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     edit_at = models.DateTimeField(null=True, blank=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(Site_User, on_delete=models.CASCADE)
 
     # function to generate code for every cart
     @staticmethod

@@ -27,8 +27,8 @@ class CartFilter(django_filters.FilterSet):
         return queryset.filter(cart_code__icontains=value)
 
     def data_by_branch_name(self, queryset, name, value):
-        print("value",value)
-        print(queryset.filter(created_by__branch__name=value).all())
+        # print("value",value)
+        # print(queryset.filter(created_by__branch__name=value).all())
         return queryset.filter(created_by__branch__name=value)
 
 

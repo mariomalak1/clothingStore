@@ -4,7 +4,7 @@ from .forms import CreateOrderForm, BuyerForm, GetCartForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Branch, User
+from .models import Branch, Site_User
 from Product.models import Product as Product_Model, ProductDetail
 from django.http import JsonResponse
 import datetime
@@ -13,7 +13,7 @@ import datetime
 # add decorator manager and seller
 def create_cart(request, cart_code = None):
     if not cart_code or cart_code == "None":
-        seller = get_object_or_404(User, id = request.user.id)
+        seller = get_object_or_404(Site_User, id = request.user.id)
         cart = Cart.objects.create(created_by = seller)
     else:
         cart = Cart.objects.filter(cart_code = cart_code).first()
@@ -53,7 +53,7 @@ def get_sizes(request):
 # add decorator manager and seller
 def create_order(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
-    seller = get_object_or_404(User, id = request.user.id)
+    seller = get_object_or_404(Site_User, id = request.user.id)
     branch = get_object_or_404(Branch, id = seller.branch_id)
     if request.method == "POST":
         form = CreateOrderForm(branch, request.POST)

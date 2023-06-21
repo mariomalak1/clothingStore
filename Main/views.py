@@ -1,14 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from Invoice.models import Cart
 from django.contrib import messages
-from Seller.models import User
+from Seller.models import Site_User
 from AdminPanel.decorators import is_authenticated_admin_decorator, is_authenticated_seller_decorator, is_authenticated_admin_or_manager_decorator
 
 # Create your views here.
 @is_authenticated_seller_decorator
 def home_page(request, cart_code=None):
-    user = get_object_or_404(User, id=request.user.id)
-    context = {"seller": seller}
+    user = get_object_or_404(Site_User, id=request.user.id)
+    context = {"seller": user}
     if cart_code:
         cart = Cart.objects.filter(cart_code=cart_code).first()
         if cart:
@@ -31,7 +31,7 @@ def admin_panel(request):
         "page_title": page_title,
         "user":request.user,
     }
-    return render(request, "Main/admin_panel.html", )
+    return render(request, "Main/admin_panel.html", context)
 
 @is_authenticated_admin_decorator
 def settings(request):
