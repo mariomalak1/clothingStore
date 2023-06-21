@@ -12,6 +12,12 @@ class Branch(models.Model):
         return self.name
 
 class Site_User(Django_User):
+
+    USER_TYPE_CHOICES_Second = (
+        (1, 'Manager'),
+        (2, 'Seller'),
+    )
+
     USER_TYPE_CHOICES = (
         (0, 'Admin'),
         (1, 'Manager'),

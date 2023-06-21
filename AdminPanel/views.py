@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+
+import Seller.models
 from Product.models import ProductDetail, Product
 from .forms import ProductDetailAddForm, AddSellerForm, AddNewBranch, EditProductCodeForm, EditBranchForm
 from django.contrib import messages
@@ -126,8 +128,10 @@ def add_new_user(request):
     if request.method == "POST":
         form_seller = AddSellerForm(request.POST)
         if form_seller.is_valid():
-            # password = form_seller.cleaned_data.get("password")
-            messages.success(request, f"Seller with Username {username} have been created")
+            username = form_seller.cleaned_data.get("username")
+            user_type = form_seller.cleaned_data.get("user_type")
+            form_seller.save()
+            messages.success(request, f"{Seller.models.Site_User.USER_TYPE_CHOICES[int(user_type)][1]} with Username {username} have been created")
             return redirect("admin_panel")
     else:
         form_seller = AddSellerForm()
@@ -201,3 +205,6 @@ def delete_branch(request, branch_name):
 
 def show_statistics(request):
     return render(request, "AdminPanel/show_statistics.html")
+
+def display_all_users():
+    pass

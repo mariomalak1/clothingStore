@@ -35,7 +35,7 @@ def admin_panel(request):
     }
     return render(request, "Main/admin_panel.html", context)
 
-# @is_authenticated_admin_decorator
+@is_authenticated_admin_decorator
 def settings(request):
     if request.method == "POST":
         form = SettingsForm(request.POST)
