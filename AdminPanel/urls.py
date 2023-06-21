@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from . import ajax_request_statistics
 urlpatterns = [
-    # path("add_new_user/", views.add_new_user, name="add_new_user"),
+    path("add_new_user/", views.add_new_user, name="add_new_user"),
     path("add_new_branch/", views.add_new_branch, name="add_new_branch"),
     path("display_all_branches/", views.display_all_branches, name="display_all_branches"),
     path("edit_product_detail/<str:branch_name>", views.edit_product_detail, name="edit_product_detail"),

@@ -26,7 +26,7 @@ class AddSellerForm(forms.ModelForm):
         fields = ["salary", "phone_number", "national_id", "age", "branch"]
 
 class AddAdmin(AddSellerForm):
-    branch = forms.ModelChoiceField(queryset=Branch.objects.all())
+    branch = forms.ModelChoiceField(queryset=Branch.objects.all(), required=False)
 
 
 class AddNewBranch(forms.ModelForm):
