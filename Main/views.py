@@ -59,7 +59,6 @@ def settingsFillFields(request, form):
         if user_.branch:
             form["branch"].initial = user_.branch
 
-
 def settingsSaveChanges(request, settingsForm):
     settings_model = SiteSettings.objects.all().first()
     settings_model.SiteName = settingsForm.cleaned_data.get('SiteName')
@@ -69,5 +68,3 @@ def settingsSaveChanges(request, settingsForm):
     branch = settingsForm.cleaned_data.get("branch")
     user_.branch = branch
     user_.save()
-
-

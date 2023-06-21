@@ -3,9 +3,9 @@
         <div class="container">
             {% if not user.is_anonymous %}
                 {% if cart_code %}
-                    <a class="navbar-brand mr-4" href="{% url 'home_page' cart_code %}">Store Name</a>
+                    <a class="navbar-brand mr-4" href="{% url 'home_page' cart_code %}">{{ site_name }}</a>
                 {% else %}
-                    <a class="navbar-brand mr-4" href="{% url 'home_page' %}">Store Name</a>
+                    <a class="navbar-brand mr-4" href="{% url 'home_page' %}">{{ site_name }}</a>
                 {% endif %}
             {% else %}
                 <p class="navbar-brand mr-4" >Store Name</p>
