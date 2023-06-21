@@ -1,5 +1,17 @@
 {% extends 'main.html' %}
+{% load crispy_forms_filters %}
 {% block body %}
-    <a href="{% url 'admin_panel' %}" class="btn btn-outline-success btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Admin Panel</a>
+    <div class="container">
+        <a href="{% url 'admin_panel' %}" class="btn btn-outline-success btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Admin Panel</a>
+        <div class = "content-section">
+            <form method="post" action="" novalidate>
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class = "form-group">
+                    <button class = "btn btn-primary btn-lg btn-block w-100 mb-2 mt-2" type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 {% endblock %}
