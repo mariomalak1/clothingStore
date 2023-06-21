@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-
 import Seller.models
 from Product.models import ProductDetail, Product
 from .forms import ProductDetailAddForm, AddSellerForm, AddNewBranch, EditProductCodeForm, EditBranchForm
