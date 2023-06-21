@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from Product.models import ProductDetail, Product
-from .forms import ProductDetailAddForm, AddUserForm, AddSellerForm, AddNewBranch, EditProductCodeForm
+from .forms import ProductDetailAddForm, AddUserForm, AddNewBranch, EditProductCodeForm
 from django.contrib import messages
 from Seller.models import Branch
 from Invoice.models import Cart, Order
 from .filters import CartFilter
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView
 from Product.models import Size
-from AdminPanel.models import SiteAdmin
 # Create your views here.
 
 class SizesListView(ListView):

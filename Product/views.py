@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from Seller.models import Branch, Seller as Seller_Model
+from Seller.models import Branch, User
 from .forms import AddProductInBranchForm
 from django.contrib import messages
 from .models import Product as Product_Model
 # Create your views here.
 
+# add decorators for seller and manager
 def add_product_in_branch(request, branch_id):
     branch = get_object_or_404(Branch, id = branch_id)
-    seller = get_object_or_404(Seller_Model, id = request.user.id)
+    seller = get_object_or_404(User, id = request.user.id)
     if seller.branch == branch:
         if request.method == "POST":
             form = AddProductInBranchForm(request.POST)

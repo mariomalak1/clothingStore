@@ -1,7 +1,7 @@
 from django import forms
 from Invoice.models import Order
 from Invoice.models import Buyer
-from .models import Seller, Branch
+from .models import Branch, User
 from Product.models import Product as Product_Model
 # forms here
 

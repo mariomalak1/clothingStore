@@ -4,15 +4,16 @@ from .forms import CreateOrderForm, BuyerForm, GetCartForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Seller, Branch
+from .models import Branch, User
 from Product.models import Product as Product_Model, ProductDetail
 from django.http import JsonResponse
 import datetime
 # Create your views here.
 
+# add decorator manager and seller
 def create_cart(request, cart_code = None):
     if not cart_code or cart_code == "None":
-        seller = get_object_or_404(Seller, user_obj = request.user)
+        seller = get_object_or_404(User, id = request.user.id)
         cart = Cart.objects.create(created_by = seller)
     else:
         cart = Cart.objects.filter(cart_code = cart_code).first()
@@ -49,9 +50,10 @@ def get_sizes(request):
     response_data = {'sizes': list_of_sizes}
     return JsonResponse(response_data)
 
+# add decorator manager and seller
 def create_order(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
-    seller = get_object_or_404(Seller, id = request.user.id)
+    seller = get_object_or_404(User, id = request.user.id)
     branch = get_object_or_404(Branch, id = seller.branch_id)
     if request.method == "POST":
         form = CreateOrderForm(branch, request.POST)
@@ -77,6 +79,8 @@ def create_order(request, cart_code):
         }
     return render(request, "Seller/create_order.html", context)
 
+
+# add decorator manager and seller
 def delete_order(request, order_id, order_number):
     order = get_object_or_404(Order, id = order_id)
 
@@ -95,6 +99,7 @@ def delete_order(request, order_id, order_number):
                }
     return render(request, "delete_confirmation.html", context)
 
+# add decorator manager and seller
 def check_out(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
     if not cart.is_finished:
@@ -125,6 +130,7 @@ def check_out(request, cart_code):
         messages.add_message(request, messages.WARNING, "this complete Cart, You can Edit in This Page")
         return redirect("edit_cart", cart_code)
 
+# add decorator manager and admin
 def delete_cart(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
 
@@ -151,6 +157,7 @@ def delete_cart(request, cart_code):
                }
     return render(request, "delete_confirmation.html", context)
 
+# add decorator manager and seller
 def get_cart_code_from_user(request):
     if request.method == "POST":
         form = GetCartForm(request.POST)
@@ -166,6 +173,7 @@ def get_cart_code_from_user(request):
 
     context = {"form":form}
     return render(request, "Seller/get_cart_code_from_user.html", context)
+
 
 def edit_cart(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)

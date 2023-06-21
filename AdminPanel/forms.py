@@ -2,7 +2,7 @@ from django import forms
 from Product.models import ProductDetail
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User as django_user
-from Seller.models import Seller, Branch
+from Seller.models import Branch, User
 
 class ProductDetailAddForm(forms.ModelForm):
     class Meta:
@@ -13,18 +13,12 @@ class EditProductCodeForm(forms.Form):
     product_code = forms.CharField(required=True)
 
 
-class AddSellerForm(forms.ModelForm):
-    is_admin = forms.BooleanField(required=False)
+class AddUserForm(forms.ModelForm):
     email = forms.EmailField(required=False)
     class Meta:
-        model = Seller
-        fields = ["is_admin", "email", "salary", "phone_number", "national_id", "age", "manager", "branch"]
+        model = User
+        fields = ["username", "password", "email", "salary", "phone_number", "national_id", "age", "branch"]
 
-
-class AddUserForm(UserCreationForm):
-    class Meta:
-        model = django_user
-        fields = ["username", "password1", "password2"]
 
 class AddNewBranch(forms.ModelForm):
     class Meta:

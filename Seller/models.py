@@ -1,9 +1,24 @@
 from django.db import models
 # from django.contrib.auth.models import User as django_user
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 # Create your models here.
 
-class User(AbstractUser):
+class UserManager(BaseUserManager):
+    def create_user(self, email=None, password=None, **extra_fields):
+
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self.create_user(email, password, **extra_fields)
+
+
+class User(AbstractUser, PermissionsMixin):
     ADMIN = 0
     MANAGER = 1
     SELLER = 2
@@ -20,8 +35,25 @@ class User(AbstractUser):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        related_name='%(class)s',
+        related_query_name='%(class)s',
     )
+
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'email'
+
+    def __str__(self):
+        return self.username
+
+    # extra data
+
+    salary = models.PositiveIntegerField(null=True, blank=True)
+    phone_number = models.CharField(max_length=11, null=True, blank=True)
+    age = models.PositiveIntegerField(null=True, blank=True)
+    national_id = models.CharField(max_length=14, null=True, blank=True)
 
 
 # class Seller(models.Model):
