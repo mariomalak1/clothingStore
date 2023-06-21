@@ -13,17 +13,17 @@ class EditProductCodeForm(forms.Form):
     product_code = forms.CharField(required=True)
 
 
-class AddUserForm(forms.ModelForm):
-    email = forms.EmailField(required=False)
-    class Meta:
-        model = django_user
-        fields = ["username", "password", "email"]
+# class AddUserForm(forms.ModelForm):
+#     email = forms.EmailField(required=False)
+#     class Meta:
+#         model = django_user
+#         fields = ["username", "password", "email"]
 
 class AddSellerForm(forms.ModelForm):
     branch = forms.ModelChoiceField(queryset=Branch.objects.all(), required=True)
     class Meta:
         model = Site_User
-        fields = ["salary", "phone_number", "national_id", "age", "branch"]
+        fields = ["username", "password1", "password2", "email", "user_type", "branch", "salary", "phone_number", "national_id", "age"]
 
 class AddAdmin(AddSellerForm):
     branch = forms.ModelChoiceField(queryset=Branch.objects.all(), required=False)

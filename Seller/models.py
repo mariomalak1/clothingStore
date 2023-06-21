@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User as Django_User
+from django.contrib.auth.models import User as Django_User, UserManager, BaseUserManager, AbstractUser
 from django.core.exceptions import ValidationError
 # Create your models here.
 
