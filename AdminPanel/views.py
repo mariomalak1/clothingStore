@@ -7,6 +7,7 @@ from Invoice.models import Cart, Order
 from .filters import CartFilter
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView
 from Product.models import Size
+from AdminPanel.models import SiteAdmin
 # Create your views here.
 
 class SizesListView(ListView):
@@ -131,6 +132,8 @@ def add_new_user(request):
             form_seller.instance.user = form_user.instance
             if form_seller.data.get("is_admin"):
                 form_user.instance.is_staff = True
+                admin_ = SiteAdmin.objects.create(user_obj=form_user.instance)
+                admin_.save()
             form_user.save()
             form_seller.save()
             username = form_user.cleaned_data.get("username")

@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.http import HttpResponseForbidden
-from Seller.models import Seller as Seller_model
+from Seller.models import User
 
 
 def is_authenticated_admin_decorator(func):
@@ -22,8 +22,8 @@ def is_authenticated_manager_decorator(func):
             return HttpResponseForbidden()
         else:
             try:
-                seller = Seller_model.objects.get(id= request.user.id).first()
-                if seller.manager:
+                manager = User.objects.get(id= request.user.id).first()
+                if manager.user_type == 1:
                     return func(request)
                 else:
                     return HttpResponseForbidden()
@@ -42,8 +42,8 @@ def is_authenticated_admin_or_manager_decorator(func):
             if request.user.is_staff:
                 return func(request)
             try:
-                seller = Seller_model.objects.filter(user_obj=request.user.id).first()
-                if seller.manager:
+                manager = User.objects.get(id= request.user.id).first()
+                if manager.user_type == 1:
                     return func(request)
                 else:
                     return HttpResponseForbidden()
@@ -60,9 +60,13 @@ def is_authenticated_seller_decorator(func):
                 messages.add_message(request, messages.WARNING, "Choose Branch First To Be In It")
                 return redirect("settings")
             try:
-                seller = Seller_model.objects.filter(user_obj = request.user.id).first()
+                seller = User.objects.get(id = request.user.id).first()
                 if seller:
-                    return func(request)
+                    if seller.user_type > 0:
+                        return func(request)
+                    else:
+                        messages.add_message(request, messages.WARNING, "Choose Branch First To Be In It")
+                        return redirect("settings")
                 else:
                     return HttpResponseForbidden()
             except:
