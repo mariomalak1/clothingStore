@@ -1,11 +1,12 @@
 from django import forms
-import Seller.models
-from Product.models import ProductDetail
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User as django_user
-from Seller.models import Branch, Site_User
 from django.contrib.auth.hashers import make_password
 
+from Product.models import ProductDetail
+from Seller.models import Branch, Site_User
+
+# Forms Here
 class ProductDetailAddForm(forms.ModelForm):
     class Meta:
         model = ProductDetail
@@ -15,21 +16,23 @@ class EditProductCodeForm(forms.Form):
     product_code = forms.CharField(required=True)
 
 
-# class AddUserForm(forms.ModelForm):
-#     email = forms.EmailField(required=False)
-#     class Meta:
-#         model = django_user
-#         fields = ["username", "password", "email"]
-
-
 class AddSellerForm(forms.ModelForm):
-    branch = forms.ModelChoiceField(queryset=Branch.objects.all(), required=True)
+    branch = forms.ModelChoiceField(queryset=Branch.objects.all(), required=False)
     password1 = forms.CharField(widget=forms.PasswordInput, required=True, label="Password")
     password2 = forms.CharField(widget=forms.PasswordInput, label="Password Confirmation")
-    user_type = forms.ChoiceField(choices=Seller.models.Site_User.USER_TYPE_CHOICES_Second)
+    user_type = forms.ChoiceField(choices=Site_User.USER_TYPE_CHOICES, label="User Permision")
     class Meta:
         model = Site_User
         fields = ["username", "password1", "password2", "user_type","email", "branch", "salary", "phone_number", "national_id", "age"]
+
+    def clean_branch(self):
+        branch = self.cleaned_data.get("branch")
+        if int(self.cleaned_data.get("user_type")) == 0:
+            return branch
+        else:
+            if branch is None:
+                raise forms.ValidationError(f"User Must Have Branch Or Make Him Admin")
+            return branch
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -50,7 +53,7 @@ class AddSellerForm(forms.ModelForm):
 
 class AddAdmin(AddSellerForm):
     branch = forms.ModelChoiceField(queryset=Branch.objects.all(), required=False)
-    user_type = forms.ChoiceField(choices=Seller.models.Site_User.USER_TYPE_CHOICES)
+    user_type = forms.ChoiceField(choices=Site_User.USER_TYPE_CHOICES)
 
 
 

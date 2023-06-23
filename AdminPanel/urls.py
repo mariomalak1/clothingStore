@@ -3,6 +3,8 @@ from . import views
 from . import ajax_request_statistics
 urlpatterns = [
     path("add_new_user/", views.add_new_user, name="add_new_user"),
+    path("display_all_users/", views.display_all_users, name="display_all_users"),
+    path("get_user/<int:user_id>", views.get_user, name="get_user"),
 
     path("add_new_branch/", views.add_new_branch, name="add_new_branch"),
     path("display_all_branches/", views.display_all_branches, name="display_all_branches"),

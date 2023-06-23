@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-import Seller.models
-from Product.models import ProductDetail, Product
-from .forms import ProductDetailAddForm, AddSellerForm, AddNewBranch, EditProductCodeForm, EditBranchForm
 from django.contrib import messages
-from Seller.models import Branch
-from Invoice.models import Cart, Order
-from .filters import CartFilter
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView
-from Product.models import Size
+from django.http import HttpResponse
+##################
+from .forms import ProductDetailAddForm, AddSellerForm, AddNewBranch, EditProductCodeForm, EditBranchForm
+from .filters import CartFilter
+from Product.models import ProductDetail, Product, Size
+from Invoice.models import Cart, Order
+from Seller.models import Branch, Site_User
 # Create your views here.
 
 class SizesListView(ListView):
@@ -130,13 +130,24 @@ def add_new_user(request):
             username = form_seller.cleaned_data.get("username")
             user_type = form_seller.cleaned_data.get("user_type")
             form_seller.save()
-            messages.success(request, f"{Seller.models.Site_User.USER_TYPE_CHOICES[int(user_type)][1]} with Username {username} have been created")
+            messages.success(request, f"{Site_User.USER_TYPE_CHOICES[int(user_type)][1]} with Username {username} have been created")
             return redirect("admin_panel")
     else:
         form_seller = AddSellerForm()
 
     context = {"form_seller":form_seller}
     return render(request, "AdminPanel/register.html", context)
+
+def display_all_users(request):
+    users = Site_User.objects.all()
+    context = {
+        "users":users,
+    }
+    return render(request, "display_all_users", context)
+
+def get_user(request, user_id):
+    str1 = f"<h1> {user_id} <h1>"
+    return HttpResponse(str1)
 
 def add_new_branch(request):
     if request.method == "POST":
