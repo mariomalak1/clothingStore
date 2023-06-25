@@ -135,6 +135,11 @@ def check_out(request, cart_code):
 def delete_cart(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
 
+    if cart.order_set.count() == 0:
+        Cart.delete(cart)
+        messages.add_message(request, messages.SUCCESS, "Cart delete Successfully")
+        return redirect("home_page")
+
     if cart.order_set.all():
         total = cart.total_price()
     else:

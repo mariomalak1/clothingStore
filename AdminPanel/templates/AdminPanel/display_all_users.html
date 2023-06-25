@@ -17,15 +17,19 @@
         </thead>
         <tbody>
 
-<!--         <a href=""></a>-->
-
         {% for user in users %}
             <a href="{% url 'get_user' user.id %}">
                 <div>
                     <tr>
                         <td>{{forloop.counter}}</td>
                         <td>{{user.username}}</td>
-                        <td>{{user.user_type}}</td>
+                        {% if user.user_type == 0 %}
+                            <td>Admin</td>
+                        {% elif user.user_type == 1 %}
+                            <td>Manager</td>
+                        {% elif user.user_type == 2 %}
+                            <td>Seller</td>
+                        {% endif %}
                         {% if user.branch %}
                             <td>{{user.branch}}</td>
                         {% else %}
@@ -62,16 +66,4 @@
         {% endfor %}
         </tbody>
     </table>
-    <!--pagination-->
-<!--    {% for page_num in buyers_pagination.iter_pages(left_edge= 1, right_edge = 1, left_current = 1, right_current= 2) %}-->
-<!--        {% if page_num %}-->
-<!--            {% if page_num == buyers_pagination.page %}-->
-<!--                <a class="btn btn-info mb-4" href="{{ url_for("buyer.buyers_display", page = page_num) }}">{{ page_num }}</a>-->
-<!--            {% else %}-->
-<!--                <a class="btn btn-outline-info" href="{{ url_for("buyer.buyers_display", page = page_num) }}">{{ page_num }}</a>-->
-<!--            {% endif %}-->
-<!--        {% else %}-->
-<!--            ...-->
-<!--        {% endif %}-->
-<!--    {% endfor %}-->
 {% endblock %}

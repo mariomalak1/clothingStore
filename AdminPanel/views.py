@@ -143,7 +143,7 @@ def display_all_users(request):
     context = {
         "users":users,
     }
-    return render(request, "display_all_users", context)
+    return render(request, "AdminPanel/display_all_users.html", context)
 
 def get_user(request, user_id):
     str1 = f"<h1> {user_id} <h1>"
@@ -216,5 +216,16 @@ def delete_branch(request, branch_name):
 def show_statistics(request):
     return render(request, "AdminPanel/show_statistics.html")
 
-def display_all_users():
-    pass
+
+# <!--    pagination-->
+# <!--    {% for page_num in buyers_pagination.iter_pages(left_edge= 1, right_edge = 1, left_current = 1, right_current= 2) %}-->
+# <!--        {% if page_num %}-->
+# <!--            {% if page_num == buyers_pagination.page %}-->
+# <!--                <a class="btn btn-info mb-4" href="{{ url_for("buyer.buyers_display", page = page_num) }}">{{ page_num }}</a>-->
+# <!--            {% else %}-->
+# <!--                <a class="btn btn-outline-info" href="{{ url_for("buyer.buyers_display", page = page_num) }}">{{ page_num }}</a>-->
+# <!--            {% endif %}-->
+# <!--        {% else %}-->
+# <!--            ...-->
+# <!--        {% endif %}-->
+# <!--    {% endfor %}-->
