@@ -1,8 +1,14 @@
 {% extends 'main.html' %}
+{% block head %}
+    <style>
+        tr:hover {
+          cursor: pointer;
+        }
+  </style>
+{% endblock %}
 {% block body %}
-    <table class="table table-hover table-dark">
+    <table class="table table-hover table-dark" id="myTable">
         <thead>
-        <div>
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">UserName</th>
@@ -13,57 +19,69 @@
                 <th scope="col">Age</th>
                 <th scope="col">National ID</th>
             </tr>
-        </div>
         </thead>
         <tbody>
 
         {% for user in users %}
-            <a href="{% url 'get_user' user.id %}">
-                <div>
-                    <tr>
-                        <td>{{forloop.counter}}</td>
-                        <td>{{user.username}}</td>
-                        {% if user.user_type == 0 %}
-                            <td>Admin</td>
-                        {% elif user.user_type == 1 %}
-                            <td>Manager</td>
-                        {% elif user.user_type == 2 %}
-                            <td>Seller</td>
-                        {% endif %}
-                        {% if user.branch %}
-                            <td>{{user.branch}}</td>
-                        {% else %}
-                            <td>All</td>
-                        {% endif %}
+            <tr data-href="{% url 'get_user' user.id %}">
+                <td>{{forloop.counter}}</td>
 
-                        {% if user.salary %}
-                            <td>{{user.salary}}</td>
-                        {% else %}
-                            <td>No Salary</td>
-                        {% endif %}
+                <td>{{user.username}}</td>
 
-                        {% if user.phone_number %}
-                            <td>{{user.phone_number}}</td>
-                        {% else %}
-                            <td>No Phone Number</td>
-                        {% endif %}
+                {% if user.user_type == 0 %}
+                    <td>Admin</td>
+                {% elif user.user_type == 1 %}
+                    <td>Manager</td>
+                {% elif user.user_type == 2 %}
+                    <td>Seller</td>
+                {% endif %}
 
-                        {% if user.age %}
-                            <td>{{user.age}}</td>
-                        {% else %}
-                            <td>Not Found</td>
-                        {% endif %}
+                {% if user.branch %}
+                    <td>{{user.branch}}</td>
+                {% else %}
+                    <td>All</td>
+                {% endif %}
 
-                        {% if user.national_id %}
-                            <td>{{user.national_id}}</td>
-                        {% else %}
-                            <td>Not Found</td>
-                        {% endif %}
+                {% if user.salary %}
+                    <td>{{user.salary}}</td>
+                {% else %}
+                    <td>No Salary</td>
+                {% endif %}
 
-                    </tr>
-                </div>
-            </a>
+                {% if user.phone_number %}
+                    <td>{{user.phone_number}}</td>
+                {% else %}
+                    <td>No Phone Number</td>
+                {% endif %}
+
+                {% if user.age %}
+                    <td>{{user.age}}</td>
+                {% else %}
+                    <td>Not Found</td>
+                {% endif %}
+
+                {% if user.national_id %}
+                    <td>{{user.national_id}}</td>
+                {% else %}
+                    <td>Not Found</td>
+                {% endif %}
+            </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let table = document.getElementById('myTable');
+            let rows = table.getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].addEventListener('click', function(e) {
+                    let href = this.getAttribute('data-href');
+                    if (href) {
+                        window.location.href = href;
+                    }
+                });
+            }
+        });
+  </script>
 {% endblock %}
