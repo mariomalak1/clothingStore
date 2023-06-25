@@ -131,31 +131,31 @@ def check_out(request, cart_code):
         messages.add_message(request, messages.WARNING, "this complete Cart, You can Edit in This Page")
         return redirect("edit_cart", cart_code)
 
-# add decorator manager and admin
-def delete_cart(request, cart_code):
+## function to delete the cart and return specific endpoint to redirect user to it
+def delete_cart_function(request, cart, place):
+    for order_ in cart.order_set.all():
+        order_.product.quantity += order_.quantity
+        order_.product.save()
+    Cart.delete(cart)
+    messages.add_message(request, messages.SUCCESS, "Cart delete Successfully")
+    if place:
+        if place == "AllCarts":
+            return ("display_all_carts")
+        ## if he's seller and make refund, or admin, but he come from refund from specific branch, will redirect him to home page
+    return ("home_page")
+
+# must user be authenticated
+# place is parameter that I will redirect him to place he come from
+def delete_cart(request, cart_code, place = None):
     cart = get_object_or_404(Cart, cart_code = cart_code)
-
-    if cart.order_set.count() == 0:
-        Cart.delete(cart)
-        messages.add_message(request, messages.SUCCESS, "Cart delete Successfully")
-        return redirect("home_page")
-
-    if cart.order_set.all():
-        total = cart.total_price()
-    else:
-        if request.user.is_staff:
-            total = 0
+    total = 0
+    if request.method == "GET":
+        if cart.order_set.count() == 0:
+            return redirect( delete_cart_function(request, cart, place) )
         else:
-            messages.add_message(request, messages.WARNING, "Cart Has No Orders Yet")
-            return redirect("all_orders_created", cart.cart_code)
-
+            total = cart.total_price()
     if request.method == "POST":
-        Cart.delete(cart)
-        messages.add_message(request, messages.SUCCESS, "Cart delete Successfully")
-        if request.user.is_staff:
-            return redirect("admin_panel")
-        return redirect("home_page")
-
+        return redirect( delete_cart_function(request, cart, place) )
     context = {"object_name": f"Cart",
                "afterObjName":f'With Total Cost "{total}"',
                "anotherText": f"With Number Orders : {cart.order_set.count()}",
@@ -167,7 +167,7 @@ def delete_cart(request, cart_code):
 def get_cart_code_from_user(request):
     if request.method == "POST":
         form = GetCartForm(request.POST)
-        cart_code = form.data.get("cart_code")
+        cart_code = form.data.get("cart_code").strip()
         cart = Cart.objects.filter(cart_code=cart_code).first()
         if cart:
             return redirect("edit_cart", cart_code = cart.cart_code)

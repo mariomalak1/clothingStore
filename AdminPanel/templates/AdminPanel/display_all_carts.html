@@ -70,7 +70,7 @@
                                                     {% endif %}
                                                     <h6 class="card-text">Discount : {{ cart.discount }}</h6>
                                                     <div class="d-flex mt-3" style="justify-content: space-between; align-items: center;">
-                                                        <a href="{% url "delete_cart" cart.cart_code%}" class="btn btn-danger">Delete</a>
+                                                        <a href="{% url 'delete_cart' cart.cart_code 'AllCarts'%}" class="btn btn-danger">Delete</a>
                                                         <div onclick="f({{ cart.cart_code }})" style="display: flex; justify-content: center; align-items: center
                                                         ;height: 30px; width: 30px; border-radius: 50%; border: 1px solid #383d3f; cursor: pointer">
                                                             <i class="fa-solid fa-arrow-right" id="button_{{ cart.cart_code }}"></i>

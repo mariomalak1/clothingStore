@@ -36,7 +36,7 @@
             <a href="{% url "check_out" cart.cart_code%}" class="btn btn-success btn-lg btn-block w-100 p-2 mb-3" style="width: 100%;">Check Out</a>
         {% endif %}
 
-        <a href="{% url "delete_cart" cart.cart_code%}" class="btn btn-danger btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Cancel All Orders</a>
+        <a href="{% url 'delete_cart' cart.cart_code%}" class="btn btn-danger btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Cancel All Orders</a>
 
     {% endif %}
 
