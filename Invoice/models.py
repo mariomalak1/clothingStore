@@ -79,11 +79,16 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def clean(self):
-        if self.quantity > self.product.quantity:
-            raise ValidationError("Not Found All This Quantity From This Product In The Branch")
+        try:
+            if self.product:
+                pass
+        except:
+            raise ValidationError("Enter Product")
 
         if self.quantity <= 0:
             raise ValidationError("You Must Enter Valid Quantity Number")
+        if self.quantity > self.product.quantity:
+            raise ValidationError("Not Found All This Quantity From This Product In The Branch")
 
     def total_cost_for_order(self):
         if self.product.price_for_branch > 0:

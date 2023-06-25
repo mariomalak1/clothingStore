@@ -36,11 +36,12 @@ def all_orders_created(request, cart_code):
     }
     return render(request, "Seller/all_orders_created.html", context)
 
-# create this function to get the of specific product that user choose it, done by chat GPT
+# create this function to get the sizes of specific product that user choose it
 def get_sizes(request):
     product_id = request.GET.get('product_id', None)  # Extract product_id from request.GET
     if product_id is None:
         return JsonResponse({'error': 'Product ID not found in request.'})  # Handle error
+    print("marioooo")
     product = get_object_or_404(Product_Model, id=product_id)
     sizes = product.product_detail.sizes.all()
     list_of_sizes = []
