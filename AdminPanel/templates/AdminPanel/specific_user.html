@@ -1,6 +1,16 @@
 {% extends "main.html" %}
+{% load crispy_forms_filters %}
 {% block body %}
     <a href="{% url 'admin_panel' %}" class="btn btn-outline-success btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Admin Panel</a>
     <a href="{% url 'display_all_users' %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">All Users Details</a>
-    {{ user_id }}
+    <div class = "content-section">
+        <form method="post" action="" novalidate>
+            {% csrf_token %}
+            <legend class="border-bottom mb-4">Edit User</legend>
+            <fieldset class="form-group">
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-block-lg btn-primary">Save</button>
+            </fieldset>
+        </form>
+    </div>
 {% endblock %}

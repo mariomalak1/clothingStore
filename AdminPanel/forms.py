@@ -67,3 +67,8 @@ class EditBranchForm(forms.ModelForm):
     class Meta:
         model = Branch
         fields = ["branch", "phone_branch", "address"]
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = Site_User
+        fields = ["username", "user_type", "branch", "salary", "phone_number", "age", "national_id"]

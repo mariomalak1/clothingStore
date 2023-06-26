@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView
+from django.http import HttpResponseForbidden
 ##################
-from .forms import ProductDetailAddForm, AddSellerForm, AddNewBranch, EditProductCodeForm, EditBranchForm
+from .forms import ProductDetailAddForm, AddSellerForm, AddNewBranch, EditProductCodeForm, EditBranchForm, EditUserForm
 from .filters import CartFilter
 from Product.models import ProductDetail, Product, Size
 from Invoice.models import Cart, Order
@@ -138,17 +139,33 @@ def add_new_user(request):
     return render(request, "AdminPanel/register.html", context)
 
 def display_all_users(request):
-    users = Site_User.objects.all()
+    users = Site_User.objects.all().order_by("user_type", "-salary")
+    current_user = get_object_or_404(Site_User, id=request.user.id)
     context = {
         "users":users,
+        "current_user":current_user,
     }
     return render(request, "AdminPanel/display_all_users.html", context)
 
 def get_user(request, user_id):
-    context = {
-        "user_id": user_id,
-    }
-    return render(request, "AdminPanel/specific_user.html", context)
+    user_ = get_object_or_404(Site_User, id = user_id)
+    user_request = get_object_or_404(Site_User, id = request.user.id)
+    if user_request.is_superuser or (not user_.is_staff and user_request.user_type == 0):
+        if request.method == "POST":
+            form = EditUserForm(request.POST, instance=user_)
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.SUCCESS, "User Saved Successfully")
+                return redirect("display_all_users")
+        else:
+            form = EditUserForm(instance=user_)
+        context = {
+            "user_id": user_id,
+            "form": form,
+        }
+        return render(request, "AdminPanel/specific_user.html", context)
+    else:
+        return HttpResponseForbidden()
 
 def add_new_branch(request):
     if request.method == "POST":

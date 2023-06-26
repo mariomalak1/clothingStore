@@ -25,7 +25,12 @@
         <tbody>
 
         {% for user in users %}
-            <tr data-href="{% url 'get_user' user.id %}">
+            {% if current_user.username == user.username %}
+                <tr data-href="{% url 'get_user' user.id %}" style="color: red;">
+            {% else %}
+                <tr data-href="{% url 'get_user' user.id %}">
+            {% endif %}
+
                 <td>{{forloop.counter}}</td>
 
                 <td>{{user.username}}</td>
