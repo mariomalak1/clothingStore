@@ -12,7 +12,7 @@ class CreateOrderForm(forms.ModelForm):
 
     def __init__(self, seller_branch, *args, **kwargs):
         super(CreateOrderForm, self).__init__(*args, **kwargs)
-        self.fields["product"].queryset = Product_Model.objects.filter(branch=seller_branch)
+        self.fields["product"].queryset = Product_Model.objects.filter(branch=seller_branch, quantity__gt=0)
 
 class CheckOutForm(forms.Form):
     is_finished = forms.BooleanField(required=True, label="Is Finished")
