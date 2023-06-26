@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView
-from django.http import HttpResponse
 ##################
 from .forms import ProductDetailAddForm, AddSellerForm, AddNewBranch, EditProductCodeForm, EditBranchForm
 from .filters import CartFilter
@@ -146,8 +145,10 @@ def display_all_users(request):
     return render(request, "AdminPanel/display_all_users.html", context)
 
 def get_user(request, user_id):
-    str1 = f"<h1> {user_id} <h1>"
-    return HttpResponse(str1)
+    context = {
+        "user_id": user_id,
+    }
+    return render(request, "AdminPanel/specific_user.html", context)
 
 def add_new_branch(request):
     if request.method == "POST":

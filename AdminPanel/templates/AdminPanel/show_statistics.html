@@ -39,7 +39,6 @@
                                 </div>
                             {% endfor %}
                         {% endif %}
-
                         {# page title #}
                         {% if page_title %}
                             <div class = "page-header">
@@ -47,18 +46,19 @@
                             </div>
                             <br>
                         {% endif %}
-
                         <div class="page-body">
                             <div class="row">
+                                <a href="{% url 'admin_panel' %}" class="btn btn-outline-success btn-lg btn-block w-100 p-2" style="margin-left: 0; margin-top: 4em;">Admin Panel</a>
                                 {# statistics view #}
                                 <div class="col-12">
+
                                     <div id="myPlot"></div>
                                 </div>
                             </div>
                             <div class="row">
                                 {# choose way to make statistics #}
-                                <div class="col-9">
-                                    <select class="form-select" aria-label="Default select example" onchange="make_choose_specific_function()" id="select_statistics_by">
+                                <div class="col-12">
+                                    <select class="form-select w-100" aria-label="Default select example" onchange="make_choose_specific_function()" id="select_statistics_by">
                                         <option value="0" selected>--------</option>
                                         <option value="1">From Year To Another</option>
                                         <option value="2">With Specific Year</option>

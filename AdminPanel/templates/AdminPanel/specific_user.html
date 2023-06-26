@@ -1,0 +1,6 @@
+{% extends "main.html" %}
+{% block body %}
+    <a href="{% url 'admin_panel' %}" class="btn btn-outline-success btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Admin Panel</a>
+    <a href="{% url 'display_all_users' %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">All Users Details</a>
+    {{ user_id }}
+{% endblock %}
