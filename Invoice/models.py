@@ -17,12 +17,11 @@ class Buyer(models.Model):
         return self.name
 
 class Cart(models.Model):
-    choices = (("mario", "mario"), ("Malak", "malak"), ("Alabd", "Alabd"), ("Sefen", "Sefen"), ("Zalamoka", "Zalamoka"))
     discount = models.PositiveIntegerField(default=0)
     is_percent_discount = models.BooleanField(default=False)
     cart_code = models.CharField(max_length=200, null=True, blank=True)
     is_finished = models.BooleanField(default=False)
-    buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True, choices=choices)
+    buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     edit_at = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(Site_User, on_delete=models.CASCADE)
