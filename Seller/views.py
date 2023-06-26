@@ -41,7 +41,6 @@ def get_sizes(request):
     product_id = request.GET.get('product_id', None)  # Extract product_id from request.GET
     if product_id is None:
         return JsonResponse({'error': 'Product ID not found in request.'})  # Handle error
-    print("marioooo")
     product = get_object_or_404(Product_Model, id=product_id)
     sizes = product.product_detail.sizes.all()
     list_of_sizes = []
@@ -156,10 +155,12 @@ def delete_cart(request, cart_code, place = None):
             total = cart.total_price()
     if request.method == "POST":
         return redirect( delete_cart_function(request, cart, place) )
+    print(place)
     context = {"object_name": f"Cart",
                "afterObjName":f'With Total Cost "{total}"',
                "anotherText": f"With Number Orders : {cart.order_set.count()}",
-               "cart_code":cart_code
+               "cart_code":cart_code,
+               "cancel_redirect": place
                }
     return render(request, "delete_confirmation.html", context)
 

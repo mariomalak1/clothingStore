@@ -19,6 +19,8 @@ class CartFilter(django_filters.FilterSet):
     edited = django_filters.BooleanFilter(field_name='edit_at', label="Edited ? ", method="data_by_edited__or_not")
     cart_code = django_filters.CharFilter(field_name="cart_code", method="data_by_cart_code_like")
 
+    ## number of orders
+
     def data_by_edited__or_not(self, queryset, name, value):
         lookup = '__'.join([name, 'isnull'])
         return queryset.filter(**{lookup: not value})

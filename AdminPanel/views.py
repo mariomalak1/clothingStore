@@ -111,7 +111,6 @@ def edit_product_code(request, product_detail_id):
 
 def display_all_carts(request):
     carts = Cart.objects.all()
-    carts.filter()
     total_money_entered = 0
     cart_filter = CartFilter(data= request.GET, queryset=carts)
     for cart in cart_filter.qs:
@@ -120,6 +119,7 @@ def display_all_carts(request):
         "carts":cart_filter.qs,
         "total_money_entered": total_money_entered,
         "cart_filter":cart_filter,
+        "number_of_carts":cart_filter.qs.count(),
     }
     return render(request, "AdminPanel/display_all_carts.html", context)
 
@@ -215,17 +215,3 @@ def delete_branch(request, branch_name):
 
 def show_statistics(request):
     return render(request, "AdminPanel/show_statistics.html")
-
-
-# <!--    pagination-->
-# <!--    {% for page_num in buyers_pagination.iter_pages(left_edge= 1, right_edge = 1, left_current = 1, right_current= 2) %}-->
-# <!--        {% if page_num %}-->
-# <!--            {% if page_num == buyers_pagination.page %}-->
-# <!--                <a class="btn btn-info mb-4" href="{{ url_for("buyer.buyers_display", page = page_num) }}">{{ page_num }}</a>-->
-# <!--            {% else %}-->
-# <!--                <a class="btn btn-outline-info" href="{{ url_for("buyer.buyers_display", page = page_num) }}">{{ page_num }}</a>-->
-# <!--            {% endif %}-->
-# <!--        {% else %}-->
-# <!--            ...-->
-# <!--        {% endif %}-->
-# <!--    {% endfor %}-->

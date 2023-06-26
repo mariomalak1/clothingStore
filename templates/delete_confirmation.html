@@ -13,10 +13,15 @@
                             {{ afterObjName }}
                         {% endif %} ?
                     </p>
-                {% if anotherText %}
-                    <p>{{ anotherText }}</p>
-                {% endif %}
-                    <a class="btn btn-secondary btn-block" href="{% url "all_orders_created" cart_code%}">Cancel</a>
+                    {% if anotherText %}
+                        <p>{{ anotherText }}</p>
+                    {% endif %}
+
+                    {% if cancel_redirect == 'AllCarts' %}
+                        <a class="btn btn-secondary btn-block" href="{% url 'display_all_carts' %}">Cancel</a>
+                    {% else %}
+                        <a class="btn btn-secondary btn-block" href="{% url 'all_orders_created' cart_code %}">Cancel</a>
+                    {% endif %}
                     <button class="btn btn-danger btn-block" type="submit">Delete</button>
                 </form>
             </div>
