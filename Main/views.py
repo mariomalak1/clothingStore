@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from Invoice.models import Cart
 from django.contrib import messages
-from Seller.models import Site_User, Branch
+from django.http import HttpResponseForbidden
+
 from AdminPanel.decorators import is_authenticated_admin_decorator, is_authenticated_seller_decorator, is_authenticated_admin_or_manager_decorator
+from Invoice.models import Cart
+from Seller.models import Site_User, Branch
 from .forms import SettingsForm
 from .models import SiteSettings
 
@@ -24,11 +26,13 @@ def home_page(request, cart_code=None):
 
 @is_authenticated_admin_or_manager_decorator
 def admin_panel(request):
-    if request.user.is_staff:
+    user_ = get_object_or_404(Site_User, id = request.user.id)
+    if user_.is_site_admin():
         page_title = "Admin Panel"
-    else:
+    elif user_.is_branch_manager():
         page_title = "Manager Panel"
-
+    else:
+        return HttpResponseForbidden()
     context = {
         "page_title": page_title,
         "user":request.user,

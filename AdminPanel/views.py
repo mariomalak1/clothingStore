@@ -141,6 +141,7 @@ def display_all_carts(request):
     }
     return render(request, "AdminPanel/display_all_carts.html", context)
 
+@is_authenticated_admin_decorator
 def add_new_user(request):
     if request.method == "POST":
         form_seller = AddSellerForm(request.POST)
@@ -156,6 +157,7 @@ def add_new_user(request):
     context = {"form_seller":form_seller}
     return render(request, "AdminPanel/register.html", context)
 
+@is_authenticated_admin_decorator
 def display_all_users(request):
     users = Site_User.objects.all().order_by("user_type", "-salary")
     current_user = get_object_or_404(Site_User, id=request.user.id)
@@ -165,6 +167,7 @@ def display_all_users(request):
     }
     return render(request, "AdminPanel/display_all_users.html", context)
 
+@is_authenticated_admin_decorator
 def get_user(request, user_id):
     user_ = get_object_or_404(Site_User, id = user_id)
     user_request = get_object_or_404(Site_User, id = request.user.id)
@@ -185,6 +188,7 @@ def get_user(request, user_id):
     else:
         return HttpResponseForbidden()
 
+@is_authenticated_admin_decorator
 def delete_user(request, user_id):
     user_to_deleted = get_object_or_404(Site_User, id = user_id)
     user_request = get_object_or_404(Site_User, id = request.user.id)
@@ -219,6 +223,7 @@ def delete_user(request, user_id):
         messages.add_message(request, messages.WARNING, "You can't Edit This User")
         return redirect("get_user", user_id)
 
+@is_authenticated_admin_decorator
 def add_new_branch(request):
     if request.method == "POST":
         form = AddNewBranch(request.POST)
@@ -230,11 +235,13 @@ def add_new_branch(request):
         form = AddNewBranch()
     return render(request, "AdminPanel/add_new_branch.html", {"form":form, "process_name": "Open", "button_name": "Create"})
 
+@is_authenticated_admin_decorator
 def display_all_branches(request):
     branches = Branch.objects.all()
     context = {"branches":branches}
     return render(request, "AdminPanel/display_all_branches.html", context)
 
+@is_authenticated_admin_decorator
 def save_branch_data(form, branch, request):
     branch_name = branch.name
     branch.name = form.cleaned_data.get("branch")
@@ -244,6 +251,7 @@ def save_branch_data(form, branch, request):
     messages.add_message(request, messages.SUCCESS,
                          f"Branch With Name {branch_name} Edited Successfully To {branch.name}")
 
+@is_authenticated_admin_decorator
 def edit_branch(request, branch_name):
     branch = get_object_or_404(Branch, name=branch_name)
     if request.method == "POST":
@@ -268,6 +276,7 @@ def edit_branch(request, branch_name):
     context = {"process_name":"Edit", "form":form, "button_name":"Save"}
     return render(request, "AdminPanel/add_new_branch.html", context)
 
+@is_authenticated_admin_decorator
 def delete_branch(request, branch_name):
     branch = get_object_or_404(Branch, name=branch_name)
     if request.method == "POST":
@@ -283,5 +292,6 @@ def delete_branch(request, branch_name):
         context = {"branch":branch, "total_number_of_employees":total_number_of_employees, "total_number_of_products":total_number_of_products}
         return render(request, "AdminPanel/branch_delete_confirmation.html", context)
 
+@is_authenticated_admin_or_manager_decorator
 def show_statistics(request):
     return render(request, "AdminPanel/show_statistics.html")

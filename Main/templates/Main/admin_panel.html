@@ -1,7 +1,6 @@
 {% extends "main.html" %}
 {% block body %}
     <div class="container">
-
         <br>
         <a href="{% url 'display_all_carts' %}">
             <div class="btn btn-primary btn-lg btn-block link-home-page">All Sales</div>
@@ -12,33 +11,30 @@
             <div class="btn btn-primary btn-lg btn-block link-home-page">Show Statistics</div>
         </a>
 
-        <br>
-        <a href="{% url 'display_all_products_details' %}">
-            <div class="btn btn-primary btn-lg btn-block link-home-page">All Products</div>
-        </a>
+        {% if user_site.is_site_admin %}
+            <br>
+            <a href="{% url 'display_all_products_details' %}">
+                <div class="btn btn-primary btn-lg btn-block link-home-page">All Products</div>
+            </a>
 
-        <br>
-        <a href="{% url 'display_all_users' %}">
-            <div class="btn btn-primary btn-lg btn-block link-home-page">Display All Users</div>
-        </a>
+            <br>
+            <a href="{% url 'display_all_users' %}">
+                <div class="btn btn-primary btn-lg btn-block link-home-page">Display All Users</div>
+            </a>
 
-        <br>
-        <a href="{% url 'display_all_branches' %}">
-            <div class="btn btn-primary btn-lg btn-block link-home-page">All Branches</div>
-        </a>
+            <br>
+            <a href="{% url 'display_all_branches' %}">
+                <div class="btn btn-primary btn-lg btn-block link-home-page">All Branches</div>
+            </a>
 
-        <br>
-        <a href="{% url 'display_all_sizes' %}">
-            <div class="btn btn-primary btn-lg btn-block link-home-page">All Sizes</div>
-        </a>
-
-        {% if user.is_staff %}
-
+            <br>
+            <a href="{% url 'display_all_sizes' %}">
+                <div class="btn btn-primary btn-lg btn-block link-home-page">All Sizes</div>
+            </a>
             <br>
             <a href="{% url 'settings' %}">
                 <div class="btn btn-primary btn-lg btn-block link-home-page">Settings</div>
             </a>
-
         {% endif %}
     </div>
 {% endblock %}
