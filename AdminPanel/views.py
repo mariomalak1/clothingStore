@@ -2,36 +2,44 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView
 from django.http import HttpResponseForbidden, HttpResponseBadRequest
+from django.contrib.auth.mixins import PermissionRequiredMixin
 ##################
 from .forms import ProductDetailAddForm, AddSellerForm, AddNewBranch, EditProductCodeForm, EditBranchForm, EditUserForm
-from .filters import CartFilter
+from .filters import CartFilter, CartFilterForManager
 from Product.models import ProductDetail, Product, Size
 from Invoice.models import Cart, Order
 from Seller.models import Branch, Site_User
+from .decorators import *
 # Create your views here.
 
-class SizesListView(ListView):
+
+class SizesListView(PermissionRequiredMixin, ListView):
     model = Size
     template_name = "AdminPanel/display_all_sizes.html"
+    permission_required = "is_authenticated_admin_decorator"
 
-class SizeCreateView(CreateView):
+class SizeCreateView(PermissionRequiredMixin, CreateView):
     model = Size
     fields = "__all__"
     template_name = "AdminPanel/add_new_size.html"
     extra_context = {"process_name": "Create", "button_name":"Create"}
+    permission_required = "is_authenticated_admin_decorator"
 
-class SizeUpdateView(UpdateView):
+class SizeUpdateView(PermissionRequiredMixin, UpdateView):
     model = Size
     fields = "__all__"
     template_name = "AdminPanel/add_new_size.html"
     extra_context = {"process_name": "Edit", "button_name":"Save"}
+    permission_required = "is_authenticated_admin_decorator"
 
-class SizeDeleteView(DeleteView):
+class SizeDeleteView(PermissionRequiredMixin, DeleteView):
     model = Size
     template_name = "AdminPanel/size_delete_confirmation.html"
     context_object_name = "size"
     success_url = "/store/admin_panel/display_all_sizes"
+    permission_required = "is_authenticated_admin_decorator"
 
+@is_authenticated_admin_decorator
 def add_product_detail(request):
     if request.method == "POST":
         form = ProductDetailAddForm(request.POST)
@@ -43,11 +51,13 @@ def add_product_detail(request):
         form = ProductDetailAddForm()
     return render(request, "AdminPanel/add_product_detail.html", {"form": form, "process_name":"Add"})
 
+@is_authenticated_admin_decorator
 def display_all_products_details(request):
     products = ProductDetail.objects.all()
     context = {"products":products}
     return render(request, "AdminPanel/display_all_products_details.html", context)
 
+@is_authenticated_admin_decorator
 def delete_product_detail(request, product_code):
     product_details = get_object_or_404(ProductDetail, product_code=product_code)
     if request.method == "POST":
@@ -64,6 +74,7 @@ def delete_product_detail(request, product_code):
         context = {"product":product_details, "total_number_of_products_in_branches":total_number_of_products_in_branches}
         return render(request, "AdminPanel/product_detail_delete_confirmation.html", context)
 
+@is_authenticated_admin_decorator
 def edit_product_detail(request, product_code):
     product_details = get_object_or_404(ProductDetail, product_code=product_code)
     if request.method == "POST":
@@ -83,6 +94,7 @@ def edit_product_detail(request, product_code):
     context = {"process_name":"Edit", "form":form, "product_details":product_details}
     return render(request, "AdminPanel/add_product_detail.html", context)
 
+@is_authenticated_admin_decorator
 def edit_product_code(request, product_detail_id):
     product_detail = get_object_or_404(ProductDetail, id = product_detail_id)
     if request.method == "POST":
@@ -109,10 +121,16 @@ def edit_product_code(request, product_detail_id):
 
     return render(request, "AdminPanel/edit_product_code.html", context)
 
+@is_authenticated_admin_or_manager_decorator
 def display_all_carts(request):
-    carts = Cart.objects.all().order_by('-created_at')
+    user_ = get_object_or_404(Site_User, id = request.user.id)
     total_money_entered = 0
-    cart_filter = CartFilter(data= request.GET, queryset=carts)
+    if user_.is_site_admin():
+        carts = Cart.objects.all().order_by('-created_at')
+        cart_filter = CartFilter(data= request.GET, queryset=carts)
+    else:
+        carts = Cart.objects.filter(branch=user_.branch).order_by('-created_at')
+        cart_filter = CartFilterForManager(data= request.GET, queryset=carts)
     for cart in cart_filter.qs:
         total_money_entered += cart.total_price()
     context = {

@@ -39,3 +39,6 @@ class CartFilter(django_filters.FilterSet):
     class Meta:
         model = Cart
         fields = ["cart_code", "discount", "created_by", "edited", "from_date", "to_date"]
+
+class CartFilterForManager(CartFilter):
+    branch_name = None

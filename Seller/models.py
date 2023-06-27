@@ -50,3 +50,8 @@ class Site_User(Django_User):
     def __str__(self):
         return self.username
 
+    def is_site_admin(self):
+        return self.user_type == 0
+
+    def is_branch_manager(self):
+        return self.user_type == 1
