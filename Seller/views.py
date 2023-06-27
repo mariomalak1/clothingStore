@@ -15,6 +15,7 @@ def create_cart(request, cart_code = None):
     if not cart_code or cart_code == "None":
         seller = get_object_or_404(Site_User, id = request.user.id)
         cart = Cart.objects.create(created_by = seller)
+        cart.branch = seller.branch
     else:
         cart = Cart.objects.filter(cart_code = cart_code).first()
         if cart:

@@ -187,14 +187,10 @@ def delete_user(request, user_id):
 
     if delete_condition:
         if request.method == "POST":
-            carts = user_to_deleted.cart_set.all()
-            for cart in carts:
-                print(cart.cart_code)
+            for cart in user_to_deleted.cart_set.all():
                 cart.created_by = user_request
                 cart.save()
-                print(cart.cart_code)
             user_to_deleted.delete()
-            print(carts.first().created_by)
             messages.add_message(request, messages.SUCCESS, "User Deleted Successfully")
             return redirect("display_all_users")
         context = {

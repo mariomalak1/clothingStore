@@ -14,7 +14,7 @@ class CartFilter(django_filters.FilterSet):
             lis.append(tup)
         return tuple(lis)
 
-    branch_name = django_filters.ChoiceFilter(choices = all_branches, field_name= "created_by", label="Branch Name", method="data_by_branch_name")
+    branch_name = django_filters.ChoiceFilter(choices = all_branches, field_name= "branch", label="Branch Name", method="data_by_branch_name")
     from_date = django_filters.DateFilter(widget=forms.DateInput(), field_name= "created_at", label="From Date", lookup_expr= "gt")
     to_date = django_filters.DateFilter(widget=forms.DateInput(), field_name= "created_at", label="To Date", lookup_expr= "lt")
     edited = django_filters.BooleanFilter(field_name='edit_at', label="Edited ? ", method="data_by_edited__or_not")
@@ -33,7 +33,7 @@ class CartFilter(django_filters.FilterSet):
         return queryset.filter(cart_code__icontains=value)
 
     def data_by_branch_name(self, queryset, name, value):
-        return queryset.filter(created_by__branch__name=value)
+        return queryset.filter(branch__name=value)
 
 
     class Meta:

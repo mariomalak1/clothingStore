@@ -60,12 +60,12 @@
                                     {% for cart in carts %}
                                         <div class="cart_with_order">
                                             <div class="card mb-2" style="background-color:#1c1e1f; z-index: 20;">
-                                                <h5 class="card-header">{{ forloop.counter }}- Cart : {{ cart.cart_code }} <span class="mr-5">{{ cart.created_by.branch }}</span> </h5>
+                                                <h5 class="card-header">{{ forloop.counter }}- Cart : {{ cart.cart_code }} <span class="mr-5">{{ cart.branch }}</span> </h5>
                                                 <div class="card-body">
                                                     <h5 class="card-title ml-0">Total Cost : {{ cart.total_price }}</h5>
                                                     <h5 class="card-title ml-0">Total Orders : {{ cart.order_set.count }}</h5>
                                                     <h6 class="card-text">Created At : {{ cart.created_at }}</h6>
-                                                    <h6 class="card-text">Created At : {{ cart.created_by }}</h6>
+                                                    <h6 class="card-text">Created By : {{ cart.created_by }}</h6>
                                                     {% if cart.edit_at %}
                                                         <h6 class="card-text">Edit At : {{ cart.edit_at }}</h6>
                                                     {% endif %}
