@@ -231,7 +231,6 @@ def change_password(request):
         if form.is_valid():
             old_password = form.cleaned_data.get("old_password")
             new_password = form.cleaned_data.get("new_password1")
-
             if user_.check_password(old_password):
                 user_.set_password(new_password)
                 user_.save()

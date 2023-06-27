@@ -59,11 +59,16 @@ class ChangePasswordForm(forms.Form):
 
     def clean_old_password(self):
         old_password = self.cleaned_data.get("old_password")
-        new_password = self.cleaned_data.get("new_password2")
-
-        print(old_password)
-        print(new_password)
+        new_password = self.cleaned_data.get("new_password1")
 
         if new_password == old_password:
             raise forms.ValidationError("New Password Is Similar to Old Password")
         return old_password
+
+    def clean(self):
+        old_password = self.cleaned_data.get("old_password")
+        new_password = self.cleaned_data.get("new_password1")
+
+        if new_password == old_password:
+            raise forms.ValidationError("New Password Is Similar to Old Password")
+        super(ChangePasswordForm, self).clean()
