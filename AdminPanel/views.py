@@ -179,11 +179,12 @@ def delete_user(request, user_id):
         delete_condition = True
     ## if user try to delete him self
     elif user_request == user_to_deleted:
-        return HttpResponseBadRequest()
+        messages.add_message(request, messages.WARNING, "You can't Edit This User")
+        return redirect("get_user", user_id)
     else:
-        return HttpResponseForbidden()
+        messages.add_message(request, messages.WARNING, "You can't Edit This User")
+        return redirect("get_user", user_id)
 
-    # cPoFwUzjl
     if delete_condition:
         if request.method == "POST":
             carts = user_to_deleted.cart_set.all()
@@ -201,7 +202,8 @@ def delete_user(request, user_id):
         }
         return render(request, "AdminPanel/user_delete_confirmation.html", context)
     else:
-        return HttpResponseForbidden()
+        messages.add_message(request, messages.WARNING, "You can't Edit This User")
+        return redirect("get_user", user_id)
 
 
 

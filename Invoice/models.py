@@ -42,13 +42,14 @@ class Cart(models.Model):
         return self.cart_code
 
     def save(self, *args, **kwargs):
-        code = Cart.generate_code()
-        cart_obj = Cart.objects.filter(cart_code = code).first()
-        while cart_obj:
+        if not self.pk: # Check if the object is newly created
             code = Cart.generate_code()
-            cart_obj = Cart.objects.get(code = code)
-        # generate a new code for the cart
-        self.cart_code = code
+            cart_obj = Cart.objects.filter(cart_code = code).first()
+            while cart_obj:
+                code = Cart.generate_code()
+                cart_obj = Cart.objects.get(code = code)
+            # generate a new code for the cart
+            self.cart_code = code
         super(Cart, self).save(*args, **kwargs)
 
     def total_price_without_discount(self):

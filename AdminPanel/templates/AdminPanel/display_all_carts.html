@@ -65,6 +65,7 @@
                                                     <h5 class="card-title ml-0">Total Cost : {{ cart.total_price }}</h5>
                                                     <h5 class="card-title ml-0">Total Orders : {{ cart.order_set.count }}</h5>
                                                     <h6 class="card-text">Created At : {{ cart.created_at }}</h6>
+                                                    <h6 class="card-text">Created At : {{ cart.created_by }}</h6>
                                                     {% if cart.edit_at %}
                                                         <h6 class="card-text">Edit At : {{ cart.edit_at }}</h6>
                                                     {% endif %}
