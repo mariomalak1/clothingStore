@@ -24,7 +24,7 @@ class Cart(models.Model):
     buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     edit_at = models.DateTimeField(null=True, blank=True)
-    created_by = models.ForeignKey(Site_User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(Site_User, on_delete=models.SET_NULL, null=True, blank=True)
 
     # function to generate code for every cart
     @staticmethod

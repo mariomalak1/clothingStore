@@ -9,7 +9,8 @@
             <legend class="border-bottom mb-4">Edit User</legend>
             <fieldset class="form-group">
                 {{ form|crispy }}
-                <button type="submit" class="btn btn-block-lg btn-primary">Save</button>
+                <button type="submit" class="btn btn-lg btn-block w-100 mb-3 btn-primary">Save</button>
+                <a href="{% url 'delete_user' user_id %}" class="btn btn-lg btn-block w-100 btn-danger">Delete</a>
             </fieldset>
         </form>
     </div>

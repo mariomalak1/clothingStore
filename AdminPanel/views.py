@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseBadRequest
 ##################
 from .forms import ProductDetailAddForm, AddSellerForm, AddNewBranch, EditProductCodeForm, EditBranchForm, EditUserForm
 from .filters import CartFilter
@@ -166,6 +166,44 @@ def get_user(request, user_id):
         return render(request, "AdminPanel/specific_user.html", context)
     else:
         return HttpResponseForbidden()
+
+def delete_user(request, user_id):
+    user_to_deleted = get_object_or_404(Site_User, id = user_id)
+    user_request = get_object_or_404(Site_User, id = request.user.id)
+    delete_condition = False
+    ## superuser can delete anyone
+    if user_request.is_superuser:
+        delete_condition = True
+    ## if user delete is admin and the user that will delete not an admin
+    elif user_request.user_type == 0 and (user_to_deleted.user_type > 0):
+        delete_condition = True
+    ## if user try to delete him self
+    elif user_request == user_to_deleted:
+        return HttpResponseBadRequest()
+    else:
+        return HttpResponseForbidden()
+
+    # cPoFwUzjl
+    if delete_condition:
+        if request.method == "POST":
+            carts = user_to_deleted.cart_set.all()
+            for cart in carts:
+                print(cart.cart_code)
+                cart.created_by = user_request
+                cart.save()
+                print(cart.cart_code)
+            user_to_deleted.delete()
+            print(carts.first().created_by)
+            messages.add_message(request, messages.SUCCESS, "User Deleted Successfully")
+            return redirect("display_all_users")
+        context = {
+            "deleted_user": user_to_deleted,
+        }
+        return render(request, "AdminPanel/user_delete_confirmation.html", context)
+    else:
+        return HttpResponseForbidden()
+
+
 
 def add_new_branch(request):
     if request.method == "POST":

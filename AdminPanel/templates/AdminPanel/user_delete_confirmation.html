@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% block body %}
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+                <form method="post" action="" novalidate>
+                    {% csrf_token %}
+                    <h5>Delete Confirmation for User With Username "{{ deleted_user.username }}"</h5>
+                    <hr>
+                    <span class="text-danger">Note That : </span> <span>If You Delete This User, All Orders Created By Him Will Go This Ownership to You !!</span>
+                    <p>Are You Sure That You Want To Delete This User ?</p>
+                    <a class="btn btn-secondary btn-block" href="{% url 'get_user' deleted_user.id %}">Cancel</a>
+                    <button class="btn btn-danger btn-block" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
