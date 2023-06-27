@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from .forms import CreateOrderForm, BuyerForm, GetCartForm, UserProfile
+from .forms import CreateOrderForm, BuyerForm, GetCartForm, UserProfile, ChangePasswordForm
 from Invoice.models import Cart, Order
 from .models import Branch, Site_User
 from Product.models import Product as Product_Model, ProductDetail
@@ -223,3 +223,27 @@ def user_profile(request):
         "current_user":user_,
     }
     return render(request, "Seller/user_profile.html", context)
+
+def change_password(request):
+    user_ = get_object_or_404(Site_User, id = request.user.id)
+    if request.method == "POST":
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            old_password = form.cleaned_data.get("old_password")
+            new_password = form.cleaned_data.get("new_password1")
+
+            if user_.check_password(old_password):
+                user_.set_password(new_password)
+                user_.save()
+                messages.add_message(request, messages.SUCCESS, "Password Changed Successfully")
+                return redirect("login")
+            else:
+                messages.add_message(request, messages.ERROR, "Old Password is InValid, Enter Valid One")
+                return redirect("change_password")
+    else:
+        form = ChangePasswordForm()
+    context = {
+        "form":form,
+        "current_user":user_,
+    }
+    return render(request, "Seller/change_password.html", context)

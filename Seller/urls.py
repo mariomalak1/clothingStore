@@ -31,6 +31,7 @@ urlpatterns = [
 
     # user urls
     path("user_profile/", views.user_profile, name="user_profile"),
+    path("change_password/", views.change_password, name="change_password"),
 
     path("logout/", LogoutView.as_view(), name= "logout"),
     path("login/", LoginView.as_view(template_name="Seller/login_page.html"), name="login"),

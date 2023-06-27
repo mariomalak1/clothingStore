@@ -44,15 +44,26 @@ class UserProfile(forms.ModelForm):
             pass
 
 
-class ChangePassword(forms.Form):
+class ChangePasswordForm(forms.Form):
     old_password = forms.CharField(widget=forms.PasswordInput, required=True, label="Old Password")
     new_password1 = forms.CharField(widget=forms.PasswordInput, required=True, label="New Password")
     new_password2 = forms.CharField(widget=forms.PasswordInput, label="New Password Confirmation")
 
     def clean_new_password2(self):
         password1 = self.cleaned_data.get("new_password1")
-        password2 = self.cleaned_data.get("new_password1")
+        password2 = self.cleaned_data.get("new_password2")
 
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords do not match.")
         return password2
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get("old_password")
+        new_password = self.cleaned_data.get("new_password2")
+
+        print(old_password)
+        print(new_password)
+
+        if new_password == old_password:
+            raise forms.ValidationError("New Password Is Similar to Old Password")
+        return old_password
