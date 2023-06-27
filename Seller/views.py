@@ -1,21 +1,21 @@
+import datetime
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from Invoice.models import Cart, Order
-from .forms import CreateOrderForm, BuyerForm, GetCartForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+
+from .forms import CreateOrderForm, BuyerForm, GetCartForm, UserProfile
+from Invoice.models import Cart, Order
 from .models import Branch, Site_User
 from Product.models import Product as Product_Model, ProductDetail
-from django.http import JsonResponse
-import datetime
 # Create your views here.
 
-# add decorator manager and seller
+# user must be authenticated and must have a specific branch
 def create_cart(request, cart_code = None):
+    seller = get_object_or_404(Site_User, id=request.user.id)
     if not cart_code or cart_code == "None":
-        seller = get_object_or_404(Site_User, id = request.user.id)
-        cart = Cart.objects.create(created_by = seller)
-        cart.branch = seller.branch
+        cart = Cart.objects.create(created_by = seller, branch=seller.branch)
     else:
         cart = Cart.objects.filter(cart_code = cart_code).first()
         if cart:
@@ -23,7 +23,7 @@ def create_cart(request, cart_code = None):
                 messages.add_message(request, messages.WARNING, "This Is Finished Cart, you can edit it only")
                 return redirect("edit_cart", cart.cart_code)
         else:
-            cart = Cart.objects.create()
+            cart = Cart.objects.create(created_by=seller, branch=seller.branch)
     return redirect("all_orders_created", cart.cart_code)
 
 def all_orders_created(request, cart_code):
@@ -37,7 +37,8 @@ def all_orders_created(request, cart_code):
     }
     return render(request, "Seller/all_orders_created.html", context)
 
-# create this function to get the sizes of specific product that user choose it
+# user must be authenticated
+# create this function to get the sizes of specific product that user choose it while he makes an order
 def get_sizes(request):
     product_id = request.GET.get('product_id', None)  # Extract product_id from request.GET
     if product_id is None:
@@ -51,7 +52,7 @@ def get_sizes(request):
     response_data = {'sizes': list_of_sizes}
     return JsonResponse(response_data)
 
-# add decorator manager and seller
+# user must be authenticated and must have a specific branch
 def create_order(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
     seller = get_object_or_404(Site_User, id = request.user.id)
@@ -81,7 +82,7 @@ def create_order(request, cart_code):
     return render(request, "Seller/create_order.html", context)
 
 
-# add decorator manager and seller
+# user must be authenticated and must have a specific branch
 def delete_order(request, order_id, order_number):
     order = get_object_or_404(Order, id = order_id)
 
@@ -100,7 +101,7 @@ def delete_order(request, order_id, order_number):
                }
     return render(request, "delete_confirmation.html", context)
 
-# add decorator manager and seller
+# user must be authenticated and must have a specific branch
 def check_out(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
     if not cart.is_finished:
@@ -165,7 +166,7 @@ def delete_cart(request, cart_code, place = None):
                }
     return render(request, "delete_confirmation.html", context)
 
-# add decorator manager and seller
+# user must be authenticated and must have a specific branch
 def get_cart_code_from_user(request):
     if request.method == "POST":
         form = GetCartForm(request.POST)
@@ -202,3 +203,23 @@ def edit_cart(request, cart_code):
 def check_out_exchange(request, old_cart_code):
     context = {"cart_code":old_cart_code}
     return render(request, "Seller/check_out_exchange.html", context)
+
+def user_profile(request):
+    user_ = get_object_or_404(Site_User, id = request.user.id)
+    if request.method == "POST":
+        if user_.user_type == 0:
+            form = UserProfile(request.POST, instance=user_)
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.SUCCESS, "Data Saved")
+                return redirect("admin_panel")
+        else:
+            messages.add_message(request, messages.WARNING, "You Can't Change This Data")
+            return redirect("home_page")
+    else:
+        form = UserProfile(instance=user_)
+    context = {
+        "form":form,
+        "current_user":user_,
+    }
+    return render(request, "Seller/user_profile.html", context)

@@ -48,8 +48,8 @@
                             {# display the total money entered #}
                             <div class="card mb-3 text-white bg-steel">
                                 <div class="card-body">
-                                    <h5>Total Money : {{ total_money_entered }}</h5>
-                                    <h5>Number Of Carts : {{ number_of_carts }}</h5>
+                                    <h5 style="color:white">Total Money : {{ total_money_entered }}</h5>
+                                    <h5 style="color:white">Number Of Carts : {{ number_of_carts }}</h5>
                                 </div>
                             </div>
                         {% endif %}
@@ -59,7 +59,7 @@
                                 {% if carts %}
                                     {% for cart in carts %}
                                         <div class="cart_with_order">
-                                            <div class="card mb-2" style="background-color:#1c1e1f; z-index: 20;">
+                                            <div class="card mb-2" style="z-index: 20;">
                                                 <h5 class="card-header">{{ forloop.counter }}- Cart : {{ cart.cart_code }} <span class="mr-5">{{ cart.branch }}</span> </h5>
                                                 <div class="card-body">
                                                     <h5 class="card-title ml-0">Total Cost : {{ cart.total_price }}</h5>

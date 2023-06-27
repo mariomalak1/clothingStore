@@ -30,6 +30,8 @@ urlpatterns = [
 
 
     # user urls
+    path("user_profile/", views.user_profile, name="user_profile"),
+
     path("logout/", LogoutView.as_view(), name= "logout"),
     path("login/", LoginView.as_view(template_name="Seller/login_page.html"), name="login"),
 ]

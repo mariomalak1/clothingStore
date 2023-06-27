@@ -15,7 +15,6 @@ class ProductDetailAddForm(forms.ModelForm):
 class EditProductCodeForm(forms.Form):
     product_code = forms.CharField(required=True)
 
-
 class AddSellerForm(forms.ModelForm):
     branch = forms.ModelChoiceField(queryset=Branch.objects.all(), required=False)
     password1 = forms.CharField(widget=forms.PasswordInput, required=True, label="Password")
@@ -49,13 +48,6 @@ class AddSellerForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-
-
-class AddAdmin(AddSellerForm):
-    branch = forms.ModelChoiceField(queryset=Branch.objects.all(), required=False)
-    user_type = forms.ChoiceField(choices=Site_User.USER_TYPE_CHOICES)
-
-
 
 class AddNewBranch(forms.ModelForm):
     class Meta:

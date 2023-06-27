@@ -110,7 +110,7 @@ def edit_product_code(request, product_detail_id):
     return render(request, "AdminPanel/edit_product_code.html", context)
 
 def display_all_carts(request):
-    carts = Cart.objects.all()
+    carts = Cart.objects.all().order_by('-created_at')
     total_money_entered = 0
     cart_filter = CartFilter(data= request.GET, queryset=carts)
     for cart in cart_filter.qs:
@@ -131,7 +131,7 @@ def add_new_user(request):
             user_type = form_seller.cleaned_data.get("user_type")
             form_seller.save()
             messages.success(request, f"{Site_User.USER_TYPE_CHOICES[int(user_type)][1]} with Username {username} have been created")
-            return redirect("admin_panel")
+            return redirect("display_all_users")
     else:
         form_seller = AddSellerForm()
 
@@ -200,8 +200,6 @@ def delete_user(request, user_id):
     else:
         messages.add_message(request, messages.WARNING, "You can't Edit This User")
         return redirect("get_user", user_id)
-
-
 
 def add_new_branch(request):
     if request.method == "POST":

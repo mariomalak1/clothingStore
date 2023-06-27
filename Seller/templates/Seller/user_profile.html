@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% load crispy_forms_filters %}
+{% block body %}
+        {% if current_user.user_type == 0 %}
+            <a href="{% url 'admin_panel' %}" class="btn btn-lg btn-block w-100 mb-3 btn-outline-success">Admin Panel</a>
+        {% else %}
+            <a href="{% url 'home_page' %}" class="btn btn-lg btn-block w-100 mb-3 btn-outline-success">Home Page</a>
+        {% endif %}
+    <div class = "content-section">
+        <form method="post" action="" novalidate>
+            {% csrf_token %}
+            <legend class="border-bottom mb-4">Personal Info</legend>
+            <fieldset class="form-group">
+                {{ form|crispy }}
+                {% if current_user.user_type == 0 %}
+                    <button type="submit" class="btn btn-lg btn-block w-100 mb-3 btn-primary">Save</button>
+                {% endif %}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
