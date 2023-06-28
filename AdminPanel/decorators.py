@@ -20,7 +20,6 @@ def is_authenticated_admin_decorator(func):
 
     return test_user
 
-
 def is_authenticated_manager_decorator(func):
     def test_user(request, *args, **kwargs):
         if request.user.is_anonymous:
@@ -39,7 +38,6 @@ def is_authenticated_manager_decorator(func):
 
     return test_user
 
-
 def is_authenticated_admin_or_manager_decorator(func):
     def test_user(request, *args, **kwargs):
         if request.user.is_anonymous:
@@ -47,7 +45,7 @@ def is_authenticated_admin_or_manager_decorator(func):
         else:
             try:
                 user_ = Site_User.objects.get(id=request.user.id)
-                if user_.user_type == 1 or user_.user_type == 0:
+                if (user_.is_site_admin()) or (user_.is_branch_manager()):
                     return func(request, *args, **kwargs)
                 else:
                     return HttpResponseForbidden()
@@ -55,7 +53,6 @@ def is_authenticated_admin_or_manager_decorator(func):
                 return HttpResponseForbidden()
 
     return test_user
-
 
 # seller and manager decorator
 def is_authenticated_seller_decorator(func):
@@ -82,3 +79,5 @@ def is_authenticated_seller_decorator(func):
                 return HttpResponseForbidden()
 
     return test_user
+
+

@@ -138,6 +138,7 @@ def display_all_carts(request):
         "total_money_entered": total_money_entered,
         "cart_filter":cart_filter,
         "number_of_carts":cart_filter.qs.count(),
+        "user_site":user_,
     }
     return render(request, "AdminPanel/display_all_carts.html", context)
 
@@ -294,4 +295,8 @@ def delete_branch(request, branch_name):
 
 @is_authenticated_admin_or_manager_decorator
 def show_statistics(request):
-    return render(request, "AdminPanel/show_statistics.html")
+    user_ = get_object_or_404(Site_User, id = request.user.id)
+    context = {
+        "user_site": user_,
+    }
+    return render(request, "AdminPanel/show_statistics.html", context)

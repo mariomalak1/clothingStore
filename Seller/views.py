@@ -9,9 +9,10 @@ from .forms import CreateOrderForm, BuyerForm, GetCartForm, UserProfile, ChangeP
 from Invoice.models import Cart, Order
 from .models import Branch, Site_User
 from Product.models import Product as Product_Model, ProductDetail
+from AdminPanel.decorators import *
 # Create your views here.
 
-# user must be authenticated and must have a specific branch
+@is_authenticated_seller_decorator
 def create_cart(request, cart_code = None):
     seller = get_object_or_404(Site_User, id=request.user.id)
     if not cart_code or cart_code == "None":
@@ -26,6 +27,7 @@ def create_cart(request, cart_code = None):
             cart = Cart.objects.create(created_by=seller, branch=seller.branch)
     return redirect("all_orders_created", cart.cart_code)
 
+@is_authenticated_seller_decorator
 def all_orders_created(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
     orders_in_cart = cart.order_set.all().order_by("-created_at")
@@ -37,7 +39,7 @@ def all_orders_created(request, cart_code):
     }
     return render(request, "Seller/all_orders_created.html", context)
 
-# user must be authenticated
+@is_authenticated_seller_decorator
 # create this function to get the sizes of specific product that user choose it while he makes an order
 def get_sizes(request):
     product_id = request.GET.get('product_id', None)  # Extract product_id from request.GET
@@ -52,7 +54,8 @@ def get_sizes(request):
     response_data = {'sizes': list_of_sizes}
     return JsonResponse(response_data)
 
-# user must be authenticated and must have a specific branch
+
+@is_authenticated_seller_decorator
 def create_order(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
     seller = get_object_or_404(Site_User, id = request.user.id)
@@ -81,8 +84,7 @@ def create_order(request, cart_code):
         }
     return render(request, "Seller/create_order.html", context)
 
-
-# user must be authenticated and must have a specific branch
+@is_authenticated_seller_decorator
 def delete_order(request, order_id, order_number):
     order = get_object_or_404(Order, id = order_id)
 
@@ -101,7 +103,8 @@ def delete_order(request, order_id, order_number):
                }
     return render(request, "delete_confirmation.html", context)
 
-# user must be authenticated and must have a specific branch
+
+@is_authenticated_seller_decorator
 def check_out(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
     if not cart.is_finished:
@@ -133,6 +136,7 @@ def check_out(request, cart_code):
         return redirect("edit_cart", cart_code)
 
 ## function to delete the cart and return specific endpoint to redirect user to it
+# used in delete_cart endpoint
 def delete_cart_function(request, cart, place):
     for order_ in cart.order_set.all():
         order_.product.quantity += order_.quantity
@@ -145,7 +149,7 @@ def delete_cart_function(request, cart, place):
         ## if he's seller and make refund, or admin, but he come from refund from specific branch, will redirect him to home page
     return ("home_page")
 
-# must user be authenticated
+@is_authenticated_seller_decorator
 # place is parameter that I will redirect him to place he come from
 def delete_cart(request, cart_code, place = None):
     cart = get_object_or_404(Cart, cart_code = cart_code)
@@ -166,7 +170,7 @@ def delete_cart(request, cart_code, place = None):
                }
     return render(request, "delete_confirmation.html", context)
 
-# user must be authenticated and must have a specific branch
+@is_authenticated_seller_decorator
 def get_cart_code_from_user(request):
     if request.method == "POST":
         form = GetCartForm(request.POST)
@@ -183,7 +187,7 @@ def get_cart_code_from_user(request):
     context = {"form":form}
     return render(request, "Seller/get_cart_code_from_user.html", context)
 
-
+@is_authenticated_seller_decorator
 def edit_cart(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
     orders_in_cart = cart.order_set.all().order_by("-created_at")
@@ -200,10 +204,12 @@ def edit_cart(request, cart_code):
         messages.add_message(request, messages.WARNING, "This not Completed Cart, You Can Enter it Again from Sale and Complete it")
         return redirect("home_page", cart_code = cart_code)
 
+@is_authenticated_seller_decorator
 def check_out_exchange(request, old_cart_code):
     context = {"cart_code":old_cart_code}
     return render(request, "Seller/check_out_exchange.html", context)
 
+@is_authenticated_seller_decorator
 def user_profile(request):
     user_ = get_object_or_404(Site_User, id = request.user.id)
     if request.method == "POST":
@@ -224,6 +230,7 @@ def user_profile(request):
     }
     return render(request, "Seller/user_profile.html", context)
 
+@is_authenticated_seller_decorator
 def change_password(request):
     user_ = get_object_or_404(Site_User, id = request.user.id)
     if request.method == "POST":

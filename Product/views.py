@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+
+from AdminPanel.decorators import *
 from Seller.models import Branch, Site_User
 from .forms import AddProductInBranchForm
-from django.contrib import messages
 from .models import Product as Product_Model
 # Create your views here.
 
-# add decorators for seller and manager
+@is_authenticated_seller_decorator
 def add_product_in_branch(request, branch_id):
     branch = get_object_or_404(Branch, id = branch_id)
     seller = get_object_or_404(Site_User, id = request.user.id)
@@ -43,9 +45,10 @@ def add_product_in_branch(request, branch_id):
         messages.add_message(request, messages.WARNING, "This Not Your Branch To Add Product In!!")
         return redirect("home_page")
 
-
+@is_authenticated_seller_decorator
 def display_all_products_in_branch(request, branch_id):
     pass
 
+@is_authenticated_admin_or_manager_decorator
 def edit_product_in_branch(request, branch_id, product_id):
     pass

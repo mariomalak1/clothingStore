@@ -2,13 +2,13 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 
-from AdminPanel.decorators import is_authenticated_admin_decorator, is_authenticated_seller_decorator, is_authenticated_admin_or_manager_decorator
 from Invoice.models import Cart
 from Seller.models import Site_User, Branch
 from .forms import SettingsForm
 from .models import SiteSettings
-
+from AdminPanel.decorators import *
 # Create your views here.
+
 @is_authenticated_seller_decorator
 def home_page(request, cart_code=None):
     user = get_object_or_404(Site_User, id=request.user.id)
