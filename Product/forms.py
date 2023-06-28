@@ -54,8 +54,11 @@ class EditProductInBranchForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super(EditProductInBranchForm, self).clean()
         disabled_product_detail = cleaned_data.get('disabled_product_detail')
-        product_detail = ProductDetail.objects.get(product_code=disabled_product_detail)
         if disabled_product_detail:
-            cleaned_data['product_detail'] = product_detail
-            del cleaned_data["disabled_product_detail"]
-        return cleaned_data
+            product_detail = ProductDetail.objects.get(product_code=disabled_product_detail)
+            if disabled_product_detail:
+                cleaned_data['product_detail'] = product_detail
+                del cleaned_data["disabled_product_detail"]
+            return cleaned_data
+        else:
+            return cleaned_data

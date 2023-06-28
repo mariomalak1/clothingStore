@@ -190,4 +190,13 @@ def edit_product_in_branch(request, branch_id, product_id):
 
 @is_authenticated_admin_decorator
 def delete_product_in_branch(request, branch_id, product_id):
-    pass
+    branch = get_object_or_404(Branch, id=branch_id)
+    product = get_object_or_404(Product_Model, id=product_id)
+    if request.method == "POST":
+        product.delete()
+        messages.add_message(request, messages.SUCCESS, f"All Products With Code {product.product_detail} Delete From Branch {branch.name} Successfully Deleted")
+        return redirect("display_all_products_in_branch", branch.id)
+    else:
+        product
+        context = {"branch":branch, "product":product}
+        return render(request, "Product/delete_product_in_branch.html", context)

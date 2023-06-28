@@ -173,7 +173,7 @@ def delete_branch(request, branch_name):
         messages.add_message(request, messages.SUCCESS, f"Branch With Name {branch_name} Successfully Deleted")
         return redirect("display_all_branches")
     else:
-        total_number_of_employees = branch.seller_set.count()
+        total_number_of_employees = branch.site_user_set.count()
         total_number_of_products = 0
         for product_branch in branch.product_set.all():
             total_number_of_products += product_branch.quantity

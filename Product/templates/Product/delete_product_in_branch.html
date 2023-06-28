@@ -1,0 +1,25 @@
+{% extends "main.html" %}
+{% block body %}
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+                <form method="post" action="" novalidate>
+                    {% csrf_token %}
+                    <h5>Delete Confirmation for "Product With Code "{{product.product_detail.product_code}}" In Branch "{{ branch.name }}"</h5>
+                    <hr>
+{#                  <span class="text-danger">Note That : </span> <span>If You Delete This Branch, All Product in All This Branch Will Be Deleted, and All Employees Are There Will Be Deleted Also</span> #}
+                    <p class="">You Can Edit It Instead of Delete ...</p>
+                    <p class="text-danger">Quantity Of Product In Branch : {{ product.quantity }}</p>
+                    <p class="">Main Price : {{ product.product_detail.price }}</p>
+                    <p class="">Price In Branch : {{ product.price_for_branch }}</p>
+                    <p>Are You Sure That You Want To Delete This Product Form Branch ?</p>
+                    <a class="btn btn-secondary btn-block" href="{% url 'display_all_products_in_branch' branch.id %}">Cancel</a>
+                    <button class="btn btn-danger btn-block" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
