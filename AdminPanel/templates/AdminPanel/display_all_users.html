@@ -27,7 +27,7 @@
 
         {% for user in users %}
             {% if current_user.username == user.username %}
-                <tr data-href="{% url 'get_user' user.id %}" style="color: red;">
+                <tr data-href="{% url 'user_profile' %}">
             {% else %}
                 <tr data-href="{% url 'get_user' user.id %}">
             {% endif %}
@@ -47,7 +47,12 @@
                 {% if user.branch %}
                     <td>{{user.branch}}</td>
                 {% else %}
-                    <td>All</td>
+                    {% if user.is_site_admin %}
+                        <td>All</td>
+                    {% else %}
+                        <td>Without</td>
+                    {% endif %}
+
                 {% endif %}
 
                 {% if user.salary %}
