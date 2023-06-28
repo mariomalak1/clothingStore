@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+{% block body %}
+    <a href="{% url 'add_product_in_branch' branch.id %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Add New Product To The Branch</a>
+    <table class="table table-hover table-dark">
+      <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Code</th>
+            <th scope="col">Name</th>
+            <th scope="col">Main Price</th>
+            <th scope="col">Branch Price</th>
+            <th scope="col">No. Sizes In Product</th>
+            {% if user_site.is_branch_manager or user_site.is_site_admin %}
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+            {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+      {% for product in products %}
+          <tr>
+              <td> <a> {{ forloop.counter }} </a> </td>
+              <td> <a> {{ product.product_code }} </a> </td>
+              <td> <a> {{ product.name }} </a> </td>
+              <td> <a> {{ product.price }} </a> </td>
+              <td> <a> {{ product.price_for_branch }} </a> </td>
+              {% if product.sizes.count %}
+                  <td> <a> {{ product.sizes.count }} </a> </td>
+              {% else %}
+                  <td> <a> WithOut </a> </td>
+              {% endif %}
+
+              {% if user_site.is_branch_manager or user_site.is_site_admin %}
+                  <td> <a href="{% url 'edit_product_in_branch' branch_id=branch.id product_id=product.id %}" class="btn btn-secondary">Edit</a> </td>
+                  <td> <a href="{% url 'delete_product_in_branch' branch_id=branch.id product_id=product.id %}" class="btn btn-danger">Delete</a> </td>
+              {% endif %}
+          </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

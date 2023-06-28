@@ -2,29 +2,29 @@
 {% block body %}
     <div class="container">
         {% if cart_code %}
-            <a href="{% url "create_cart" cart_code %}">
+            <a href="{% url 'create_cart' cart_code %}">
                 <div class="btn btn-primary btn-lg btn-block link-home-page">Sale</div>
             </a>
         {% else %}
 
-            <a href="{% url "create_cart" %}">
+            <a href="{% url 'create_cart' %}">
                 <div class="btn btn-primary btn-lg btn-block link-home-page">Sale</div>
             </a>
 
         {% endif %}
 
         <br>
-        <a href="{% url "get_cart_code_from_user"  %}">
+        <a href="{% url 'get_cart_code_from_user'  %}">
             <div class="btn btn-primary btn-lg btn-block link-home-page">Refund</div>
         </a>
         <br>
-        <a href="{% url "get_cart_code_from_user" %}">
+        <a href="{% url 'get_cart_code_from_user' %}">
             <div class="btn btn-primary btn-lg btn-block link-home-page">Exchange</div>
         </a>
 
         <br>
-        <a href="{% url "add_product_in_branch" seller.branch_id%}">
-            <div class="btn btn-primary btn-lg btn-block link-home-page">Add Product</div>
+        <a href="{% url 'display_all_products_in_branch' seller.branch_id %}">
+            <div class="btn btn-primary btn-lg btn-block link-home-page">Display All Products In Branch</div>
         </a>
     </div>
 {% endblock %}

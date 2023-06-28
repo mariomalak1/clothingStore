@@ -63,21 +63,18 @@ def is_authenticated_seller_decorator(func):
             try:
                 seller = Site_User.objects.get(id=request.user.id)
                 if seller:
-                    if seller.user_type > 0:
+                    if seller.is_can_be_seller():
                         return func(request, *args, **kwargs)
                     else:
-                        if seller.branch is None:
+                        if seller.is_site_admin():
                             messages.add_message(request, messages.WARNING, "Choose Branch First To Be In It")
                             return redirect("settings")
                         else:
-                            return func(request, *args, **kwargs)
+                            return HttpResponseForbidden()
                 else:
                     return HttpResponseForbidden()
             except:
                 return HttpResponseForbidden()
             else:
                 return HttpResponseForbidden()
-
     return test_user
-
-

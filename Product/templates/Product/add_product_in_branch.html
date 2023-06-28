@@ -1,7 +1,8 @@
 {% extends "main.html" %}
 {% load crispy_forms_filters %}
 {% block body %}
-    <a href="{% url "home_page" %}" class="btn btn-outline-success w-100 p-2 mb-4" style="width: 100%;">Home Page</a>
+    <a href="{% url 'home_page' %}" class="btn btn-outline-success w-100 p-2 mb-4" style="width: 100%;">Home Page</a>
+    <a href="{% url 'display_all_products_in_branch' branch.id %}" class="btn btn-outline-secondary w-100 p-2 mb-4" style="width: 100%;">Display All Products In Branch</a>
 
     <div class = "content-section">
         <form method="post" action="" novalidate>

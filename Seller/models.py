@@ -55,3 +55,6 @@ class Site_User(Django_User):
 
     def is_branch_manager(self):
         return self.user_type == 1
+
+    def is_can_be_seller(self):
+        return (self.branch is not None)

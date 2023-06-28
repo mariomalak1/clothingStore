@@ -47,8 +47,18 @@ def add_product_in_branch(request, branch_id):
 
 @is_authenticated_seller_decorator
 def display_all_products_in_branch(request, branch_id):
-    pass
+    branch = get_object_or_404(Branch, id = branch_id)
+    products = Product_Model.objects.filter(branch=branch).all()
+    context = {
+        "products":products,
+        "branch":branch,
+    }
+    return render(request, "Product/display_all_products_in_branch.html", context)
 
 @is_authenticated_admin_or_manager_decorator
 def edit_product_in_branch(request, branch_id, product_id):
+    pass
+
+@is_authenticated_admin_or_manager_decorator
+def delete_product_in_branch(request, branch_id, product_id):
     pass
