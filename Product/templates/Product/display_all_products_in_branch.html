@@ -20,12 +20,12 @@
       {% for product in products %}
           <tr>
               <td> <a> {{ forloop.counter }} </a> </td>
-              <td> <a> {{ product.product_code }} </a> </td>
-              <td> <a> {{ product.name }} </a> </td>
-              <td> <a> {{ product.price }} </a> </td>
+              <td> <a> {{ product.product_detail }} </a> </td>
+              <td> <a> {{ product.product_detail.name }} </a> </td>
+              <td> <a> {{ product.product_detail.price }} </a> </td>
               <td> <a> {{ product.price_for_branch }} </a> </td>
-              {% if product.sizes.count %}
-                  <td> <a> {{ product.sizes.count }} </a> </td>
+              {% if product.product_detail.sizes.count %}
+                  <td> <a> {{ product.product_detail.sizes.count }} </a> </td>
               {% else %}
                   <td> <a> WithOut </a> </td>
               {% endif %}

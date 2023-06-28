@@ -2,18 +2,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User as django_user
 from django.contrib.auth.hashers import make_password
-
-from Product.models import ProductDetail
 from Seller.models import Branch, Site_User
 
 # Forms Here
-class ProductDetailAddForm(forms.ModelForm):
-    class Meta:
-        model = ProductDetail
-        fields = "__all__"
-
-class EditProductCodeForm(forms.Form):
-    product_code = forms.CharField(required=True)
 
 class AddSellerForm(forms.ModelForm):
     branch = forms.ModelChoiceField(queryset=Branch.objects.all(), required=False)

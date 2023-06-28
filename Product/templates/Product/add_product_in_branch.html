@@ -8,7 +8,7 @@
         <form method="post" action="" novalidate>
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">{{ process_name }} New Product In {{ branch.name }}</legend>
+                <legend class="border-bottom mb-4">{{ process_name }} Product In {{ branch.name }}</legend>
 
                 {{ form|crispy }}
 
