@@ -1,2 +1,6 @@
 from django.shortcuts import render
-# Create your views here.
+
+# create views here.
+
+def create_invoice(request):
+    return render(request, "Invoice/invoice.html")

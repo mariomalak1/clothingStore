@@ -134,3 +134,5 @@ dmypy.json
 .idea/
 features.md
 bootstrap
+Invoice.pdf
+invoice_black_and_white.pdf
