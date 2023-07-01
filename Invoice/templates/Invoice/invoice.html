@@ -35,31 +35,21 @@
     <table>
       <thead>
         <tr>
-          <th>Description</th>
+          <th>Product</th>
           <th>Price</th>
+          <th>Size</th>
           <th>Quantity</th>
-          <th>Subtotal</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Website design</td>
-          <td>€34.20</td>
-          <td>100</td>
-          <td>€3,420.00</td>
-        </tr>
-        <tr>
-          <td>Website development</td>
-          <td>€45.50</td>
-          <td>100</td>
-          <td>€4,550.00</td>
-        </tr>
-        <tr>
-          <td>Website integration</td>
-          <td>€25.75</td>
-          <td>100</td>
-          <td>€2,575.00</td>
-        </tr>
+        {% for order in cart.order_set.all %}
+          <tr>
+            <td>{{order.product.product_detail.product_code}}</td>
+            <td>{{order.product.price_for_branch}}</td>
+            <td>{{order.size}}</td>
+            <td>{{order.quantity}}</td>
+          </tr>
+        {% endfor %}
       </tbody>
     </table>
 
@@ -73,9 +63,9 @@
       </thead>
       <tbody>
         <tr>
-          <td>May 10, 2018</td>
-          <td>132 456 789 012</td>
-          <td>€10,545.00</td>
+          <td>{{cart.created_at}}</td>
+          <td>{{cart.cart_code}}</td>
+          <td>{{cart.total_price}}</td>
         </tr>
       </tbody>
     </table>
