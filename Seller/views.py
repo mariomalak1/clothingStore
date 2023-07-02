@@ -118,7 +118,8 @@ def check_out(request, cart_code):
                     cart.is_finished = True
                     cart.save()
                     messages.add_message(request,messages.SUCCESS, f"Check Out For Cart with Code {cart.cart_code} is Finished Successfully")
-                    return redirect("home_page")
+
+                    return redirect("create_invoice", cart_code)
 
             buyer_form = BuyerForm()
 

@@ -1,9 +1,9 @@
 {% extends "main.html" %}
 {% block body %}
 
-    <a href="{% url "seller_create_order" cart_code %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Add Order</a>
+    <a href="{% url 'seller_create_order' cart_code %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Add Order</a>
 
-    <a href="{% url "get_cart_code_from_user" %}" class="btn btn-secondary btn-lg btn-block mt-2 w-100 p-2 mb-3" style="margin-left: 0">Search For Another Cart</a>
+    <a href="{% url 'get_cart_code_from_user' %}" class="btn btn-secondary btn-lg btn-block mt-2 w-100 p-2 mb-3" style="margin-left: 0">Search For Another Cart</a>
 
     {# display the total of orders and cart #}
     <div class="card mb-3 text-white bg-steel">

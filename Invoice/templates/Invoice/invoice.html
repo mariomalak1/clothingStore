@@ -24,41 +24,14 @@
   </div>
 
   <table class="invoice-info-container">
-
-    {% if cart.buyer %}
-    <tr>
-      <td rowspan="2" class="client-name"> {{cart.buyer.name}} </td>
-
-      {% if cart.buyer.phone_number %}
-        <td>Phone Number : {{cart.buyer.phone_number}}</td>
-      {% endif %}
-
-    </tr>
-    {% endif %}
-
-    <tr>
-      <td>Invoice Date: <strong>{{cart.created_at|date:"F jS, Y" }}</strong> </td>
-    </tr>
-
     <tr>
       <td>
         Invoice No: <strong>{{cart.cart_code}}</strong>
       </td>
     </tr>
-
     <tr>
-      <td>
-        Branch Name: <strong>{{cart.branch.name}}</strong>
-      </td>
+      <td>Invoice Date: <strong>{{cart.created_at|date:"F jS, Y" }}</strong> </td>
     </tr>
-
-    {% if cart.branch.address %}
-      <tr>
-          <td>
-            Branch Address: <strong>{{cart.branch.address}}</strong>
-          </td>
-      </tr>
-    {% endif %}
   </table>
 
 
@@ -90,6 +63,7 @@
         <th>Payment Info</th>
         <th>Due By</th>
         <th>Total Due</th>
+        <th>Branch Name</th>
       </tr>
     </thead>
     <tbody>
@@ -101,20 +75,11 @@
         </td>
         <td class="large">{{cart.due_by|date:"F jS, Y" }}</td>
         <td class="large total">{{cart.total_price}}</td>
+        <td>
+          <strong>{{cart.branch.name}}</strong>
+        </td>
       </tr>
     </tbody>
   </table>
-
-<!--<div class="footer">
-    <div class="footer-info">
-      <span>hello@useanvil.com</span> |
-      <span>555 444 6666</span> |
-      <span>useanvil.com</span>
-    </div>
-    <div class="footer-thanks">
-      <img src="https://github.com/anvilco/html-pdf-invoice-template/raw/main/img/heart.png" alt="heart">
-      <span>Thank you!</span>
-    </div>
-  </div> -->
 </body>
 </html>

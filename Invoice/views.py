@@ -5,8 +5,8 @@ from Seller.models import Site_User
 # from weasyprint import HTML
 # create views here.
 
-# def create_invoice_pdf(request):
-#     return HttpResponse()
+def create_invoice_pdf(request):
+    return HttpResponse()
 
 
 def create_invoice(request, cart_code):
