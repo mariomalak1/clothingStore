@@ -1,73 +1,120 @@
 {% load static %}
 <html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="{% static 'Invoice/invoice.css' %}">
-    <title>Invoice</title>
-    <meta name="description" content="Invoice demo sample">
-  </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
 
-  <body>
-    <h1>Invoice</h1>
+  <title>Invoice</title>
 
-    <aside>
-      <address id="from">
-        WeasyPrint
-        26 rue Emile Decorps
-        69100 Villeurbanne
-        France
-      </address>
+  <link rel="stylesheet" href="{% static 'css/invoice.css' %}">
 
-      <address id="to">
-        Our awesome developers
-        From all around the world
-        Earth
-      </address>
-    </aside>
+  <link rel="icon" type="image/x-icon" href="{% static 'MarioLogo.ico' %}">
+</head>
+<body>
+  <div class="page-container">
+    Page
+    <span class="page"></span>
+    of
+    <span class="pages"></span>
+  </div>
 
-    <dl id="informations">
-      <dt>Invoice number</dt>
-      <dd>12345</dd>
-      <dt>Date</dt>
-      <dd>March 31, 2018</dd>
-    </dl>
+  <div class="logo-container">
+    <img style="height: 80px" src="{% static 'MarioLogo.png' %}">
+  </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>Price</th>
-          <th>Size</th>
-          <th>Quantity</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for order in cart.order_set.all %}
-          <tr>
-            <td>{{order.product.product_detail.product_code}}</td>
-            <td>{{order.product.price_for_branch}}</td>
-            <td>{{order.size}}</td>
-            <td>{{order.quantity}}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <table class="invoice-info-container">
 
-    <table id="total">
-      <thead>
-        <tr>
-          <th>Due by</th>
-          <th>Account number</th>
-          <th>Total due</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{cart.created_at}}</td>
-          <td>{{cart.cart_code}}</td>
-          <td>{{cart.total_price}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </body>
+    {% if cart.buyer %}
+    <tr>
+      <td rowspan="2" class="client-name"> {{cart.buyer.name}} </td>
+
+      {% if cart.buyer.phone_number %}
+        <td>Phone Number : {{cart.buyer.phone_number}}</td>
+      {% endif %}
+
+    </tr>
+    {% endif %}
+
+    <tr>
+      <td>Invoice Date: <strong>{{cart.created_at|date:"F jS, Y" }}</strong> </td>
+    </tr>
+
+    <tr>
+      <td>
+        Invoice No: <strong>{{cart.cart_code}}</strong>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Branch Name: <strong>{{cart.branch.name}}</strong>
+      </td>
+    </tr>
+
+    {% if cart.branch.address %}
+      <tr>
+          <td>
+            Branch Address: <strong>{{cart.branch.address}}</strong>
+          </td>
+      </tr>
+    {% endif %}
+  </table>
+
+
+  <table class="line-items-container">
+    <thead>
+      <tr>
+        <th class="heading-quantity">Qty</th>
+        <th class="heading-description">Product Name</th>
+        <th class="heading-price">Price</th>
+        <th class="heading-subtotal">Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for order in cart.order_set.all %}
+     <tr>
+        <td>{{order.quantity}}</td>
+        <td>{{order.product.product_detail.name}}</td>
+        <td class="right">{{order.product.price_for_branch}}</td>
+        <td class="bold">{{order.total_cost_for_order}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+
+  <table class="line-items-container has-bottom-border">
+    <thead>
+      <tr>
+        <th>Payment Info</th>
+        <th>Due By</th>
+        <th>Total Due</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="payment-info">
+          <div>
+            User Create Orders: <strong>{{current_user.username}}</strong>
+          </div>
+        </td>
+        <td class="large">{{cart.due_by|date:"F jS, Y" }}</td>
+        <td class="large total">{{cart.total_price}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+<!--<div class="footer">
+    <div class="footer-info">
+      <span>hello@useanvil.com</span> |
+      <span>555 444 6666</span> |
+      <span>useanvil.com</span>
+    </div>
+    <div class="footer-thanks">
+      <img src="https://github.com/anvilco/html-pdf-invoice-template/raw/main/img/heart.png" alt="heart">
+      <span>Thank you!</span>
+    </div>
+  </div> -->
+</body>
 </html>

@@ -1,9 +1,10 @@
 import random
 import string
+from datetime import timedelta
 from django.db import models
-from Product.models import Product as product_model, Size as Product_size
 from django.core.exceptions import ValidationError
 from Seller.models import Site_User, Branch
+from Product.models import Product as product_model, Size as Product_size
 # Create your models here.
 
 class Buyer(models.Model):
@@ -52,6 +53,9 @@ class Cart(models.Model):
             # generate a new code for the cart
             self.cart_code = code
         super(Cart, self).save(*args, **kwargs)
+
+    def due_by(self):
+        return self.created_at + timedelta(days=14)
 
     def total_price_without_discount(self):
         total = 0
