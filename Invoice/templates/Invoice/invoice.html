@@ -1,13 +1,9 @@
-{% load static %}
-<html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
 
   <title>Invoice</title>
-
-  <link rel="icon" type="image/x-icon" href="{% static 'MarioLogo.ico' %}">
 
   <style>
           /*
@@ -168,7 +164,7 @@
   </div>
 
   <div class="logo-container">
-    <img style="height: 80px" src="{% static 'MarioLogo.png' %}">
+    <img style="height: 80px" src="data:image/png;base64,{{ logo_data }}">
   </div>
 
   <table class="invoice-info-container">
