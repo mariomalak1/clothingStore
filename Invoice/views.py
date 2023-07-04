@@ -28,7 +28,7 @@ def create_invoice(request, cart_code):
             "logo_data":logo_data,
         }
 
-        template = render(request, "Invoice/invoice.html", context)
+        template = render(request, "Invoice/index.html", context)
         html_content = template.content.decode('utf-8')
         path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
         config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)

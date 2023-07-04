@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        @page{
+          size: A3;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+        }
+        html,body {
+            width: 100%;
+            height: 100%;
+        }
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            line-height: 3em;
+        }
+
+        .container-custom {
+            width: 100%;
+            padding: 4em;
+            display: flex;
+            flex-direction: column;
+            gap: 20%;
+            height: 100%;
+        }
+        .payment-info {
+            padding-top: 3em;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .top-side-payment {
+            display: flex;
+            justify-content: space-between;
+        }
+        .bottom-side-payment {
+            display: flex;
+            justify-content: space-between;
+        }
+        .line {
+            width: 100%;
+            height: 3px;
+            background-color: rgb(87, 87, 87);
+            border-radius: 5px;
+            margin: 2em 0;
+        }
+      </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="container-custom">
+
+        <div class="top-side">
+
+            <div class="logo">
+                <img style="height: 80px" src="data:image/png;base64,{{ logo_data }}">
+            </div>
+
+
+            <div class="info">
+
+                <div class="left-side">
+                    {% if cart.buyer %}
+                        <h1>{{ cart.buyer.name }}</h1>
+                    {% endif %}
+                    <p>
+                        Invoice Date : <span style="font-weight: bold">{{ cart.created_at|date:"F jS, Y" }}</span>
+                    </p>
+
+                    <p>invoice No : <span style="font-weight: bold">{{cart.cart_code}}</span></p>
+                </div>
+
+                <div class="right-side">
+                    <p>Branch Name: {{cart.branch.name}}</p>
+                        {% if cart.branch.address %}
+                            <p>Branch Address: {{cart.branch.address}}</p>
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-side">
+            <table class="table">
+                <thead>
+                  <tr>
+                      <th scope="col">Product Name</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                {% for order in cart.order_set.all %}
+                    <tr>
+                        <th scope="row">{{ order.product.product_detail.name }}</th>
+                        <th scope="row">{{ order.quantity }}</th>
+                        <td>{{ order.price }}</td>
+                        <td>{{ order.total_cost_for_order }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            <div class="payment-info">
+                <div class="top-side-payment">
+                    <p>Payment Info</p>
+                    <p>Due By</p>
+                    <p>Total</p>
+                </div>
+
+                <div class="line"></div>
+
+                <div class="bottom-side-payment">
+                    <div class="account-info">
+                        <p>User Account: {{cart.created_by.name}}</p>
+
+                        {% if cart.discount %}
+                            {% if is_percent_discount %}
+                                <p>Discount: {{cart.discount}} %</p>
+                            {% else %}
+                                <p>Discount: {{cart.discount}}</p>
+                            {% endif %}
+                        {% endif %}
+
+                    </div>
+
+                    <p style="font-size: 20px;">{{cart.due_by|date:"F jS, Y" }}</p>
+
+                    <p style="font-size: 15px;">{{cart.total_price}}</p>
+            </div>
+            <div class="line"></div>
+        </div>
+        </div>
+   
+    </div>
+   
+  </body>
+</html>

@@ -103,3 +103,7 @@ class Order(models.Model):
 
     def __str__(self):
         return (self.product.product_detail.name + " - " + str(self.quantity) + " - " + self.cart.cart_code)
+
+    @property
+    def price(self):
+        return self.product.price_for_branch
