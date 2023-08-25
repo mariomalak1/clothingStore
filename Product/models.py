@@ -13,6 +13,10 @@ class Size(models.Model):
     def get_absolute_url(self):
         return reverse("display_all_sizes")
 
+    def save(self, *args, **kwargs):
+        self.name = self.name.upper()
+        super(Size, self).save(*args, **kwargs)
+
 
 class ProductDetail(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)

@@ -4,4 +4,4 @@ from django.db import models
 class Notification(models.Model):
     title = models.CharField(max_length=100)
     message = models.TextField(null=True)
-    link = models.CharField(max_length=500, null=True)
+    link = models.URLField(null=True)

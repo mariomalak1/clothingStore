@@ -4,35 +4,65 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from AdminPanel.decorators import *
 from Seller.models import Branch, Site_User
-from .forms import AddProductInBranchForm, EditProductInBranchForm, ProductDetailAddForm, EditProductCodeForm
+from .forms import AddProductInBranchForm, EditProductInBranchForm, ProductDetailAddForm, EditProductCodeForm, SizeForm
 from .models import Product as Product_Model, ProductDetail, Size
 # Create your views here.
 
-class SizesListView(PermissionRequiredMixin, ListView):
-    model = Size
-    template_name = "Product/display_all_sizes.html"
-    permission_required = "is_authenticated_admin_decorator"
+@is_authenticated_admin_decorator
+def sizesListView(request):
+    sizes = Size.objects.all()
+    context = {
+        "object_list": sizes,
+    }
+    return render(request, "Product/display_all_sizes.html", context)
 
-class SizeCreateView(PermissionRequiredMixin, CreateView):
-    model = Size
-    fields = "__all__"
-    template_name = "Product/add_new_size.html"
-    extra_context = {"process_name": "Create", "button_name":"Create"}
-    permission_required = "is_authenticated_admin_decorator"
+@is_authenticated_admin_decorator
+def addNewSize(request):
+    if request.method == "POST":
+        form = SizeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("display_all_sizes")
+    else:
+        form = SizeForm()
+    context = {
+        "form":form,
+        "process_name":"Create",
+        "button_name": "Create",
+    }
+    return render(request, "Product/add_new_size.html", context)
 
-class SizeUpdateView(PermissionRequiredMixin, UpdateView):
-    model = Size
-    fields = "__all__"
-    template_name = "Product/add_new_size.html"
-    extra_context = {"process_name": "Edit", "button_name":"Save"}
-    permission_required = "is_authenticated_admin_decorator"
+@is_authenticated_admin_decorator
+def updateSize(request, size_id):
+    size = get_object_or_404(Size, id=size_id)
+    if request.method == "POST":
+        size_name = size.name
+        form = SizeForm(request.POST, instance=size)
+        if form.is_valid():
+            messages.add_message(request, messages.SUCCESS, f"Size successfully updated form {size_name} to {form.data.get('name')}")
+            form.save()
+            return redirect("display_all_sizes")
+    else:
+        form = SizeForm(instance=size)
+    context = {
+        "form":form,
+        "process_name":"Edit",
+        "button_name": "Save",
+    }
+    return render(request, "Product/add_new_size.html", context)
 
-class SizeDeleteView(PermissionRequiredMixin, DeleteView):
-    model = Size
-    template_name = "Product/size_delete_confirmation.html"
-    context_object_name = "size"
-    success_url = "/store/product/display_all_sizes"
-    permission_required = "is_authenticated_admin_decorator"
+def delete_size(request, size_id):
+    size = get_object_or_404(Size, id=size_id)
+    if request.method == "POST":
+        messages.add_message(request, messages.SUCCESS, f"Size with name {size.name} Successfully Deleted")
+        size.delete()
+        return redirect("display_all_sizes")
+    else:
+        context = {
+            "size":size,
+        }
+        return render(request, 'Product/size_delete_confirmation.html', context)
+
 
 
 @is_authenticated_admin_decorator

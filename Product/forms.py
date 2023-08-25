@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, ProductDetail
+from .models import Product, ProductDetail, Size
 
 class ProductDetailAddForm(forms.ModelForm):
     class Meta:
@@ -62,3 +62,14 @@ class EditProductInBranchForm(forms.ModelForm):
             return cleaned_data
         else:
             return cleaned_data
+
+class SizeForm(forms.ModelForm):
+    class Meta:
+        model = Size
+        fields = '__all__'
+
+    def clean_name(self):
+        size = Size.objects.filter(name=self.cleaned_data.get('name').upper())
+        if size.first() is not None:
+            raise forms.ValidationError("Size with this Name already exists.")
+        return self.cleaned_data.get('name')

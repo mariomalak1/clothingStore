@@ -43,7 +43,6 @@ class Site_User(Django_User):
     # to check if he is manager or seller it must have branched
     def clean(self):
         if self.user_type > 0:
-            print(self.branch)
             if not self.branch:
                 raise ValidationError(f"{Site_User.USER_TYPE_CHOICES[self.user_type][1]} Can't Created Without Branch")
 
