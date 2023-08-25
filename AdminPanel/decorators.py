@@ -9,15 +9,14 @@ def is_authenticated_admin_decorator(func):
         if request.user.is_anonymous:
             return HttpResponseForbidden()
         else:
-            # try:
+            try:
                 admin_ = Site_User.objects.get(id=request.user.id)
                 if admin_.user_type == 0:
                     return func(request, *args, **kwargs)
                 else:
                     return HttpResponseForbidden()
-            # except:
-            #     return HttpResponseForbidden()
-
+            except:
+                return HttpResponseForbidden()
     return test_user
 
 def is_authenticated_manager_decorator(func):
@@ -60,7 +59,7 @@ def is_authenticated_seller_decorator(func):
         if request.user.is_anonymous:
             return redirect("login")
         else:
-            try:
+            # try:
                 seller = Site_User.objects.get(id=request.user.id)
                 if seller:
                     if seller.is_can_be_seller():
@@ -73,8 +72,8 @@ def is_authenticated_seller_decorator(func):
                             return HttpResponseForbidden()
                 else:
                     return HttpResponseForbidden()
-            except:
-                return HttpResponseForbidden()
-            else:
-                return HttpResponseForbidden()
+            # except:
+            #     return HttpResponseForbidden()
+            # else:
+            #     return HttpResponseForbidden()
     return test_user

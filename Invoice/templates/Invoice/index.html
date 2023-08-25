@@ -85,6 +85,12 @@
                         Invoice Date : <span style="font-weight: bold">{{ cart.created_at|date:"F jS, Y" }}</span>
                     </p>
 
+                    {% if cart.edit_at %}
+                    <p>
+                        Invoice Edited At : <span style="font-weight: bold">{{ cart.edit_at|date:"F jS, Y" }}</span>
+                    </p>
+                    {% endif %}
+
                     <p>invoice No : <span style="font-weight: bold">{{cart.cart_code}}</span></p>
                 </div>
 
@@ -122,9 +128,10 @@
             </table>
             <div class="payment-info">
                 <div class="top-side-payment">
-                    <p>Payment Info</p>
-                    <p>Due By</p>
-                    <p>Total</p>
+                    <p style="font-size: 25px;">Payment Info :</p>
+                    <p style="font-size: 20px;">    Due By : {{cart.due_by|date:"F jS, Y" }}</p>
+
+                    <p style="font-size: 20px;">     Total: {{cart.total_price}}</p>
                 </div>
 
                 <div class="line"></div>
@@ -142,10 +149,6 @@
                         {% endif %}
 
                     </div>
-
-                    <p style="font-size: 20px;">{{cart.due_by|date:"F jS, Y" }}</p>
-
-                    <p style="font-size: 15px;">{{cart.total_price}}</p>
             </div>
             <div class="line"></div>
         </div>

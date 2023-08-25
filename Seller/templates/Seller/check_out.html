@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 {% load crispy_forms_filters %}
 {% block body %}
-    <a href="{% url "all_orders_created" cart.cart_code %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Return To All Orders</a>
+    <a href="{% url 'all_orders_created' cart.cart_code %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Return To All Orders</a>
 
     {# display the total of orders and cart #}
     <div class="card mb-3 text-white bg-steel">
@@ -17,7 +17,7 @@
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Create Order</legend>
                 {{ buyer_form|crispy }}
-                <button type="submit" class="btn btn-outline-success btn-lg btn-block link-home-page p-2 mb-3 mt-3" style="margin-left: 0">Get Invoice</button>
+                <button type="submit" class="btn btn-success btn-lg btn-block link-home-page p-2 mb-3 mt-3" style="margin-left: 0">Finish Cart - Get Invoice</button>
             </fieldset>
         </form>
     </div>

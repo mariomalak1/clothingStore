@@ -1,7 +1,8 @@
 {% extends "main.html" %}
 {% load static %}
 {% block body %}
-    <a href="{% url "seller_create_order" cart.cart_code %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Add Order</a>
+    <a href="{% url 'seller_create_order' cart.cart_code %}" class="btn btn-primary btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Add Order</a>
+
     {% if cart.order_set %}
 
         {# display the total of orders and cart #}
@@ -23,17 +24,16 @@
                     <h5 class="card-title mr-3">Total for this order : {{ order.total_cost_for_order }}</h5>
                     <h6 class="card-text">product code : {{ order.product.product_detail.product_code }}</h6>
                     <!-- Confirmation button code -->
-                    <a href="{% url "delete_order" order.id forloop.counter%}" class="btn btn-danger">Delete</a>
+                    <a href="{% url 'delete_order' order.id forloop.counter%}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
 
         {% endfor %}
 
         {% if page_title == "Edit Cart" %}
-            <a href="{% url "check_out_exchange" cart.cart_code%}" class="btn btn-success btn-lg btn-block w-100 p-2 mb-3" style="width: 100%;">Check Out</a>
-        {# to go check out #}
+            <a href="{% url 'check_out_exchange' cart.cart_code%}" class="btn btn-success btn-lg btn-block w-100 p-2 mb-3" style="width: 100%;">Check Out</a>
         {% else %}
-            <a href="{% url "check_out" cart.cart_code%}" class="btn btn-success btn-lg btn-block w-100 p-2 mb-3" style="width: 100%;">Check Out</a>
+            <a href="{% url 'check_out' cart.cart_code%}" class="btn btn-success btn-lg btn-block w-100 p-2 mb-3" style="width: 100%;">Check Out</a>
         {% endif %}
 
         <a href="{% url 'delete_cart' cart.cart_code%}" class="btn btn-danger btn-lg btn-block w-100 p-2 mb-3" style="margin-left: 0">Cancel All Orders</a>
@@ -41,9 +41,3 @@
     {% endif %}
 
 {% endblock %}
-
-
-        <div class="form-control mb-3">
-            <label for="isFinished">is Finished ? </label>
-            <input id="isFinished" type="checkbox" name="Finished" value="yes">
-        </div>

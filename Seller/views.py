@@ -15,16 +15,14 @@ from AdminPanel.decorators import *
 @is_authenticated_seller_decorator
 def create_cart(request, cart_code = None):
     seller = get_object_or_404(Site_User, id=request.user.id)
-    if not cart_code or cart_code == "None":
-        cart = Cart.objects.create(created_by = seller, branch=seller.branch)
-    else:
-        cart = Cart.objects.filter(cart_code = cart_code).first()
-        if cart:
-            if cart.is_finished:
-                messages.add_message(request, messages.WARNING, "This Is Finished Cart, you can edit it only")
-                return redirect("edit_cart", cart.cart_code)
+    cart = Cart.objects.filter(cart_code=cart_code).first()
+    if cart:
+        if cart.is_finished:
+            messages.add_message(request, messages.WARNING, "This Is Finished Cart, you can edit it only")
+            return redirect("edit_cart", cart.cart_code)
         else:
-            cart = Cart.objects.create(created_by=seller, branch=seller.branch)
+            cart.delete()
+    cart = Cart.objects.create(created_by = seller, branch=seller.branch)
     return redirect("all_orders_created", cart.cart_code)
 
 @is_authenticated_seller_decorator
@@ -53,7 +51,6 @@ def get_sizes(request):
         list_of_sizes.append(dic)
     response_data = {'sizes': list_of_sizes}
     return JsonResponse(response_data)
-
 
 @is_authenticated_seller_decorator
 def create_order(request, cart_code):
@@ -136,6 +133,29 @@ def check_out(request, cart_code):
         messages.add_message(request, messages.WARNING, "this complete Cart, You can Edit in This Page")
         return redirect("edit_cart", cart_code)
 
+@is_authenticated_seller_decorator
+def check_out_exchange(request, cart_code):
+    cart = Cart.objects.filter(cart_code=cart_code).first()
+    seller = get_object_or_404(Site_User, id=request.user.id)
+    if not cart.is_finished:
+        cart.is_finished = True
+        cart.edit_at = datetime.datetime.now()
+        cart.edited_by = seller
+        cart.save()
+    if cart.order_set.all():
+        if request.method == "POST":
+            messages.add_message(request, messages.SUCCESS, f"Check Out For Cart with Code {cart.cart_code} is Edited Successfully")
+            return redirect("create_invoice", cart_code)
+    else:
+        messages.add_message(request, messages.WARNING, "No Orders Created Yet")
+        return redirect("all_orders_created", cart_code)
+
+    context = {
+        "cart_code":cart_code,
+        "cart":cart,
+    }
+    return render(request, "Seller/check_out_exchange.html", context)
+
 ## function to delete the cart and return specific endpoint to redirect user to it
 # used in delete_cart endpoint
 def delete_cart_function(request, cart, place):
@@ -162,7 +182,6 @@ def delete_cart(request, cart_code, place = None):
             total = cart.total_price()
     if request.method == "POST":
         return redirect( delete_cart_function(request, cart, place) )
-    print(place)
     context = {"object_name": f"Cart",
                "afterObjName":f'With Total Cost "{total}"',
                "anotherText": f"With Number Orders : {cart.order_set.count()}",
@@ -192,23 +211,19 @@ def get_cart_code_from_user(request):
 def edit_cart(request, cart_code):
     cart = get_object_or_404(Cart, cart_code = cart_code)
     orders_in_cart = cart.order_set.all().order_by("-created_at")
-    if cart.is_finished:
-        cart.edit_at = datetime.datetime.now()
-        context = {
-            "cart": cart,
-            "page_title":"Edit Cart",
-            "cart_code":cart_code,
-            "orders_in_cart": orders_in_cart,
-        }
-        return render(request, "Seller/all_orders_created.html", context)
-    else:
-        messages.add_message(request, messages.WARNING, "This not Completed Cart, You Can Enter it Again from Sale and Complete it")
-        return redirect("home_page", cart_code = cart_code)
-
-@is_authenticated_seller_decorator
-def check_out_exchange(request, old_cart_code):
-    context = {"cart_code":old_cart_code}
-    return render(request, "Seller/check_out_exchange.html", context)
+    seller = get_object_or_404(Site_User, id=request.user.id)
+    if not cart.is_finished:
+        cart.is_finished = True
+    cart.edit_at = datetime.datetime.now()
+    cart.edited_by = seller
+    cart.save()
+    context = {
+        "cart": cart,
+        "page_title":"Edit Cart",
+        "cart_code":cart_code,
+        "orders_in_cart": orders_in_cart,
+    }
+    return render(request, "Seller/all_orders_created.html", context)
 
 @is_authenticated_seller_decorator
 def user_profile(request):

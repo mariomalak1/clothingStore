@@ -79,7 +79,8 @@
                                                     <h6 class="card-text">Discount : {{ cart.discount }}</h6>
                                                     <div class="d-flex mt-3" style="justify-content: space-between; align-items: center;">
                                                         <div>
-                                                            <a href="{% url 'delete_cart' cart.cart_code 'AllCarts'%}" class="btn btn-danger">Delete</a>
+                                                            <a href="{% url 'delete_cart' cart.cart_code 'AllCarts'%}" class="btn btn-outline-danger">Delete</a>
+                                                            <a href="{% url 'edit_cart' cart.cart_code %}" class="btn btn-outline-success">Edit</a>
                                                             <a href="{% url 'create_invoice' cart.cart_code %}" style="margin-left: 0;" class="btn btn-outline-secondary">Print</a>
                                                         </div>
                                                         <div onclick='f({{ cart.cart_code }})' style="display: flex; justify-content: center; align-items: center

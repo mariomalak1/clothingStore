@@ -3,6 +3,8 @@ import string
 from datetime import timedelta
 from django.db import models
 from django.core.exceptions import ValidationError
+
+from Main.models import SiteSettings
 from Seller.models import Site_User, Branch
 from Product.models import Product as product_model, Size as Product_size
 # Create your models here.
@@ -18,14 +20,20 @@ class Buyer(models.Model):
         return self.name
 
 class Cart(models.Model):
-    discount = models.PositiveIntegerField(default=0)
-    is_percent_discount = models.BooleanField(default=False)
     cart_code = models.CharField(max_length=200, null=True, blank=True)
+
+    is_percent_discount = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
+
+    discount = models.PositiveIntegerField(default=0)
     buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
-    edit_at = models.DateTimeField(null=True, blank=True)
+
     created_by = models.ForeignKey(Site_User, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+
+    edited_by = models.ForeignKey(Site_User, on_delete=models.SET_NULL, null=True, blank=True, related_name="carts_edited")
+    edit_at = models.DateTimeField(null=True, blank=True)
+
     branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, blank=True)
 
     # function to generate code for every cart
@@ -55,7 +63,12 @@ class Cart(models.Model):
         super(Cart, self).save(*args, **kwargs)
 
     def due_by(self):
-        return self.created_at + timedelta(days=14)
+        due_by_days = SiteSettings.objects.first().due_by_days
+        if self.edit_at:
+            last_time = self.edit_at
+        else:
+            last_time = self.created_at
+        return last_time + timedelta(days=due_by_days)
 
     def total_price_without_discount(self):
         total = 0

@@ -66,6 +66,7 @@ def settingsFillFields(request, form):
 def settingsSaveChanges(request, settingsForm):
     settings_model = SiteSettings.objects.all().first()
     settings_model.SiteName = settingsForm.cleaned_data.get('SiteName')
+    settings_model.due_by_days = settingsForm.cleaned_data.get("due_by_days")
     settings_model.save()
 
     user_ = Site_User.objects.get(id = request.user.id)
