@@ -9,14 +9,14 @@ def is_authenticated_admin_decorator(func):
         if request.user.is_anonymous:
             return HttpResponseForbidden()
         else:
-            try:
+            # try:
                 admin_ = Site_User.objects.get(id=request.user.id)
                 if admin_.user_type == 0:
                     return func(request, *args, **kwargs)
                 else:
                     return HttpResponseForbidden()
-            except:
-                return HttpResponseForbidden()
+            # except:
+            #     return HttpResponseForbidden()
     return test_user
 
 def is_authenticated_manager_decorator(func):
@@ -24,16 +24,16 @@ def is_authenticated_manager_decorator(func):
         if request.user.is_anonymous:
             return HttpResponseForbidden()
         else:
-            try:
+            # try:
                 manager = Site_User.objects.get(id=request.user.id)
                 if manager.user_type == 1:
                     return func(request, *args, **kwargs)
                 else:
                     return HttpResponseForbidden()
-            except:
-                return HttpResponseForbidden()
-            else:
-                return HttpResponseForbidden()
+            # except:
+            #     return HttpResponseForbidden()
+            # else:
+            #     return HttpResponseForbidden()
 
     return test_user
 
@@ -42,14 +42,14 @@ def is_authenticated_admin_or_manager_decorator(func):
         if request.user.is_anonymous:
             return HttpResponseForbidden()
         else:
-            try:
+            # try:
                 user_ = Site_User.objects.get(id=request.user.id)
                 if (user_.is_site_admin()) or (user_.is_branch_manager()):
                     return func(request, *args, **kwargs)
                 else:
                     return HttpResponseForbidden()
-            except:
-                return HttpResponseForbidden()
+            # except:
+            #     return HttpResponseForbidden()
 
     return test_user
 
