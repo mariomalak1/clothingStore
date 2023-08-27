@@ -2,6 +2,7 @@ import random
 import string
 from datetime import timedelta
 from django.db import models
+from django.db.models import Sum, F
 from django.core.exceptions import ValidationError
 
 from Main.models import SiteSettings

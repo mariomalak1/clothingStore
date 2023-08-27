@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponseBadRequest
+from django.db.models import Sum, F
+from django.utils import timezone
+from datetime import datetime, timedelta
 ##################
 from .forms import AddSellerForm, AddNewBranch, EditBranchForm, EditUserForm
 from .filters import CartFilter, CartFilterForManager
@@ -12,15 +15,19 @@ from .decorators import *
 @is_authenticated_admin_or_manager_decorator
 def display_all_carts(request):
     user_ = get_object_or_404(Site_User, id = request.user.id)
-    total_money_entered = 0
-    if user_.is_site_admin():
-        carts = Cart.objects.all().order_by('-created_at')
-        cart_filter = CartFilter(data= request.GET, queryset=carts)
-    else:
+    carts = Cart.objects.all().order_by('-created_at')
+
+    for cart_is_not_finished in carts.filter(is_finished=False):
+        if cart_is_not_finished.created_at + timedelta(hours=3) <= timezone.now():
+            cart_is_not_finished.delete()
+
+    if user_.is_branch_manager():
         carts = Cart.objects.filter(branch=user_.branch).order_by('-created_at')
         cart_filter = CartFilterForManager(data= request.GET, queryset=carts)
-    for cart in cart_filter.qs:
-        total_money_entered += cart.total_price()
+    else:
+        cart_filter = CartFilter(data=request.GET, queryset=carts)
+    total_money_entered = cart_filter.qs.annotate( total_cost=Sum(F('order__quantity') * F('order__product__price_for_branch'))).aggregate(total_money = Sum('total_cost'))['total_money'] or 0
+
     context = {
         "carts":cart_filter.qs,
         "total_money_entered": total_money_entered,
