@@ -2,11 +2,7 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" style="background-color: rgba(0,0,0,0.7)">
         <div class="container">
             {% if not user.is_anonymous %}
-                {% if cart_code %}
-                    <a class="navbar-brand mr-4" href="{% url 'home_page' cart_code %}">{{ site_name }}</a>
-                {% else %}
                     <a class="navbar-brand mr-4" href="{% url 'home_page' %}">{{ site_name }}</a>
-                {% endif %}
             {% else %}
                 <p class="navbar-brand mr-4" >Store Name</p>
             {% endif %}

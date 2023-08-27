@@ -23,6 +23,8 @@ class CartFilter(django_filters.FilterSet):
     ## number of orders
 
     def data_by_number_of_orders(self, queryset, name, value):
+        if value < 0:
+            return queryset.none()
         return queryset.annotate(count=Count('order')).filter(count__gte=value)
 
     def data_by_edited__or_not(self, queryset, name, value):

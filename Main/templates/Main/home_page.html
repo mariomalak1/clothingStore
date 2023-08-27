@@ -1,17 +1,9 @@
 {% extends "main.html" %}
 {% block body %}
     <div class="container">
-        {% if cart_code %}
-            <a href="{% url 'create_cart' cart_code %}">
-                <div class="btn btn-primary btn-lg btn-block link-home-page">Sale</div>
-            </a>
-        {% else %}
-
-            <a href="{% url 'create_cart' %}">
-                <div class="btn btn-primary btn-lg btn-block link-home-page">Sale</div>
-            </a>
-
-        {% endif %}
+        <a href="{% url 'create_cart' %}">
+            <div class="btn btn-primary btn-lg btn-block link-home-page">Sale</div>
+        </a>
 
         <br>
         <a href="{% url 'get_cart_code_from_user'  %}">

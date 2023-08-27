@@ -13,15 +13,8 @@ from AdminPanel.decorators import *
 # Create your views here.
 
 @is_authenticated_seller_decorator
-def create_cart(request, cart_code = None):
+def create_cart(request):
     seller = get_object_or_404(Site_User, id=request.user.id)
-    cart = Cart.objects.filter(cart_code=cart_code).first()
-    if cart:
-        if cart.is_finished:
-            messages.add_message(request, messages.WARNING, "This Is Finished Cart, you can edit it only")
-            return redirect("edit_cart", cart.cart_code)
-        else:
-            cart.delete()
     cart = Cart.objects.create(created_by = seller, branch=seller.branch)
     return redirect("all_orders_created", cart.cart_code)
 
