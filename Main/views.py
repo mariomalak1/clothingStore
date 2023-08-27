@@ -48,11 +48,12 @@ def settings(request):
 
 def settingsFillFields(request, form):
     user_ = Site_User.objects.get(id = request.user.id)
-    site_name = SiteSettings.objects.all().first()
-    form["SiteName"].initial = site_name.SiteName
+    site_settings = SiteSettings.objects.all().first()
+    form["SiteName"].initial = site_settings.SiteName
     if user_:
         if user_.branch:
             form["branch"].initial = user_.branch
+    form["due_by_days"].initial = site_settings.due_by_days
 
 def settingsSaveChanges(request, settingsForm):
     settings_model = SiteSettings.objects.all().first()
