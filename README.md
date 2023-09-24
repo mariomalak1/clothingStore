@@ -18,17 +18,13 @@ Some features:
 - display all users
 - if cart will be cancelled and no orders in it, delete it without go to delete page
 - if press order and not chosen a specific product, display message not error
-
-
+- admin can suspend any user except the other admins 
 
 to run this program on your machine 
 
 First, you want to install only Python programming language from https://www.python.org/
 
-
-
 **Remember**: To Add Python To Path in the Installation
-
 
 
 32-bit version:
