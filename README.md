@@ -45,3 +45,10 @@ py manage.py migrate
 py manage.py runserver
 ```
 
+create an admin
+
+```shell
+py manage.py createsuperuser
+
+```
+
