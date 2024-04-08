@@ -5,8 +5,6 @@ manager user has access to everything as admin but, in his branch only.
 except he can't access any branch else his
 admin user can see all branches sales and some statistics for sales in branches, and a lot of features
 
-
-
 Some features:
 
 - create the invoice pdf and print it 
@@ -17,7 +15,12 @@ Some features:
 - Search in all carts with number of orders
 - if product quantity in a branch is equal to 0 will not appear in "create order form"
 - display all users
-- if a cart will be canceled and no orders in it, delete it without go to "delete page"
+- if cart will be cancelled and no orders in it, delete it without go to delete page
+- if press order and not chosen a specific product, display message not error
+- admin can suspend any user except the other admins 
+
+to run this program on your machine 
+
 
 
 To run this program on your machine:
