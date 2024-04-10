@@ -57,3 +57,22 @@ pip install -r requirements.txt
 py manage.py migrate
 py manage.py runserver
 ```
+
+
+
+
+
+
+
+In [1]: from Main import models
+
+In [2]: models.SiteSettings
+Out[2]: Main.models.SiteSettings
+
+In [3]: site = models.SiteSettings()
+
+In [4]: site.SiteName = "Clothing Store"
+
+In [5]: site.save()
+
+In [6]: exit()
