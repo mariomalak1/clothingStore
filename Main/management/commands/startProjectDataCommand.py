@@ -15,5 +15,8 @@ class Command(BaseCommand):
         user_.set_password("password1")
         user_.save()
 
+        site = MainModels.SiteSettings(SiteName="Mario Site")
+        site.save()
+
         print("done starter data.")
         print("you now can enter website with username = 'admin1'\nand password = 'password1'\nand you have already created branch called 'branch 1'")

@@ -52,27 +52,36 @@ https://www.python.org/ftp/python/3.10.10/python-3.10.10-amd64.exe
 
 then open cmd and run this command
 
-```
-pip install -r requirements.txt
-py manage.py migrate
-py manage.py runserver
-```
 
 
+1. first install all requirement libraries for the project
 
+   - ```shell
+     pip install -r requirements.txt
+     ```
 
+2. create the physical database for the project
 
+   - ```shell
+     py manage.py migrate
+     ```
 
+3. run this command also to create some dummy data to run project directly 
 
-In [1]: from Main import models
+   - ```shell
+     py manage.py startProjectDataCommand
+     ```
 
-In [2]: models.SiteSettings
-Out[2]: Main.models.SiteSettings
+4. run the server and open the project
 
-In [3]: site = models.SiteSettings()
+   - ```shell
+     py manage.py runserver
+     ```
 
-In [4]: site.SiteName = "Clothing Store"
+Now you can enter the project on localhost
 
-In [5]: site.save()
+http://127.0.0.1:8000/
 
-In [6]: exit()
+enter username : "admin1"
+
+password : "password1"
