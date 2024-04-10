@@ -7,16 +7,27 @@ class Command(BaseCommand):
         print("welcome in mario clothing store project.")
 
         # create branch, after while he can enter website and change it
-        branch = SellerModel.Branch(name="branch 1")
-        branch.save()
+        try:
+            branch = SellerModel.Branch(name="branch 1")
+            branch.save()
+            print("branch with name 'branch 1' added successfully, you can enter website and change it")
+        except:
+            branch = SellerModel.Branch.objects.first()
+            print("branch with name 'branch 1' is already exist, no need to create dummy data!.")
+        try:
+            # create site user to be an admin and can open the admin pages
+            user_ = SellerModel.Site_User(username="admin1", branch=branch, user_type=0)
+            user_.set_password("password1")
+            user_.save()
+        except:
+            user_ = SellerModel.Site_User.objects.filter(username="admin1").first()
+            user_.set_password("password2")
+            user_.save()
+            print("username is already exist and will change this password to : password2")
 
-        # create site user to be an admin and can open the admin pages
-        user_ = SellerModel.Site_User(username="admin1", branch=branch, user_type=0)
-        user_.set_password("password1")
-        user_.save()
-
-        site = MainModels.SiteSettings(SiteName="Mario Site")
-        site.save()
+        site = MainModels.SiteSettings.objects.first()
+        if not site:
+            site = MainModels.SiteSettings(SiteName="Mario Site")
+            site.save()
 
         print("done starter data.")
-        print("you now can enter website with username = 'admin1'\nand password = 'password1'\nand you have already created branch called 'branch 1'")
